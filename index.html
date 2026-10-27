@@ -268,7 +268,7 @@ h3{font-size:17px;font-weight:700}
 .quick .btn{flex:none}
 
 /* ===== Bottom nav ===== */
-.nav{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(env(safe-area-inset-bottom,0px) + 10px);width:calc(100% - 24px);max-width:536px;z-index:20;display:grid;grid-template-columns:repeat(4,1fr);padding:8px 4px;border-radius:30px;background:var(--nav-bg);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);box-shadow:var(--shadow);border:1px solid var(--line)}
+.nav{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(env(safe-area-inset-bottom,0px) + 10px);width:calc(100% - 24px);max-width:536px;z-index:20;display:grid;grid-template-columns:repeat(5,1fr);padding:8px 4px;border-radius:30px;background:var(--nav-bg);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);box-shadow:var(--shadow);border:1px solid var(--line)}
 .nav button{border:0;background:none;display:flex;flex-direction:column;align-items:center;gap:4px;padding:4px 0;cursor:pointer;color:var(--ink);font-size:12.5px;font-weight:500}
 .nav .ni{position:relative;width:40px;height:36px;display:grid;place-items:center}
 .nav .ni svg.i{width:27px;height:27px;stroke-width:1.6}
@@ -343,6 +343,41 @@ label.f textarea{min-height:200px;font-size:14px;line-height:1.55}
 .dev .tick{margin-left:auto;width:24px;height:24px;border-radius:50%;border:2px solid var(--line);display:grid;place-items:center;font-size:13px;color:#fff;flex:none}
 .dev[aria-pressed="true"] .tick{background:var(--brand);border-color:var(--brand)}
 .pick{display:flex;flex-wrap:wrap;gap:8px}
+.inv{border:3px solid var(--ok-soft);background:linear-gradient(180deg,var(--ok-soft),var(--surface) 75%);border-radius:22px;padding:14px 16px;display:grid;gap:10px}
+.inv .t{font-weight:700;font-size:15.5px}
+.inv .d{font-size:13.5px;color:var(--muted)}
+.inv .row .btn{flex:1}
+.convs{display:grid;gap:10px;grid-template-columns:minmax(0,1fr)}
+.conv{display:flex;align-items:center;gap:12px;width:100%;border:3px solid var(--ring);background:var(--surface);border-radius:20px;padding:10px 14px;cursor:pointer;text-align:left;color:var(--ink)}
+.conv .mid{flex:1;min-width:0}
+.conv .who{font-weight:700}
+.conv .last{font-size:13.5px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.conv .side{display:grid;justify-items:end;gap:4px;font-size:12px;color:var(--muted)}
+.conv .un{min-width:20px;height:20px;padding:0 6px;border-radius:10px;background:var(--brand);color:#fff;font-size:11.5px;font-weight:700;line-height:20px;text-align:center}
+.conv.unread .last{color:var(--ink);font-weight:600}
+.chat-head{display:flex;align-items:center;gap:10px;margin:0 0 12px}
+.chat-head .back{border:0;background:var(--surface-2);width:40px;height:40px;border-radius:50%;font-size:22px;cursor:pointer;color:var(--ink)}
+.chat-head .who{font-weight:700}
+.chat-head .u{font-size:13px;color:var(--muted)}
+.thread{display:flex;flex-direction:column;gap:8px;min-height:220px;padding-bottom:8px}
+.bub{max-width:82%;padding:9px 13px;border-radius:20px;white-space:pre-wrap;font-size:14.5px;line-height:1.5;word-wrap:break-word}
+.bub.me{align-self:flex-end;background:var(--brand);color:#fff;border-bottom-right-radius:6px}
+.bub.them{align-self:flex-start;background:var(--surface-2);border-bottom-left-radius:6px}
+.bub time{display:block;font-size:11px;opacity:.7;margin-top:3px}
+.bub.card{background:var(--surface);color:var(--ink);border:3px solid var(--ring);max-width:88%}
+.bub.card.me{border-color:var(--brand-soft)}
+.bub.card .ct{font-weight:700;margin-bottom:4px}
+.bub.card .row{margin-top:10px}
+.bub.card .row .btn{flex:1}
+.sysmsg{align-self:center;font-size:12.5px;color:var(--muted);background:var(--surface-2);padding:5px 12px;border-radius:999px;text-align:center;max-width:90%}
+.compose{position:sticky;bottom:calc(env(safe-area-inset-bottom,0px) + 98px);background:var(--bg);padding:8px 0 4px;display:grid;gap:8px}
+.compose .qa{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none}
+.compose .qa .btn{flex:none}
+.compose .in{display:flex;gap:8px}
+.compose textarea{flex:1;resize:none;border:1.5px solid var(--line);background:var(--surface);border-radius:24px;padding:12px 16px;min-height:48px;max-height:120px;font-size:15px}
+.compose .in .btn{width:48px;height:48px;padding:0;flex:none}
+.inv-banner{display:flex;align-items:center;gap:12px;background:var(--ok-soft);border-radius:18px;padding:12px 14px;margin-bottom:14px;font-weight:600;font-size:14px}
+.inv-banner .btn{margin-left:auto}
 div.f{display:grid;gap:8px;font-size:13.5px;font-weight:600;color:var(--muted)}
 .f2>*,.f3>*{min-width:0}
 label.f input,label.f select{min-width:0;max-width:100%}
@@ -450,6 +485,7 @@ const I = {
   users: svg('<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.5-3.5 3.2-5.5 6.5-5.5s6 2 6.5 5.5"/><circle cx="17" cy="9" r="2.5"/><path d="M17 14.5c2.5 0 4.2 1.6 4.5 4"/>'),
   send: svg('<path d="M4 12l16-8-6 16-2.5-6.5z"/>'),
   scissors: svg('<circle cx="6" cy="7" r="3"/><circle cx="6" cy="17" r="3"/><path d="M8.5 8.5 20 18M8.5 15.5 20 6"/>'),
+  chat: svg('<path d="M4 5.5h16a1.5 1.5 0 0 1 1.5 1.5v9a1.5 1.5 0 0 1-1.5 1.5h-8.5L7 21v-3.5H4A1.5 1.5 0 0 1 2.5 16V7A1.5 1.5 0 0 1 4 5.5z"/><path d="M7.5 10.5h.01M12 10.5h.01M16.5 10.5h.01"/>'),
   split: svg('<path d="M3.5 3h17v18l-2.8-1.6L14.8 21 12 19.4 9.2 21l-2.9-1.6L3.5 21z"/><path d="M12 6v10.5" stroke-dasharray="2.2 2.2"/><path d="M7 8.5h2.5M7 12.5h2.5M14.5 8.5H17M14.5 12.5H17"/>'),
   cash: svg('<rect x="2" y="9" width="17" height="11.5" rx="2"/><circle cx="10.5" cy="14.75" r="2.5"/><path d="M5 4.5h15a2 2 0 0 1 2 2v10"/>'),
   logout: svg('<path d="M15 4h3a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-3M10 17l5-5-5-5M15 12H3"/>'),
@@ -564,7 +600,7 @@ function alertsList(){
   }).map(e => ({...e, c: e.n < 0 ? 'var(--leak)' : e.kind==='trial' ? 'var(--trial)' : 'var(--warn)'}));
   for (const m of (state.inbox||[]).filter(x => !x.read).slice(0,10).reverse()) out.unshift(m.type === 'invite'
     ? {icon:'🤝', title:`${m.fromName} mời bạn ghép nhóm ${m.svc}`, desc:m.text, c:'var(--ok)', kind:'invite', ref:m.id}
-    : {icon:'💬', title:`${m.fromName} nhắc bạn${m.amount?` · ${money(m.amount)}`:''}`, desc:m.text, c:'var(--trial)', kind:'msg', ref:m.id, amount:m.amount});
+    : {icon:'💬', title: m.type === 'remind' || m.amount ? `${m.fromName} nhắc bạn · ${money(m.amount)}` : `${m.fromName} nhắn cho bạn`, desc:m.text, c:'var(--trial)', kind:'msg', ref:m.id, amount: m.type === 'remind' || m.amount ? m.amount : 0, from:m.from});
   for (const s of state.subs){
     if (s.cancelTodo){ const dl = s.trialEnd || s.nextBill; out.unshift({icon:'✂️', title:`Nhớ hủy ${s.name}`, desc: dl ? `Hủy trước ${fmtDate(dl)} (${whenText(daysUntil(dl))}) để không bị trừ ${money(s.price)}.` : `Bạn đã đặt nhắc hủy gói này.`, c:'var(--leak)', kind:'todo', ref:s.id}); }
     if (s.prevPrice && s.priceChangedAt && (Date.now()-s.priceChangedAt) < 60*864e5 && s.price > s.prevPrice){
@@ -613,8 +649,8 @@ const MINDSET = [
 ];
 
 /* ============ Rendering ============ */
-const NAV = [['overview','Tổng quan','home'],['subs','Gói','card'],['calendar','Lịch','cal'],['student','Sinh viên','cap']];
-const PAGE = {subs:['Quản lý các gói đăng ký','Theo dõi chi phí, tần suất sử dụng và mức độ đáng tiền của từng gói.'], calendar:['Lịch thanh toán','Nhắc trước 1–3 ngày, không bị trừ tiền oan'], student:['Ví sinh viên','Học phí, chia tiền nhóm, mượn & trả'], ai:['Hỏi OptiSub','Cố vấn chi tiêu số của riêng bạn']};
+const NAV = [['overview','Tổng quan','home'],['subs','Gói','card'],['calendar','Lịch','cal'],['student','Sinh viên','cap'],['chat','Bạn bè','chat']];
+const PAGE = {subs:['Quản lý các gói đăng ký','Theo dõi chi phí, tần suất sử dụng và mức độ đáng tiền của từng gói.'], calendar:['Lịch thanh toán','Nhắc trước 1–3 ngày, không bị trừ tiền oan'], student:['Ví sinh viên','Học phí, chia tiền nhóm, mượn & trả'], chat:['Bạn bè','Trò chuyện, mời ghép gói và nhắc nợ'], ai:['Hỏi OptiSub','Cố vấn chi tiêu số của riêng bạn']};
 const DECO = '<svg class="hdr-deco" viewBox="0 0 400 260" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><defs><radialGradient id="dg1" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#FFD1DC" stop-opacity=".75"/><stop offset="1" stop-color="#FFD1DC" stop-opacity="0"/></radialGradient><radialGradient id="dg2" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#FFC07A" stop-opacity=".7"/><stop offset="1" stop-color="#FFC07A" stop-opacity="0"/></radialGradient><radialGradient id="dg3" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#C77DFF" stop-opacity=".45"/><stop offset="1" stop-color="#C77DFF" stop-opacity="0"/></radialGradient><pattern id="dgd" width="14" height="14" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1.4" fill="#fff"/></pattern></defs><circle cx="345" cy="20" r="150" fill="url(#dg1)"/><circle cx="40" cy="250" r="140" fill="url(#dg2)"/><circle cx="230" cy="150" r="110" fill="url(#dg3)"/><rect x="250" y="150" width="120" height="84" fill="url(#dgd)" opacity=".18" rx="20"/><path d="M-10 205 C 70 170, 140 245, 230 205 S 360 170, 420 200" fill="none" stroke="#fff" stroke-width="2" stroke-opacity=".22" stroke-linecap="round"/><path d="M-10 222 C 80 192, 150 262, 240 222 S 370 190, 420 218" fill="none" stroke="#fff" stroke-width="1.4" stroke-opacity=".14" stroke-linecap="round"/><circle cx="300" cy="85" r="26" fill="none" stroke="#fff" stroke-opacity=".28" stroke-width="2"/><circle cx="300" cy="85" r="17" fill="#fff" fill-opacity=".12"/><circle cx="372" cy="128" r="9" fill="#fff" fill-opacity=".22"/><circle cx="182" cy="34" r="5" fill="#fff" fill-opacity=".3"/><circle cx="128" cy="140" r="3.5" fill="#fff" fill-opacity=".35"/><path fill="#fff" opacity="0.85" transform="translate(352 58) scale(1.3)" d="M0-10C1.2-3 3-1.2 10 0 3 1.2 1.2 3 0 10-1.2 3-3 1.2-10 0-3-1.2-1.2-3 0-10z"/><path fill="#fff" opacity="0.6" transform="translate(250 40) scale(0.8)" d="M0-10C1.2-3 3-1.2 10 0 3 1.2 1.2 3 0 10-1.2 3-3 1.2-10 0-3-1.2-1.2-3 0-10z"/><path fill="#fff" opacity="0.55" transform="translate(388 190) scale(0.9)" d="M0-10C1.2-3 3-1.2 10 0 3 1.2 1.2 3 0 10-1.2 3-3 1.2-10 0-3-1.2-1.2-3 0-10z"/><path fill="#fff" opacity="0.5" transform="translate(205 118) scale(0.6)" d="M0-10C1.2-3 3-1.2 10 0 3 1.2 1.2 3 0 10-1.2 3-3 1.2-10 0-3-1.2-1.2-3 0-10z"/><path fill="#fff" opacity="0.45" transform="translate(92 30) scale(0.7)" d="M0-10C1.2-3 3-1.2 10 0 3 1.2 1.2 3 0 10-1.2 3-3 1.2-10 0-3-1.2-1.2-3 0-10z"/></svg>';
 function tier(){
   const s = state.savedFromCancels || 0;
@@ -749,8 +785,11 @@ async function acceptInvite(m){
   s.shareWith = [...new Set([...(s.shareWith||[]), current.username])];
   s.sharedWith = s.shareWith.length + (s.guests||[]).length + 1; s.payers = s.sharedWith;
   s.invited = (s.invited||[]).filter(u => u !== current.username);
-  sst.inbox = [{id:uid(), at:Date.now(), read:false, from: current.username, fromName: current.displayName, text:`Mình đồng ý ghép nhóm ${s.name}! Nhóm giờ có ${s.sharedWith} người, mỗi người ${money(monthly(s)/s.sharedWith)}/tháng.`, amount:0}, ...(sst.inbox||[])];
+  const notice = {id:uid()+uid(), at:Date.now(), type:'system', from: current.username, fromName: current.displayName, text:`${current.displayName.split(' ').slice(-1)[0]} đã đồng ý ghép nhóm ${s.name} · ${s.sharedWith} người, mỗi người ${money(monthly(s)/s.sharedWith)}/tháng`};
+  sst.inbox = [{...notice, read:false}, ...(sst.inbox||[])];
+  chatSetStatus(sst, current.username, m.id, 'accepted'); chatPush(sst, current.username, notice);
   await saveState(sender, sst);
+  chatSetStatus(state, sender.username, m.id, 'accepted'); chatPush(state, sender.username, notice);
   const members = [sender.username, ...s.shareWith]; const k = svcKey(s.name);
   for (const u of s.shareWith){
     const copy = {...s, shareWith: members.filter(x => x !== u), sharedBy: sender.displayName, owner: sender.username, invited: []};
@@ -767,10 +806,98 @@ async function acceptInvite(m){
       await saveState(acc, st);
     }
   }
-  m.read = true; commit(); if (dlg.open) notifCenter();
+  const ib = (state.inbox||[]).find(x => x.id === m.id); if (ib) ib.read = true; m.read = true;
+  commit(); if (dlg.open) notifCenter();
   toast(`🎉 Đã vào nhóm ${s.name} cùng ${sender.displayName.split(' ').slice(-1)[0]}. Phần của bạn: ${money(monthly(s)/s.sharedWith)}/tháng.`, 5000);
   loadPeers();
 }
+
+/* ============ Bạn bè & chat ============ */
+let chatPeer = null; let chatTimer = null;
+function chatPush(st, peer, msg){ st.chats = st.chats || {}; const L = st.chats[peer] = st.chats[peer] || []; if (!L.some(x => x.id === msg.id)) L.push(msg); if (L.length > 200) L.splice(0, L.length - 200); }
+function chatSetStatus(st, peer, id, status){ const x = (st.chats?.[peer]||[]).find(m => m.id === id); if (x) x.status = status; const y = (st.inbox||[]).find(m => m.id === id); if (y && status !== 'pending') y.read = y.read || peer !== y.from ? y.read : y.read; }
+function chatUnread(u){ const last = (state.chatRead||{})[u] || 0; return (state.chats?.[u]||[]).filter(m => m.from !== current.username && m.at > last).length; }
+function chatUnreadTotal(){ return Object.keys(state.chats||{}).reduce((a,u) => a + chatUnread(u), 0); }
+function pendingInvites(){ return (state.inbox||[]).filter(m => m.type === 'invite' && !m.read); }
+function timeTxt(t){ const d = new Date(t); const now = new Date(); return d.toDateString() === now.toDateString() ? `${pad(d.getHours())}:${pad(d.getMinutes())}` : `${pad(d.getDate())}/${pad(d.getMonth()+1)}`; }
+function inviteCard(m){
+  return `<div class="inv"><div><div class="t">🤝 ${esc(m.fromName)} mời bạn ghép nhóm ${esc(m.svc)}</div><div class="d">${esc(m.text)}</div></div>
+    <div class="row"><button class="btn primary" data-act="invite-accept" data-id="${m.id}">Đồng ý ghép</button><button class="btn" data-act="invite-decline" data-id="${m.id}">Từ chối</button></div></div>`;
+}
+function msgHTML(m, peer){
+  const mine = m.from === current.username; const side = mine ? 'me' : 'them';
+  const tm = `<time>${timeTxt(m.at)}</time>`;
+  if (m.type === 'system') return `<div class="sysmsg">${esc(m.text)} · ${timeTxt(m.at)}</div>`;
+  if (m.type === 'invite'){
+    const st = m.status || 'pending';
+    const act = !mine && st === 'pending' ? `<div class="row"><button class="btn sm primary" data-act="invite-accept" data-id="${m.id}">Đồng ý ghép</button><button class="btn sm" data-act="invite-decline" data-id="${m.id}">Từ chối</button></div>` : `<div style="margin-top:8px"><span class="chip ${st==='accepted'?'ok':st==='declined'?'kill':'warn'}">${st==='accepted'?'✅ Đã đồng ý':st==='declined'?'Đã từ chối':'⏳ Đang chờ phản hồi'}</span></div>`;
+    return `<div class="bub card ${side}"><div class="ct">🤝 Lời mời ghép nhóm ${esc(m.svc||'')}</div>${esc(m.text)}${act}${tm}</div>`;
+  }
+  if (m.type === 'remind'){
+    const act = !mine ? (m.status === 'recorded' ? `<div style="margin-top:8px"><span class="chip ok">📒 Đã ghi cần trả</span></div>` : `<div class="row"><button class="btn sm primary" data-act="chat-debt" data-id="${m.id}" data-u="${esc(peer)}">Ghi cần trả ${money(m.amount)}</button></div>`) : '';
+    return `<div class="bub card ${side}"><div class="ct">💸 Nhắc khoản ${money(m.amount)}</div>${esc(m.text)}${act}${tm}</div>`;
+  }
+  return `<div class="bub ${side}">${esc(m.text)}${tm}</div>`;
+}
+function viewChat(){
+  const others = liveAccounts().filter(a => a.id !== current.id);
+  if (chatPeer){
+    const a = others.find(x => x.username === chatPeer);
+    const L = state.chats?.[chatPeer] || [];
+    return `<div class="chat-head"><button class="back" data-act="chat-back" aria-label="Quay lại">‹</button><span class="av">${esc(initials(a?.displayName||chatPeer))}</span><div><div class="who">${esc(a?.displayName||chatPeer)}</div><div class="u">@${esc(chatPeer)}</div></div></div>
+      <div class="thread" id="thread">${L.length ? L.map(m => msgHTML(m, chatPeer)).join('') : `<div class="empty">Chưa có tin nhắn. Gửi lời chào, mời ghép gói hoặc nhắc khoản cần thu nhé 👋</div>`}</div>
+      <div class="compose"><div class="qa"><button class="btn soft sm" data-act="chat-invite">🤝 Mời ghép gói</button><button class="btn soft sm" data-act="chat-remind">💸 Nhắc khoản cần thu</button></div>
+      <div class="in"><textarea id="chat-in" rows="1" placeholder="Nhắn cho ${esc((a?.displayName||chatPeer).split(' ').slice(-1)[0])}…" aria-label="Tin nhắn"></textarea><button class="btn primary" data-act="chat-send" aria-label="Gửi">${I.send}</button></div></div>`;
+  }
+  const inv = pendingInvites();
+  const rows = others.map(a => { const L = state.chats?.[a.username] || []; const last = L[L.length-1]; return {a, last, un: chatUnread(a.username)}; })
+    .sort((x,y) => (y.last?.at||0) - (x.last?.at||0));
+  return `${inv.length ? `<div class="sec-head"><h2>Lời mời ghép nhóm</h2></div><div class="list">${inv.map(inviteCard).join('')}</div>` : ''}
+    <div class="sec-head"><div><h2>Tin nhắn</h2><p class="sub">Bạn bè đang dùng OptiSub</p></div></div>
+    <div class="convs">${rows.map(r => `<button class="conv ${r.un?'unread':''}" data-act="chat-open" data-u="${esc(r.a.username)}"><span class="av">${esc(initials(r.a.displayName))}</span><span class="mid"><div class="who">${esc(r.a.displayName)}</div><div class="last">${r.last ? (r.last.from === current.username ? 'Bạn: ' : '') + esc(r.last.type==='invite' ? '🤝 Lời mời ghép nhóm ' + (r.last.svc||'') : r.last.type==='remind' ? '💸 Nhắc khoản ' + money(r.last.amount) : r.last.text) : '@' + esc(r.a.username) + ' · bắt đầu trò chuyện'}</div></span><span class="side">${r.last ? timeTxt(r.last.at) : ''}${r.un ? `<span class="un">${r.un}</span>` : ''}</span></button>`).join('')}</div>`;
+}
+function openChat(u){
+  chatPeer = u; tab = 'chat';
+  state.chatRead = {...(state.chatRead||{}), [u]: Date.now()};
+  (state.inbox||[]).forEach(m => { if (m.from === u && m.type !== 'invite') m.read = true; });
+  commit(false); render(); window.scrollTo(0, document.body.scrollHeight);
+  refreshFromStore();
+}
+async function chatSendText(){
+  const f = $('#chat-in'); const text = (f?.value || '').trim(); if (!text || !chatPeer) return;
+  const a = liveAccounts().find(x => x.username === chatPeer); if (!a) return;
+  f.value = '';
+  await pushToAccount(a, {from: current.username, fromName: current.displayName, text, type:'text'});
+  render(); window.scrollTo(0, document.body.scrollHeight);
+}
+async function declineInvite(id){
+  const m = (state.inbox||[]).find(x => x.id === id) || Object.values(state.chats||{}).flat().find(x => x.id === id); if (!m) return;
+  const sender = liveAccounts().find(a => a.username === m.from);
+  const notice = {id:uid()+uid(), at:Date.now(), type:'system', from: current.username, fromName: current.displayName, text:`${current.displayName.split(' ').slice(-1)[0]} chưa tham gia ghép nhóm ${m.svc}`};
+  if (sender){ const sst = await loadState(sender); chatSetStatus(sst, current.username, id, 'declined'); chatPush(sst, current.username, notice); sst.inbox = [{...notice, read:false}, ...(sst.inbox||[])]; const s = sst.subs.find(x => x.id === m.subId); if (s) s.invited = (s.invited||[]).filter(u => u !== current.username); await saveState(sender, sst); chatSetStatus(state, sender.username, id, 'declined'); chatPush(state, sender.username, notice); }
+  const ib = (state.inbox||[]).find(x => x.id === id); if (ib) ib.read = true;
+  commit(); if (dlg.open) notifCenter(); toast('Đã từ chối lời mời.');
+}
+async function refreshFromStore(){
+  if (!current) return; const me = current;
+  const fresh = await loadState(me); if (current !== me) return;
+  let changed = false;
+  for (const [u, list] of Object.entries(fresh.chats || {})){
+    state.chats = state.chats || {}; const mine = state.chats[u] = state.chats[u] || [];
+    for (const x of list){ const y = mine.find(z => z.id === x.id); if (!y){ mine.push(x); changed = true; } else if (x.status && y.status !== x.status && y.status !== 'recorded'){ y.status = x.status; changed = true; } }
+    mine.sort((a,b) => a.at - b.at);
+  }
+  const ids = new Set((state.inbox||[]).map(x => x.id)); const add = (fresh.inbox||[]).filter(x => !ids.has(x.id));
+  if (add.length){ state.inbox = [...add, ...(state.inbox||[])].slice(0,50); changed = true; }
+  for (const fs of fresh.subs || []){
+    const i = state.subs.findIndex(x => x.id === fs.id);
+    if (i < 0 && fs.owner){ state.subs.push(fs); changed = true; }
+    else if (i >= 0 && JSON.stringify(state.subs[i].shareWith||[]) !== JSON.stringify(fs.shareWith||[])){ Object.assign(state.subs[i], {shareWith: fs.shareWith, sharedWith: fs.sharedWith, payers: fs.payers, invited: fs.invited}); changed = true; }
+  }
+  if (chatPeer) state.chatRead = {...(state.chatRead||{}), [chatPeer]: Date.now()};
+  if (changed){ commit(false); render(); if (chatPeer) window.scrollTo(0, document.body.scrollHeight); }
+}
+setInterval(() => { if (current && tab === 'chat' && !document.hidden) refreshFromStore(); }, 12000);
 
 function renderHeader(){
   const t = tier(); const hdr = $('#hdr');
@@ -786,20 +913,23 @@ function renderNav(){
   const nAlerts = alertsList().filter(a => !a.quiet).length;
   const nKill = state.subs.filter(s => subStatus(s)==='kill').length;
   $('#nav').innerHTML = NAV.map(([k,l,ic]) => {
-    const n = k==='calendar' ? nAlerts : k==='subs' ? nKill : 0;
+    const n = k==='calendar' ? nAlerts : k==='subs' ? nKill : k==='chat' ? chatUnreadTotal() : 0;
     return `<button data-tab="${k}" ${tab===k?'aria-current="page"':''}><span class="ni">${I[ic]}${n?`<span class="dot">${n}</span>`:''}</span>${l}</button>`;
   }).join('');
 }
 function goTab(t){
   if (['tuition','bills','debts'].includes(t)){ sub = t; tab = 'student'; } else tab = t;
+  if (tab !== 'chat') chatPeer = null;
   render(); window.scrollTo(0,0);
+  if (tab === 'chat') refreshFromStore();
 }
 function render(){
   document.body.classList.toggle('auth', !current);
   if (!current){ renderAuth(); return; }
   renderHeader(); renderNav();
   const v = $('#view');
-  v.innerHTML = ({overview:viewOverview, subs:viewSubs, calendar:viewCalendar, student:viewStudent, ai:viewAI})[tab]();
+  v.innerHTML = ({overview:viewOverview, subs:viewSubs, calendar:viewCalendar, student:viewStudent, ai:viewAI, chat:viewChat})[tab]();
+  if (tab === 'chat' && chatPeer){ const t = $('#thread'); if (t) t.lastElementChild?.scrollIntoView({block:'end'}); }
 }
 function viewStudent(){ return ({tuition:viewTuition, bills:viewBills, debts:viewDebts})[sub](); }
 
@@ -875,8 +1005,8 @@ function viewOverview(){
 }
 function alertHTML(a){
   let act = '';
-  if (a.kind==='invite') act = `<div class="act" style="display:grid;gap:6px"><button class="btn sm primary" data-act="invite-accept" data-id="${a.ref}">Đồng ý ghép</button><button class="btn sm" data-act="msg-read" data-id="${a.ref}">Để sau</button></div>`;
-  else if (a.kind==='msg') act = `<div class="act" style="display:grid;gap:6px">${a.amount?`<button class="btn sm primary" data-act="msg-debt" data-id="${a.ref}">Ghi cần trả</button>`:''}<button class="btn sm" data-act="msg-read" data-id="${a.ref}">Đã xem</button></div>`;
+  if (a.kind==='invite') act = `<div class="act" style="display:grid;gap:6px"><button class="btn sm primary" data-act="invite-accept" data-id="${a.ref}">Đồng ý ghép</button><button class="btn sm" data-act="invite-decline" data-id="${a.ref}">Từ chối</button></div>`;
+  else if (a.kind==='msg') act = `<div class="act" style="display:grid;gap:6px">${a.amount?`<button class="btn sm primary" data-act="msg-debt" data-id="${a.ref}">Ghi cần trả</button>`:''}<button class="btn sm" data-act="chat-open" data-u="${a.from}">Mở chat</button></div>`;
   else if (a.kind==='todo') act = `<button class="btn sm act primary" data-act="cancel" data-id="${a.ref}">Xem cách hủy</button>`;
   else if (a.kind==='trial' || a.kind==='trial-ended' || (a.kind==='renew' && state.subs.find(s=>s.id===a.ref && subStatus(s)==='kill'))) act = `<button class="btn sm act" data-act="cancel" data-id="${a.ref}">Hủy ngay</button>`;
   else if (a.kind==='bill') act = `<button class="btn sm act" data-act="pay-bill" data-id="${a.ref}">Đã trả</button>`;
@@ -956,9 +1086,18 @@ function viewTuition(){
 
 function viewBills(){
   const key = ym(today());
-  const mine = state.bills.reduce((a,b)=>a+b.amount/Math.max(1,b.people),0);
+  const sharedSubs = state.subs.filter(s => s.owner || (s.shareWith||[]).length || (s.guests||[]).length);
+  const mine = state.bills.reduce((a,b)=>a+b.amount/Math.max(1,b.people),0) + sharedSubs.reduce((a,s)=>a+myMonthly(s),0);
+  const inv = pendingInvites();
+  const nm = u => esc((liveAccounts().find(a => a.username === u)?.displayName || u).split(' ').slice(-1)[0]);
   return `
+  ${inv.length ? `<div class="inv-banner">🤝 Bạn có ${inv.length} lời mời ghép nhóm<button class="btn primary sm" data-act="go" data-tab="chat">Xem & đồng ý</button></div>` : ''}
   <div class="sec-head"><div><h2>Khoản dùng chung</h2><p class="sub">Khoản chi chung với 1 người hay cả nhóm · phần của bạn mỗi tháng: <b class="num">${money(mine)}</b></p></div><button class="btn primary sm" data-act="add-bill">${I.plus} Thêm khoản chia</button></div>
+  ${sharedSubs.length ? `<h3 style="margin:0 4px 10px;font-size:16px">🔗 Gói đăng ký dùng chung</h3><div class="list" style="margin-bottom:22px">${sharedSubs.map(s => { const others = [...new Set(s.shareWith||[])].filter(u => u !== s.owner); const names = [...others.map(nm), ...(s.guests||[]).map(esc)]; const peer = s.owner || (s.shareWith||[])[0]; return `<div class="item">
+      <div><div class="item-name">${esc(s.name)} <span class="chip ok">${s.payers||names.length+1} người</span></div>
+      <div class="item-meta">${s.owner ? `Chủ gói: ${nm(s.owner)}` : 'Bạn giữ gói'}${names.length ? ` · cùng ${names.join(', ')}` : ''}${s.nextBill ? ` · gia hạn ${fmtDate(s.nextBill)}` : ''}</div></div>
+      <div class="item-right"><div class="item-price num">${money(myMonthly(s))}</div><div class="item-cpu num">trên tổng ${money(monthly(s))}/tháng</div></div>
+      <div class="item-foot">${peer && liveAccounts().some(a => a.username === peer) ? `<button class="btn sm soft" data-act="chat-open" data-u="${esc(peer)}">💬 Nhắn ${s.owner ? 'chủ gói' : nm(peer)}</button>` : ''}<span style="flex:1"></span><button class="btn ghost sm" data-act="go" data-tab="subs">Xem gói</button></div></div>`; }).join('')}</div><h3 style="margin:0 4px 10px;font-size:16px">🏠 Khoản chi khác</h3>` : ''}
   <div class="list">
   ${state.bills.length ? state.bills.map(b => { const d = billDue(b); const n = daysUntil(d.date); const share = b.amount/Math.max(1,b.people); return `<div class="item">
     <div><div class="item-name">${esc(b.name)} ${b.paid?.[key]?'<span class="chip ok">✅ Đã trả tháng này</span>':n<0?'<span class="chip kill">Quá hạn</span>':n<=3?`<span class="chip warn">${whenText(n)}</span>`:''}</div>
@@ -1497,15 +1636,14 @@ function matchAcc(name){
 }
 /* Gửi tin nhắn vào hộp thư trong app của tài khoản khác */
 async function pushToAccount(acc, msg){
-  const key = 'optisub.v1.' + acc.id;
-  let st = readJSON(localStorage, key);
-  const ref = cloud.db && cloud.cid ? cloud.db.doc(`data/users/${cloud.cid}/optisub-${acc.id}`) : null;
-  if (ref){ try { const snap = await ref.get(); if (snap.exists){ const d = snap.data(); if (!st || (d.updatedAt||0) > (st.updatedAt||0)) st = JSON.parse(d.payload); } } catch(e){} }
-  st = st && st.v ? Object.assign(emptyState(), st) : Object.assign(demoState(acc.kind), {updatedAt:1});
-  st.inbox = [{...msg, id:uid(), at:Date.now(), read:false}, ...(st.inbox||[])].slice(0,50);
-  st.updatedAt = Date.now();
-  writeJSON(localStorage, key, st);
-  if (ref){ try { await ref.set({payload: JSON.stringify(st), updatedAt: st.updatedAt}); } catch(e){} }
+  const full = {...msg, id: uid()+uid(), at: Date.now(), type: msg.type || (msg.amount ? 'remind' : 'text'), status: msg.type === 'invite' ? 'pending' : msg.amount ? 'open' : undefined};
+  const st = await loadState(acc);
+  st.inbox = [{...full, read:false}, ...(st.inbox||[])].slice(0,50);
+  chatPush(st, msg.from, full);
+  await saveState(acc, st);
+  chatPush(state, acc.username, full); state.chatRead = {...(state.chatRead||{}), [acc.username]: Date.now()};
+  commit(false);
+  return full;
 }
 async function sendInApp(){
   const raw = val('m-to').split(/[\s,;]+/).map(x => x.replace(/^@/,'').trim().toLowerCase()).filter(Boolean);
@@ -1658,9 +1796,22 @@ document.addEventListener('click', async ev => {
     case 'sf-toggle': { el.setAttribute('aria-pressed', String(el.getAttribute('aria-pressed') !== 'true')); const s = state.subs.find(x => x.id === dlg.querySelector('[data-act="sf-send"]').dataset.id); sfSum(s); break; }
     case 'sf-send': { const s = state.subs.find(x => x.id === id); sendInvites(s, sfSel()); break; }
     case 'sf-copy': { const s = state.subs.find(x => x.id === id); const t = inviteText(s, Math.max(2, sfSel().length + 1)); try { await navigator.clipboard.writeText(t); toast('Đã sao chép lời mời 📋'); } catch(e){ textDlg('Lời mời ghép nhóm', t); } break; }
-    case 'invite-accept': { const m = (state.inbox||[]).find(x => x.id === id); if (m) acceptInvite(m); break; }
+    case 'invite-accept': { const m = (state.inbox||[]).find(x => x.id === id) || Object.values(state.chats||{}).flat().find(x => x.id === id); if (m) acceptInvite(m); break; }
+    case 'invite-decline': declineInvite(id); break;
+    case 'chat-open': if (dlg.open) dlg.close(); openChat(el.dataset.u); break;
+    case 'chat-back': chatPeer = null; render(); window.scrollTo(0,0); break;
+    case 'chat-send': chatSendText(); break;
+    case 'chat-invite': { const subs = state.subs.filter(s => !s.owner); openDlg('Mời ghép gói', subs.length ? `<p class="sub" style="margin:0">Chọn gói muốn rủ @${esc(chatPeer)} ghép nhóm:</p><div>${subs.map(s => `<button class="dev" data-act="chat-invite-go" data-id="${s.id}"><span class="av">${esc(initials(s.name))}</span><span><div class="who">${esc(s.name)}</div><div class="u">${money(monthly(s))}/tháng · ${(s.shareWith||[]).length+(s.guests||[]).length+1} người đang dùng</div></span>${I.chev}</button>`).join('')}</div>` : `<div class="empty">Bạn chưa có gói nào để mời.</div>`, `<button class="btn" data-act="close">Huỷ</button>`); break; }
+    case 'chat-invite-go': { const s = state.subs.find(x => x.id === id); dlg.close(); await sendInvites(s, [chatPeer]); render(); window.scrollTo(0, document.body.scrollHeight); break; }
+    case 'chat-remind': openDlg('Nhắc khoản cần thu', `<label class="f">Số tiền (₫)<input id="cr-amt" class="money" type="text" inputmode="numeric" autocomplete="off" placeholder="50.000"></label><label class="f">Ghi chú<input id="cr-note" placeholder="Trà sữa, tiền điện…"></label><label class="check sm"><input type="checkbox" id="cr-log" checked> Ghi vào Mượn & Trả (cần thu)</label>`, `<button class="btn" data-act="close">Huỷ</button><button class="btn primary" data-act="chat-remind-go">📨 Gửi nhắc</button>`); break;
+    case 'chat-remind-go': { const amt = numv('cr-amt'); if (!amt){ toast('Nhập số tiền.'); return; } const note = val('cr-note').trim(); const a = liveAccounts().find(x => x.username === chatPeer); const nm = a.displayName.split(' ').slice(-1)[0];
+      if ($('#cr-log').checked) state.debts.push({id:uid(), person:nm, username:a.username, amount:amt, dir:'owed', note, date:iso(today()), settled:false});
+      dlg.close(); await pushToAccount(a, {from: current.username, fromName: current.displayName, amount: amt, note, type:'remind', text:`Ê ${nm} ơi, khoản ${money(amt)}${note?` (${note})`:''} nhớ chuyển mình khi tiện nha 😄`}); render(); window.scrollTo(0, document.body.scrollHeight); break; }
+    case 'chat-debt': { const u = el.dataset.u; const m = (state.chats?.[u]||[]).find(x => x.id === id); if (!m) break; const a = liveAccounts().find(x => x.username === u);
+      state.debts.push({id:uid(), person:(a?.displayName||u).split(' ').slice(-1)[0], username:u, amount:m.amount, dir:'owe', note:m.note||'Theo nhắc trong chat', date:iso(today()), settled:false});
+      m.status = 'recorded'; const ib = (state.inbox||[]).find(x => x.id === id); if (ib) ib.read = true; commit(); toast('📒 Đã ghi vào Mượn & Trả (cần trả).'); break; }
     case 'msg-read': { const m = (state.inbox||[]).find(x => x.id === id); if (m){ m.read = true; commit(); if (dlg.open) notifCenter(); } break; }
-    case 'msg-debt': { const m = (state.inbox||[]).find(x => x.id === id); if (m){ m.read = true; state.debts.push({id:uid(), person:m.fromName.split(' ').slice(-1)[0], username:m.from, amount:m.amount, dir:'owe', note:m.note||'Theo nhắc trong app', date:iso(today()), settled:false}); commit(); if (dlg.open) notifCenter(); toast('📒 Đã ghi vào Mượn & Trả (cần trả).'); } break; }
+    case 'msg-debt': { const m = (state.inbox||[]).find(x => x.id === id); if (m){ m.read = true; const cm = (state.chats?.[m.from]||[]).find(x => x.id === id); if (cm) cm.status = 'recorded'; state.debts.push({id:uid(), person:m.fromName.split(' ').slice(-1)[0], username:m.from, amount:m.amount, dir:'owe', note:m.note||'Theo nhắc trong app', date:iso(today()), settled:false}); commit(); if (dlg.open) notifCenter(); toast('📒 Đã ghi vào Mượn & Trả (cần trả).'); } break; }
     case 'ics': { try { await caps.downloads.save({filename:'optisub-nhac-thanh-toan.ics', data:buildICS()}); } catch(e){ if (e?.code!=='declined' && e?.code!=='cancelled') toast('Chưa lưu được tệp lịch.'); } break; }
     case 'ask': tab = 'ai'; sendChat(el.dataset.q); window.scrollTo(0, document.body.scrollHeight); break;
     case 'send': { const t = $('#chat-text'); const q = t.value; t.value=''; sendChat(q); break; }
@@ -1669,6 +1820,7 @@ document.addEventListener('click', async ev => {
 });
 document.addEventListener('keydown', e => {
   if (e.key==='Enter' && e.target.closest && e.target.closest('#auth-form') && e.target.tagName==='INPUT' && e.target.type!=='checkbox'){ e.preventDefault(); doLogin(); return; }
+  if (e.target.id==='chat-in' && e.key==='Enter' && !e.shiftKey){ e.preventDefault(); chatSendText(); return; }
   if (e.target.id==='f-share-in' && e.key==='Enter'){ e.preventDefault(); shareAdd(e.target.value); return; }
   if (e.target.id==='chat-text' && e.key==='Enter' && !e.shiftKey){ e.preventDefault(); const q = e.target.value; e.target.value=''; sendChat(q); }
 });
