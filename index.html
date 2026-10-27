@@ -1,0 +1,1707 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>OptiSub — Cố vấn chi tiêu số cho sinh viên</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --brand:#E8173F; --brand-2:#F5476A; --brand-deep:#C80F33; --brand-soft:#FDE7EC; --ring:#FBE4E9;
+  --hdr-a:#F0284D; --hdr-b:#FF4F8B; --hdr-c:#FF8A4C;
+  --bg:#FFFFFF; --surface:#FFFFFF; --surface-2:#F2F2F4; --ink:#16161A; --muted:#6B6B73; --line:#E8E8EC;
+  --accent:var(--brand); --accent-soft:var(--brand-soft); --on-accent:#FFFFFF;
+  --leak:#D3112F; --leak-soft:#FDE4E8; --warn:#B86A00; --warn-soft:#FFF1DA;
+  --ok:#0B8F4D; --ok-soft:#E1F5EA; --trial:#0C7D9C; --trial-soft:#DFF2F8;
+  --nav-bg:rgba(255,255,255,.92); --shadow:0 8px 28px rgba(22,22,26,.12);
+  color-scheme:light; box-sizing:border-box;
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --brand:#FF3B5F; --brand-2:#FF6782; --brand-deep:#E8173F; --brand-soft:#3A1720; --ring:#3A1C24;
+    --hdr-a:#B30D33; --hdr-b:#C2185B; --hdr-c:#D9542B;
+    --bg:#111114; --surface:#1B1B20; --surface-2:#26262C; --ink:#F1F1F4; --muted:#A0A0AA; --line:#2E2E35;
+    --on-accent:#FFFFFF; --leak:#FF6B80; --leak-soft:#3B1A21; --warn:#F2A93B; --warn-soft:#3A2C14;
+    --ok:#3CCB86; --ok-soft:#14321F; --trial:#55C6E3; --trial-soft:#13303A;
+    --nav-bg:rgba(30,30,36,.92); --shadow:0 8px 28px rgba(0,0,0,.45);
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --brand:#FF3B5F; --brand-2:#FF6782; --brand-deep:#E8173F; --brand-soft:#3A1720; --ring:#3A1C24;
+  --hdr-a:#B30D33; --hdr-b:#C2185B; --hdr-c:#D9542B;
+  --bg:#111114; --surface:#1B1B20; --surface-2:#26262C; --ink:#F1F1F4; --muted:#A0A0AA; --line:#2E2E35;
+  --on-accent:#FFFFFF; --leak:#FF6B80; --leak-soft:#3B1A21; --warn:#F2A93B; --warn-soft:#3A2C14;
+  --ok:#3CCB86; --ok-soft:#14321F; --trial:#55C6E3; --trial-soft:#13303A;
+  --nav-bg:rgba(30,30,36,.92); --shadow:0 8px 28px rgba(0,0,0,.45);
+  color-scheme:dark;
+}
+*,*::before,*::after{box-sizing:inherit}
+html,body{background:var(--bg)}
+body{margin:0;color:var(--ink);font-family:"Be Vietnam Pro",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased;-webkit-tap-highlight-color:transparent}
+button,input,select,textarea{font:inherit;color:inherit}
+.num{font-variant-numeric:tabular-nums}
+:focus-visible{outline:2px solid var(--brand);outline-offset:2px;border-radius:8px}
+svg.i{width:22px;height:22px;flex:none;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+
+/* ===== Red header ===== */
+.hdr{position:relative;overflow:hidden;overflow:clip;background:linear-gradient(135deg,var(--hdr-b) 0%,var(--hdr-a) 48%,var(--hdr-c) 100%);color:#fff;padding-top:env(safe-area-inset-top,0px)}
+.hdr-deco{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.hdr-inner{position:relative;max-width:560px;margin:0 auto;padding:26px 20px 22px;display:flex;align-items:flex-start;gap:12px}
+.hdr-title{font-size:25px;font-weight:700;letter-spacing:-.01em;line-height:1.2;text-transform:uppercase;margin:0}
+.hdr-title.page{text-transform:none;font-size:26px}
+.badge{margin-top:12px;display:inline-flex;align-items:center;gap:8px;padding:5px 12px 5px 5px;border-radius:999px;border:0;cursor:pointer;background:linear-gradient(90deg,#FFE7B8,#FFF6E0);color:#4A3200;font-weight:600;font-size:13.5px;box-shadow:0 2px 6px rgba(120,0,20,.18)}
+.badge .em{width:26px;height:26px;border-radius:50%;background:linear-gradient(160deg,#F7A21B,#E36414);display:grid;place-items:center;font-size:15px}
+.badge svg{width:15px;height:15px;stroke-width:2.4}
+.hdr-sub{margin:8px 0 0;font-size:14px;opacity:.9}
+.hdr-actions{margin-left:auto;display:flex;gap:8px;flex:none}
+.hdr-inner>div:first-child{min-width:0;flex:1}
+.hdr-title.page{font-size:24px!important}
+@media (max-width:420px){.round{width:42px!important;height:42px!important}}
+.round{width:46px;height:46px;border-radius:50%;border:0;display:grid;place-items:center;cursor:pointer;background:rgba(255,255,255,.28);color:#fff;box-shadow:inset 0 0 0 1px rgba(255,255,255,.35)}
+.round.solid{background:#fff;color:var(--brand)}
+.round svg.i{width:23px;height:23px;stroke-width:2}
+.sync{font-size:12.5px;color:var(--muted);display:flex;align-items:center;justify-content:center;gap:6px;margin:28px 0 0}
+.sync i{width:7px;height:7px;border-radius:50%;background:var(--line);display:inline-block}
+.sync.on i{background:var(--ok)}
+
+/* notch tabs (Sinh viên) */
+.strip{position:relative;max-width:560px;margin:0 auto;display:flex;gap:4px;padding:0 6px;overflow-x:auto;scrollbar-width:none}
+.strip::-webkit-scrollbar{display:none}
+.strip button{flex:none;border:0;background:none;color:#fff;font-weight:600;font-size:15px;padding:13px 14px 15px;display:flex;align-items:center;gap:8px;cursor:pointer;border-radius:22px 22px 0 0;position:relative}
+.strip button svg.i{width:20px;height:20px}
+.strip button[aria-selected="true"]{background:var(--bg);color:var(--brand)}
+.strip button[aria-selected="true"]::before,.strip button[aria-selected="true"]::after{content:"";position:absolute;bottom:0;width:22px;height:22px;background:transparent;pointer-events:none}
+.strip button[aria-selected="true"]::before{left:-22px;border-bottom-right-radius:22px;box-shadow:8px 8px 0 8px var(--bg)}
+.strip button[aria-selected="true"]::after{right:-22px;border-bottom-left-radius:22px;box-shadow:-8px 8px 0 8px var(--bg)}
+.hdr.has-strip .hdr-inner{padding-bottom:16px}
+.hdr:not(.has-strip){border-radius:0 0 28px 28px}
+
+/* ===== Auth ===== */
+body.auth #nav{display:none}
+.hdr.auth-hdr{border-radius:0 0 36px 36px}
+.hdr.auth-hdr .hdr-inner{flex-direction:column;align-items:center;text-align:center;padding:44px 20px 92px}
+.logo{width:72px;height:72px;border-radius:24px;background:#fff;display:grid;place-items:center;box-shadow:0 8px 24px rgba(120,0,25,.25)}
+.logo svg{width:44px;height:44px}
+.auth-title{margin:16px 0 0;font-size:28px;font-weight:800;letter-spacing:-.02em}
+.auth-sub{margin:6px 0 0;opacity:.92;font-size:15px}
+.auth-card{position:relative;margin:-72px auto 0;max-width:528px;background:var(--surface);border:3px solid var(--ring);border-radius:28px;padding:18px 18px 22px;box-shadow:var(--shadow)}
+.auth-card form{display:grid;gap:14px;margin-top:4px}
+.pw{position:relative}
+.pw input{padding-right:48px !important}
+.pw .eye{position:absolute;right:8px;bottom:9px}
+.check{display:flex;align-items:center;gap:10px;font-size:14.5px;color:var(--ink);cursor:pointer}
+.check input{width:20px;height:20px;accent-color:var(--brand);margin:0}
+.auth-row{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
+.err{background:var(--leak-soft);color:var(--leak);border-radius:14px;padding:10px 12px;font-size:14px;font-weight:500}
+.auth-card .btn.primary{width:100%;padding:14px;font-size:16px}
+.devs{margin-top:22px}
+.devs h3{font-size:15px;color:var(--muted);font-weight:600;margin:0 4px 10px}
+.dev{display:flex;align-items:center;gap:12px;width:100%;border:3px solid var(--ring);background:var(--surface);border-radius:20px;padding:10px 14px;cursor:pointer;text-align:left;margin-bottom:10px}
+.dev .who{font-weight:700}
+.dev .u{font-size:13px;color:var(--muted)}
+.dev svg.i{margin-left:auto;color:var(--muted);width:18px;height:18px}
+.av{width:42px;height:42px;border-radius:50%;flex:none;display:grid;place-items:center;font-weight:700;color:#fff;background:linear-gradient(150deg,var(--brand),var(--brand-2));font-size:16px}
+.av.lg{width:72px;height:72px;font-size:28px}
+.round.av-btn{background:#fff;color:var(--brand);font-weight:800;font-size:17px}
+.auth-foot{margin:22px 8px 0;font-size:12.5px;color:var(--muted);text-align:center;line-height:1.55}
+.acc-top{display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center;padding:4px 0 8px}
+.menu{display:grid;border:3px solid var(--ring);border-radius:20px;overflow:hidden}
+.menu button{display:flex;align-items:center;gap:12px;border:0;border-top:1.5px dashed var(--line);background:var(--surface);padding:14px 16px;font-size:15px;font-weight:600;cursor:pointer;text-align:left;color:var(--ink)}
+.menu button:first-child{border-top:0}
+.menu button.danger{color:var(--leak)}
+.menu button svg.i{width:20px;height:20px;color:var(--muted)}
+.menu button.danger svg.i{color:var(--leak)}
+
+/* ===== Layout ===== */
+main{max-width:560px;margin:0 auto;padding:20px 16px calc(env(safe-area-inset-bottom,0px) + 120px)}
+h1,h2,h3{margin:0;letter-spacing:-.015em}
+h2{font-size:22px;font-weight:700}
+h3{font-size:17px;font-weight:700}
+.sub{color:var(--muted);font-size:14px;margin:4px 0 0}
+.sec-head{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin:30px 4px 14px}
+.sec-head:first-child{margin-top:4px}
+.link{border:0;background:none;color:var(--brand);font-weight:600;font-size:14px;cursor:pointer;padding:4px}
+
+.panel{background:var(--surface);border:3px solid var(--ring);border-radius:22px;padding:16px 18px}
+.grid{display:grid;gap:12px}
+.g2{grid-template-columns:1fr 1fr}
+
+/* ===== Buttons ===== */
+.btn{border:1.5px solid var(--line);background:var(--surface);padding:10px 16px;border-radius:999px;font-weight:600;font-size:14.5px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:7px;text-decoration:none;color:var(--ink)}
+.btn.primary{background:var(--brand);border-color:var(--brand);color:#fff}
+.btn.soft{background:var(--brand-soft);border-color:var(--brand-soft);color:var(--brand)}
+.btn.outline{border-color:var(--ink);background:none}
+.btn.danger{color:var(--leak);border-color:var(--leak-soft);background:var(--leak-soft)}
+.btn.ghost{border-color:transparent;background:none;padding:6px 10px;color:var(--muted)}
+.btn.sm{padding:7px 13px;font-size:13.5px}
+.btn.lg{padding:13px 20px;font-size:16px}
+.btn[disabled]{opacity:.5;cursor:default}
+.btn svg.i{width:19px;height:19px}
+.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.center{display:flex;justify-content:center;margin-top:22px}
+
+/* ===== Account-style card ===== */
+.acct{background:var(--surface);border:3px solid var(--ring);border-radius:24px;overflow:hidden}
+.acct-head{display:flex;align-items:center;gap:12px;min-height:58px}
+.acct-head .tag{align-self:stretch;display:flex;align-items:center;background:var(--brand);color:#fff;font-weight:700;font-size:19px;padding:0 44px 0 22px;border-bottom-right-radius:58px 52px}
+.acct-head .meta{font-weight:700;font-size:19px;letter-spacing:-.01em;padding-right:16px}
+.acct-cols{display:grid;grid-template-columns:1fr 2px 1fr;gap:16px;padding:22px 22px 8px}
+.acct-cols .sep{background:repeating-linear-gradient(to bottom,var(--ring) 0 5px,transparent 5px 9px);border-radius:2px}
+.acct-cols label{display:block;color:var(--muted);font-size:14.5px}
+.acct-cols .v{display:flex;align-items:center;gap:6px;margin-top:8px;white-space:nowrap;font-size:clamp(17px,5.2vw,21px);font-weight:700;letter-spacing:-.01em}
+.acct-cols .v.leak{color:var(--leak)}
+.eye{border:0;background:none;padding:2px;color:var(--muted);cursor:pointer;display:grid}
+.acct-btns{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:16px 22px 22px}
+.acct-btns .btn{padding:12px 8px;font-size:15px;white-space:nowrap}
+
+.flow{margin:12px 22px 0;display:flex;height:34px;border-radius:10px;overflow:hidden;gap:3px;background:var(--surface-2)}
+.flow-seg{min-width:6px;display:flex;align-items:center;padding:0 8px;font-size:11.5px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--ink);cursor:pointer;border:0;text-align:left}
+.flow-seg.ok{background:var(--ok-soft);color:var(--ok)}
+.flow-seg.unknown{background:var(--surface-2);color:var(--muted)}
+.flow-seg.trial{background:var(--trial-soft);color:var(--trial)}
+.flow-seg.warn{background:var(--warn-soft);color:var(--warn)}
+.flow-seg.kill{background:repeating-linear-gradient(135deg,var(--leak-soft) 0 7px,color-mix(in srgb,var(--leak) 22%,var(--leak-soft)) 7px 14px);color:var(--leak)}
+.flow-empty{flex:1;display:grid;place-items:center;color:var(--muted);font-size:13px}
+.legend{display:flex;gap:4px 10px;flex-wrap:wrap;margin:8px 22px 0;font-size:12px;color:var(--muted)}
+.legend span::before{content:"";display:inline-block;width:9px;height:9px;border-radius:3px;margin-right:5px;vertical-align:0;background:var(--c)}
+.saved-note{margin:12px 22px 0;font-size:13.5px;color:var(--ok);font-weight:600}
+.leak-line{margin:10px 22px 0;font-size:13.5px;color:var(--muted)}
+
+.ai-box{margin-top:14px;border-radius:20px;background:var(--brand-soft);padding:14px 16px;white-space:pre-wrap;font-size:14.5px;line-height:1.6;display:none}
+.ai-box.show{display:block}
+.ai-box .src{display:block;margin-top:8px;font-size:12px;color:var(--muted)}
+
+/* ===== Utilities row ===== */
+.utils{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;margin:0 -16px;padding:0 12px 4px}
+.utils::-webkit-scrollbar{display:none}
+.util{flex:none;width:92px;border:0;background:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:10px;text-align:center;font-size:14px;line-height:1.35;color:var(--ink);padding:4px 2px}
+.util .ico{width:42px;height:42px;display:grid;place-items:center;color:var(--ink);position:relative}
+.util .ico svg.i{width:30px;height:30px;stroke-width:1.6}
+.util .ico .acc{position:absolute;right:2px;top:0;width:15px;height:15px;color:var(--brand);stroke-width:2.6}
+
+/* ===== Segmented control ===== */
+.segc{display:grid;grid-template-columns:1fr 1fr;background:var(--surface-2);border-radius:999px;padding:5px;margin-bottom:14px}
+.segc button{border:0;background:none;padding:11px 8px;border-radius:999px;font-weight:600;font-size:15px;color:var(--muted);cursor:pointer}
+.segc button[aria-pressed="true"]{background:var(--surface);color:var(--ink);box-shadow:0 1px 4px rgba(0,0,0,.08)}
+
+/* ===== Alerts ===== */
+.alerts{display:grid;gap:10px}
+.alert{display:flex;gap:12px;align-items:center;padding:14px;border-radius:20px;background:var(--surface);border:3px solid var(--ring);position:relative}
+.alert::before{content:"";position:absolute;left:-3px;top:16px;bottom:16px;width:4px;border-radius:0 4px 4px 0;background:var(--c,var(--warn))}
+.alert .ic{font-size:20px;width:42px;height:42px;border-radius:14px;background:var(--surface-2);display:grid;place-items:center;flex:none}
+.alert .t{font-weight:600;line-height:1.35}
+.alert .d{font-size:13px;color:var(--muted);margin-top:2px}
+.alert .act{margin-left:auto;flex:none}
+.empty{padding:22px;text-align:center;color:var(--muted);border:2px dashed var(--line);border-radius:20px;font-size:14px}
+
+.stat .k{font-size:13.5px;color:var(--muted)}
+.stat .v{font-size:22px;font-weight:700;letter-spacing:-.02em;margin-top:4px}
+.stat .x{font-size:12.5px;color:var(--muted);margin-top:4px}
+
+/* ===== Item cards (with corner ribbon) ===== */
+.list{display:grid;gap:12px}
+.item{position:relative;background:var(--surface);border:3px solid var(--ring);border-radius:22px;padding:18px 18px 14px 22px;display:grid;gap:10px;grid-template-columns:1fr auto;align-items:center;overflow:hidden}
+.item::before{content:"";position:absolute;left:8px;top:18px;bottom:18px;width:3px;background:repeating-linear-gradient(to bottom,var(--ring) 0 5px,transparent 5px 9px)}
+.corner{position:absolute;right:-3px;top:-3px;padding:6px 18px 6px 30px;border-radius:0 22px 0 30px;font-style:italic;font-weight:700;font-size:13px;text-transform:uppercase;letter-spacing:.01em;color:#fff;background:var(--ok)}
+.corner.warn{background:var(--warn)} .corner.kill{background:var(--leak)} .corner.trial{background:var(--trial)} .corner.unknown{background:var(--muted)}
+.item.has-corner .item-name{padding-right:110px}
+.item-name{font-weight:700;font-size:17.5px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.item-meta{font-size:13.5px;color:var(--muted);margin-top:3px}
+.item-right{text-align:right}
+.item-price{font-weight:700;font-size:17px}
+.item-cpu{font-size:12.5px;color:var(--muted);font-weight:500}
+.item-foot{grid-column:1/-1;display:flex;gap:8px;align-items:center;flex-wrap:wrap;border-top:1.5px dashed var(--line);padding-top:12px}
+.chip{display:inline-flex;align-items:center;gap:4px;font-size:12px;font-weight:600;padding:3px 10px;border-radius:999px;background:var(--surface-2);color:var(--muted)}
+.chip.ok{background:var(--ok-soft);color:var(--ok)} .chip.warn{background:var(--warn-soft);color:var(--warn)}
+.chip.kill{background:var(--leak-soft);color:var(--leak)} .chip.trial{background:var(--trial-soft);color:var(--trial)}
+.uses{display:flex;align-items:center;border-radius:999px;background:var(--surface-2);overflow:hidden}
+.uses button{border:0;background:none;width:36px;height:34px;cursor:pointer;font-weight:700;font-size:16px;color:var(--brand)}
+.uses span{min-width:78px;text-align:center;font-size:13px;font-weight:600}
+.spark{display:flex;gap:3px;align-items:flex-end;height:22px}
+.spark i{width:7px;border-radius:2px;background:var(--line)}
+.spark i.has{background:var(--brand)}
+.tip{font-size:13.5px;color:var(--ink);background:var(--surface-2);border-radius:14px;padding:10px 12px;grid-column:1/-1}
+
+.kill-zone{border:3px solid var(--leak-soft);background:linear-gradient(180deg,var(--leak-soft),var(--surface) 70%);border-radius:24px;padding:18px}
+.kill-zone h3{color:var(--leak)}
+.kill-card{display:flex;align-items:center;gap:12px;flex-wrap:wrap;background:var(--surface);border:1.5px solid var(--leak-soft);border-radius:18px;padding:12px 14px;margin-top:10px}
+.kill-card .n{font-weight:700}
+.kill-card .m{font-size:13px;color:var(--muted)}
+.kill-card .btn{margin-left:auto}
+.mind{font-size:13px;color:var(--muted);margin-top:12px;line-height:1.55}
+
+/* ===== Calendar ===== */
+.cal{background:var(--surface);border:3px solid var(--ring);border-radius:22px;overflow:hidden}
+.cal-row{display:grid;grid-template-columns:62px 1fr;gap:12px;align-items:center;padding:13px 16px;border-top:1.5px dashed var(--line)}
+.cal-row:first-child{border-top:0}
+.cal-date{width:54px;height:54px;border-radius:16px;background:var(--surface-2);display:grid;place-items:center;text-align:center;font-weight:700;font-size:17px;line-height:1.05}
+.cal-date small{display:block;font-weight:500;color:var(--muted);font-size:11px}
+.cal-row.soon .cal-date{background:var(--warn-soft);color:var(--warn)}
+.cal-row.late .cal-date{background:var(--brand);color:#fff}
+.cal-row.late .cal-date small{color:#fff}
+.cal-main{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+.cal-amt{font-weight:700;white-space:nowrap}
+
+.bar{height:10px;border-radius:6px;background:var(--surface-2);overflow:hidden;margin:12px 0 6px}
+.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--brand),var(--brand-2));border-radius:6px}
+
+.debt-tot{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.debt-tot .v{font-size:21px;font-weight:700;margin-top:4px}
+.owe{color:var(--leak)} .owed{color:var(--ok)}
+.done{opacity:.55}
+.done .item-name{text-decoration:line-through}
+
+/* ===== Chat ===== */
+.chat{display:flex;flex-direction:column;gap:10px;min-height:240px}
+.msg{max-width:88%;padding:11px 14px;border-radius:20px;white-space:pre-wrap;font-size:14.5px;line-height:1.6}
+.msg.u{align-self:flex-end;background:var(--brand);color:#fff;border-bottom-right-radius:6px}
+.msg.a{align-self:flex-start;background:var(--surface-2);border-bottom-left-radius:6px}
+.chat-in{display:flex;gap:8px;margin-top:14px;position:sticky;bottom:calc(env(safe-area-inset-bottom,0px) + 104px);background:var(--bg);padding:6px 0}
+.chat-in textarea{flex:1;resize:none;border:1.5px solid var(--line);background:var(--surface);border-radius:24px;padding:12px 16px;min-height:48px;max-height:140px}
+.chat-in .btn{width:48px;height:48px;padding:0}
+.quick{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;margin:0 -16px 14px;padding:0 16px}
+.quick::-webkit-scrollbar{display:none}
+.quick .btn{flex:none}
+
+/* ===== Bottom nav ===== */
+.nav{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(env(safe-area-inset-bottom,0px) + 10px);width:calc(100% - 24px);max-width:536px;z-index:20;display:grid;grid-template-columns:repeat(4,1fr);padding:8px 4px;border-radius:30px;background:var(--nav-bg);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);box-shadow:var(--shadow);border:1px solid var(--line)}
+.nav button{border:0;background:none;display:flex;flex-direction:column;align-items:center;gap:4px;padding:4px 0;cursor:pointer;color:var(--ink);font-size:12.5px;font-weight:500}
+.nav .ni{position:relative;width:40px;height:36px;display:grid;place-items:center}
+.nav .ni svg.i{width:27px;height:27px;stroke-width:1.6}
+.nav button[aria-current="page"]{color:var(--brand)}
+.nav button[aria-current="page"] .ni{border:2px solid var(--brand);border-radius:6px;width:36px;height:34px}
+.nav button[aria-current="page"] .ni svg.i{width:22px;height:22px;stroke-width:2.2}
+.nav .dot{position:absolute;top:-6px;right:-8px;min-width:20px;height:20px;padding:0 5px;border-radius:10px;background:var(--brand);color:#fff;font-size:11.5px;font-weight:700;line-height:20px;text-align:center;border:2px solid var(--surface)}
+
+/* ===== Dialog as bottom sheet ===== */
+dialog{border:0;padding:0;width:100%;max-width:560px;max-height:88vh;margin:auto auto 0;border-radius:28px 28px 0 0;background:var(--surface);color:var(--ink);box-shadow:0 -10px 40px rgba(0,0,0,.2);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (min-width:700px){dialog{margin:auto;border-radius:28px;padding-bottom:0}}
+dialog::backdrop{background:rgba(20,8,12,.5)}
+.dlg-head{display:flex;align-items:center;justify-content:space-between;padding:12px 18px 12px;position:sticky;top:0;background:var(--surface);z-index:1}
+.dlg-head::before{content:"";position:absolute;left:50%;top:7px;width:40px;height:4px;margin-left:-20px;border-radius:2px;background:var(--line)}
+.dlg-head h3{margin-top:10px}
+.dlg-body{padding:6px 18px 12px;display:grid;gap:12px}
+.dlg-foot{display:flex;gap:8px;justify-content:flex-end;padding:10px 18px 18px;flex-wrap:wrap}
+label.f{display:grid;gap:6px;font-size:13.5px;font-weight:600;color:var(--muted)}
+label.f input,label.f select,label.f textarea{border:1.5px solid var(--line);background:var(--surface-2);border-radius:14px;padding:11px 13px;font-weight:500;color:var(--ink);font-size:16px;width:100%}
+label.f input:focus,label.f select:focus,label.f textarea:focus{border-color:var(--brand);outline:none}
+label.f textarea{min-height:200px;font-size:14px;line-height:1.55}
+.f2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.f3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+.hint{font-size:12.5px;color:var(--muted);font-weight:400}
+.steps{margin:0;padding-left:20px;font-size:14px;line-height:1.65}
+.seg{display:inline-flex;background:var(--surface-2);border-radius:999px;padding:3px}
+.seg button{border:0;background:none;padding:6px 12px;border-radius:999px;cursor:pointer;font-size:13px;font-weight:600;color:var(--muted)}
+.seg button[aria-pressed="true"]{background:var(--surface);color:var(--brand);box-shadow:0 1px 3px rgba(0,0,0,.08)}
+
+.toast{position:fixed;left:50%;bottom:calc(env(safe-area-inset-bottom,0px) + 104px);transform:translateX(-50%) translateY(16px);opacity:0;background:var(--ink);color:var(--bg);padding:12px 16px;border-radius:18px;font-size:14px;width:max-content;max-width:min(520px,92vw);transition:.25s;pointer-events:none;z-index:50;line-height:1.5}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+@media (prefers-reduced-motion:reduce){.toast{transition:none}}
+.round{position:relative}
+.round .dot{position:absolute;top:-4px;right:-4px;min-width:20px;height:20px;padding:0 5px;border-radius:10px;background:#FFD43B;color:#3A2600;font-size:11.5px;font-weight:800;line-height:20px;text-align:center}
+.push{position:fixed;left:50%;top:calc(env(safe-area-inset-top,0px) + 10px);transform:translate(-50%,-140%);width:calc(100% - 20px);max-width:520px;z-index:60;display:flex;gap:12px;align-items:flex-start;text-align:left;border:0;cursor:pointer;padding:12px 14px;border-radius:22px;background:var(--nav-bg);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);box-shadow:0 10px 34px rgba(0,0,0,.22);color:var(--ink);transition:transform .35s cubic-bezier(.2,.9,.3,1.2)}
+.push.show{transform:translate(-50%,0)}
+.push:not(.show){transform:translate(-50%,calc(-100% - 40px));visibility:hidden;transition:transform .35s,visibility 0s linear .35s}
+.hdr.auth-hdr .hdr-inner>div:first-child{flex:none}
+.badge{white-space:nowrap;max-width:100%}
+.push .pi{width:38px;height:38px;border-radius:10px;background:var(--brand);display:grid;place-items:center;flex:none}
+.push .pi svg{width:24px;height:24px}
+.push .pm{display:flex;justify-content:space-between;font-size:12.5px;color:var(--muted);gap:8px}
+.push .pt{font-weight:700;font-size:14.5px;margin-top:1px}
+.push .pb{font-size:13.5px;color:var(--ink);opacity:.85}
+@media (prefers-reduced-motion:reduce){.push{transition:none}}
+.freq{display:flex;background:var(--surface-2);border-radius:999px;padding:3px;gap:2px;flex:1 1 100%}
+.freq button{flex:1;border:0;background:none;padding:7px 4px;border-radius:999px;font-size:12.5px;font-weight:600;color:var(--muted);cursor:pointer;white-space:nowrap}
+.freq button[aria-pressed="true"]{background:var(--brand);color:#fff}
+.smart{position:relative;overflow:hidden;margin-top:16px;border-radius:26px;padding:18px;color:#fff;background:radial-gradient(120% 140% at 100% 0%,#FF5A7A 0%,transparent 55%),linear-gradient(150deg,#5A0B24 0%,#B5103A 60%,#E8173F 100%);box-shadow:0 12px 30px rgba(180,16,58,.35)}
+.smart::after{content:"";position:absolute;right:-30px;top:-30px;width:140px;height:140px;border-radius:50%;background:rgba(255,255,255,.08);pointer-events:none}
+.smart-top{display:flex;align-items:center;gap:8px;font-weight:700;font-size:13px;letter-spacing:.02em}
+.smart-top .tag2{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.3);padding:4px 10px;border-radius:999px}
+.smart-top .cnt{margin-left:auto;opacity:.8;font-weight:600}
+.smart-msg{margin:12px 0 0;font-size:16px;font-weight:600;line-height:1.45}
+.smart .avs{display:flex;margin-top:12px}
+.smart .avs .av{width:34px;height:34px;font-size:13px;border:2px solid #fff;margin-left:-8px;background:linear-gradient(150deg,#FFB547,#FF7A45)}
+.smart .avs .av:first-child{margin-left:0;background:#fff;color:var(--brand)}
+.smart .avs .more{margin-left:8px;align-self:center;font-size:13px;opacity:.9}
+.cmp{margin-top:14px;background:#fff;color:#16161A;border-radius:18px;padding:12px 14px;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:8px;position:relative}
+.cmp small{display:block;font-size:12px;color:#6B6B73;font-weight:500}
+.cmp s{font-size:15px;color:#6B6B73;font-weight:600;text-decoration-thickness:2px;text-decoration-color:#E8173F}
+.cmp b{font-size:21px;color:#0B8F4D;letter-spacing:-.02em;display:block;line-height:1.15}
+.cmp .arr{font-size:20px;color:#E8173F;font-weight:800}
+.cmp .pct{position:absolute;top:-10px;right:12px;background:#0B8F4D;color:#fff;font-weight:800;font-size:12.5px;padding:3px 9px;border-radius:999px}
+.smart .row{margin-top:14px}
+.smart .btn.cta{background:#fff;color:var(--brand);border-color:#fff;font-weight:700;flex:1}
+.smart .btn.ghost2{background:rgba(255,255,255,.14);border-color:rgba(255,255,255,.35);color:#fff;flex:1}
+.smart .fine{margin:10px 0 0;font-size:11.5px;opacity:.78;line-height:1.45}
+.smart .sent{margin-top:10px;font-size:13px;background:rgba(255,255,255,.14);border-radius:12px;padding:8px 10px}
+.smart .nxt{position:relative;z-index:1;background:none;border:0;color:#fff;font-weight:600;font-size:13px;opacity:.9;cursor:pointer;padding:6px 0 0}
+.dev[aria-pressed="true"]{border-color:var(--brand);background:var(--brand-soft)}
+.dev .tick{margin-left:auto;width:24px;height:24px;border-radius:50%;border:2px solid var(--line);display:grid;place-items:center;font-size:13px;color:#fff;flex:none}
+.dev[aria-pressed="true"] .tick{background:var(--brand);border-color:var(--brand)}
+.pick{display:flex;flex-wrap:wrap;gap:8px}
+div.f{display:grid;gap:8px;font-size:13.5px;font-weight:600;color:var(--muted)}
+.f2>*,.f3>*{min-width:0}
+label.f input,label.f select{min-width:0;max-width:100%}
+.pick button{display:flex;align-items:center;gap:8px;border:1.5px solid var(--line);background:var(--surface);border-radius:999px;padding:5px 12px 5px 5px;cursor:pointer;font-size:14px;font-weight:600;color:var(--ink)}
+.pick button .av{width:28px;height:28px;font-size:12px}
+.pick button[aria-pressed="true"]{border-color:var(--brand);background:var(--brand-soft);color:var(--brand)}
+.share-in{display:flex;gap:8px}
+.share-in input{flex:1;min-width:0;border:1.5px solid var(--line);background:var(--surface-2);border-radius:14px;padding:11px 13px;font-size:16px;font-weight:500;color:var(--ink)}
+.share-in input:focus{border-color:var(--brand);outline:none}
+.share-in .btn{flex:none}
+.pick .chip2{display:inline-flex;align-items:center;gap:8px;border-radius:999px;padding:4px 6px 4px 4px;font-size:14px;font-weight:600;border:1.5px solid var(--brand);background:var(--brand-soft);color:var(--brand)}
+.pick .chip2.guest{border-color:var(--line);border-style:dashed;background:var(--surface-2);color:var(--ink)}
+.pick .chip2 .av{width:28px;height:28px;font-size:12px}
+.pick .chip2.guest .av{background:var(--muted)}
+.pick .chip2 small{font-weight:500;color:var(--muted);font-size:12px}
+.pick .chip2 .x{border:0;background:none;padding:0 6px;font-size:16px;line-height:1;color:inherit;cursor:pointer}
+.sugs{display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-size:12.5px;font-weight:500}
+.sugs button{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:4px 10px;font-size:13px;cursor:pointer;color:var(--ink)}
+.share-err{color:var(--leak);font-size:13px;font-weight:500}
+.check.sm{font-size:13.5px;font-weight:500;color:var(--ink)}
+.check.sm input{width:18px;height:18px}
+.pick-sum{font-size:13.5px;color:var(--muted);margin-top:2px}
+.notif-tip{background:var(--surface-2);border-radius:16px;padding:12px 14px;font-size:13.5px;line-height:1.55}
+@media (max-width:420px){
+  .hdr-title{font-size:22px}
+  .acct-head .tag,.acct-head .meta{font-size:17px}
+  .item{grid-template-columns:1fr}
+  .item-right{text-align:left}
+  .f3{grid-template-columns:1fr 1fr}
+}
+</style>
+</head>
+<body>
+<header class="hdr" id="hdr"></header>
+<main id="view"></main>
+<nav class="nav" id="nav" aria-label="Điều hướng chính"></nav>
+<dialog id="dlg"></dialog>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<button class="push" id="push" data-act="notifs" aria-live="polite"></button>
+
+<script>
+/* ============ Helpers ============ */
+const $ = (s, r=document) => r.querySelector(s);
+const NF = new Intl.NumberFormat('vi-VN');
+const money = n => NF.format(Math.round(n||0)) + ' ₫';
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const uid = () => Math.random().toString(36).slice(2,10);
+const pad = n => String(n).padStart(2,'0');
+const iso = d => `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
+const parseD = s => { if(!s) return null; const [y,m,d] = s.split('-').map(Number); return new Date(y, m-1, d); };
+const today = () => { const t = new Date(); t.setHours(0,0,0,0); return t; };
+const addDays = (d,n) => { const x = new Date(d); x.setDate(x.getDate()+n); return x; };
+const addMonths = (d,n) => { const x = new Date(d); const day = x.getDate(); x.setDate(1); x.setMonth(x.getMonth()+n); const last = new Date(x.getFullYear(), x.getMonth()+1, 0).getDate(); x.setDate(Math.min(day,last)); return x; };
+const daysUntil = s => { const d = parseD(s); return d ? Math.round((d - today())/864e5) : null; };
+const ym = d => `${d.getFullYear()}-${pad(d.getMonth()+1)}`;
+const monthKey = back => ym(addMonths(new Date(today().getFullYear(), today().getMonth(), 1), -back));
+const fmtDate = s => { const d = parseD(s); return d ? `${pad(d.getDate())}/${pad(d.getMonth()+1)}` : '—'; };
+const weekday = s => ['CN','T2','T3','T4','T5','T6','T7'][parseD(s).getDay()];
+const whenText = n => n === 0 ? 'hôm nay' : n === 1 ? 'ngày mai' : n > 1 ? `còn ${n} ngày` : `quá ${-n} ngày`;
+
+/* ============ State ============ */
+const LEGACY_KEY = 'optisub.v1';
+const ACC_KEY = 'optisub.accounts';
+const SES_KEY = 'optisub.session';
+const emptyState = () => ({v:1, updatedAt:0, subs:[], tuition:[], bills:[], debts:[], savedFromCancels:0, cancelled:[], seenWelcome:false});
+const readJSON = (store, k) => { try { return JSON.parse(store.getItem(k)); } catch(e){ return null; } };
+const writeJSON = (store, k, v) => { try { store.setItem(k, JSON.stringify(v)); } catch(e){} };
+let state = emptyState();
+/* Chỉ 6 tài khoản demo dưới đây được đăng nhập. Mật khẩu chỉ lưu dạng băm (PBKDF2). */
+const ALLOWED_ACCOUNTS = [
+  {"id": "demo-1", "username": "giang.nguyen", "displayName": "Nguyễn Thị Thuỳ Giang", "salt": "/J6qLcJ7EXwIcFfw/C5ffw==", "hash": "bxC3NnXB5nl9dODw+Y//XGAS57TvqqjGmFuVPwze2q0=", "kind": 1},
+  {"id": "demo-2", "username": "vy.tran", "displayName": "Trần Phan Tường Vy", "salt": "YwrdioVP+5sCOgbvc7EsXw==", "hash": "yVOULMHZ1T+HJNGd733P6XIVaXfjNzGDJ0Tn2gJMDuY=", "kind": 2},
+  {"id": "demo-3", "username": "nhi.tran", "displayName": "Trần Mai Nhi", "salt": "XZwJPL1Z7dVbG03Vpvh4OA==", "hash": "5fH6cqeAWg4LZvZ2G1zQ7To5e7W6hJU4ZGPUBHc7qjY=", "kind": 3},
+  {"id": "demo-4", "username": "quang.le", "displayName": "Lê Văn Quang", "salt": "tbQWqGvaE/ufqBPGuDY8LQ==", "hash": "9mis1r5iqqpCkcuXSrX4rKK9GyFtcudluADOQa4Qmyc=", "kind": 4},
+  {"id": "demo-5", "username": "nam.huynh", "displayName": "Huỳnh Ngọc Nguyễn Hải Nam", "salt": "Up5ran02o/5fqPKvSGt6qg==", "hash": "S8pjG5vipfIDz1xMGLhdmeITOzRG1AunxGYmm9+u6AU=", "kind": 5},
+  {"id": "demo-6", "username": "minh.nguyen", "displayName": "Nguyễn Trường Minh", "salt": "KXAVbuzYCQ3B+I/Ueh49dA==", "hash": "1oEgHS7UrWFRdMq6uic0RIjgFdVH2IBG3cckOWz8AHk=", "kind": 6}
+];
+let accounts = ALLOWED_ACCOUNTS.map(a => ({...a}));
+let current = null;
+let authMode = 'login', authErr = '', authBusy = false, authFails = 0, authLockUntil = 0, showPw = false, prefillUser = '';
+let claudeName = '';
+const cloud = {db:null, cid:null, legacy:null};
+let cloudReadyResolve; const cloudReady = new Promise(r => cloudReadyResolve = r);
+const liveAccounts = () => accounts.filter(a => !a.deleted);
+const stateKey = () => 'optisub.v1.' + current.id;
+let tab = 'overview';
+let sub = 'tuition';
+let ovSeg = 'alerts';
+
+let syncOn = false, syncText = '';
+let hideAmt = (() => { try { return localStorage.getItem('optisub.hide') === '1'; } catch(e){ return false; } })();
+const svg = d => `<svg class="i" viewBox="0 0 24 24" aria-hidden="true">${d}</svg>`;
+const I = {
+  home: svg('<path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/>'),
+  card: svg('<rect x="3" y="5" width="18" height="14" rx="3"/><path d="M3 10h18M7 15h4"/>'),
+  cal: svg('<rect x="3" y="4.5" width="18" height="16" rx="3"/><path d="M3 9.5h18M8 3v3M16 3v3"/>'),
+  cap: svg('<path d="M2 9l10-5 10 5-10 5z"/><path d="M6 11v5c0 1.5 2.7 3 6 3s6-1.5 6-3v-5M22 9v6"/>'),
+  spark: svg('<path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/><path d="M19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8z"/>'),
+  plus: svg('<path d="M12 5v14M5 12h14"/>'),
+  eye: svg('<path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/>'),
+  eyeOff: svg('<path d="M3 3l18 18M10.6 5.1A10 10 0 0 1 12 5c6.5 0 10 7 10 7a17 17 0 0 1-3.2 4M6.6 6.6A17 17 0 0 0 2 12s3.5 7 10 7a9.7 9.7 0 0 0 5.4-1.6M9.9 9.9a3 3 0 0 0 4.2 4.2"/>'),
+  chev: svg('<path d="M9 6l6 6-6 6"/>'),
+  bell: svg('<path d="M6 8a6 6 0 1 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10 21a2 2 0 0 0 4 0"/>'),
+  house: svg('<path d="M3 11 12 4l9 7"/><path d="M5 10v10h14V10"/><path d="M10 20v-5h4v5"/>'),
+  users: svg('<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.5-3.5 3.2-5.5 6.5-5.5s6 2 6.5 5.5"/><circle cx="17" cy="9" r="2.5"/><path d="M17 14.5c2.5 0 4.2 1.6 4.5 4"/>'),
+  send: svg('<path d="M4 12l16-8-6 16-2.5-6.5z"/>'),
+  scissors: svg('<circle cx="6" cy="7" r="3"/><circle cx="6" cy="17" r="3"/><path d="M8.5 8.5 20 18M8.5 15.5 20 6"/>'),
+  split: svg('<path d="M3.5 3h17v18l-2.8-1.6L14.8 21 12 19.4 9.2 21l-2.9-1.6L3.5 21z"/><path d="M12 6v10.5" stroke-dasharray="2.2 2.2"/><path d="M7 8.5h2.5M7 12.5h2.5M14.5 8.5H17M14.5 12.5H17"/>'),
+  cash: svg('<rect x="2" y="9" width="17" height="11.5" rx="2"/><circle cx="10.5" cy="14.75" r="2.5"/><path d="M5 4.5h15a2 2 0 0 1 2 2v10"/>'),
+  logout: svg('<path d="M15 4h3a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-3M10 17l5-5-5-5M15 12H3"/>'),
+  lock: svg('<rect x="4" y="10.5" width="16" height="10" rx="3"/><path d="M8 10.5V7a4 4 0 0 1 8 0v3.5"/>'),
+  pen: svg('<path d="M4 20h4L19 9a2.8 2.8 0 0 0-4-4L4 16z"/>'),
+  trash: svg('<path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"/>'),
+  accPlus: '<svg class="i acc" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v16M4 12h16"/></svg>'
+};
+let chatLog = [];
+let analysis = null; // {text, src}
+let caps = {db:null, docRef:null, sample:null, downloads:null};
+
+function saveLocal(){ if (!current) return; writeJSON(localStorage, stateKey(), state); }
+let cloudTimer = null;
+function commit(rerender=true){
+  if (!current) return;
+  state.updatedAt = Date.now();
+  saveLocal();
+  if (caps.docRef){ clearTimeout(cloudTimer); cloudTimer = setTimeout(pushCloud, 700); }
+  if (rerender) render();
+}
+async function pushCloud(){
+  try { await caps.docRef.set({payload: JSON.stringify(state), updatedAt: state.updatedAt}); setSync(true); }
+  catch(e){ setSync(false, 'Chưa đồng bộ được — đang lưu trên trình duyệt'); }
+}
+function syncHTML(){ return `<p class="sync ${syncOn?'on':''}" id="sync"><i></i><span>${esc(syncText || (syncOn ? 'Đã lưu vào tài khoản của bạn' : 'Đang lưu trên thiết bị này'))}</span></p>`; }
+function setSync(on, text){
+  syncOn = on; syncText = text || '';
+  const el = $('#sync'); if (!el) return;
+  el.outerHTML = syncHTML();
+}
+
+/* ============ Domain logic ============ */
+const monthly = s => s.cycle === 'year' ? s.price/12 : s.price;
+const myMonthly = s => monthly(s) / Math.max(1, s.payers||1);
+const uses3 = s => [0,1,2].map(i => s.usage?.[monthKey(i)]);
+function subStatus(s){
+  const u = uses3(s);
+  if (s.trialEnd && daysUntil(s.trialEnd) >= 0) return 'trial';
+  if (u.every(x => x === 0)) return 'kill';
+  const known = u.filter(x => typeof x === 'number');
+  if (!known.length) return 'unknown';
+  const avg = known.reduce((a,b)=>a+b,0)/known.length;
+  if (avg === 0) return 'warn';
+  return (myMonthly(s)/avg) >= 20000 || avg < 3 ? 'warn' : 'ok';
+}
+function cpu(s){
+  const known = uses3(s).filter(x => typeof x === 'number');
+  if (!known.length) return null;
+  const avg = known.reduce((a,b)=>a+b,0)/known.length;
+  return avg > 0 ? myMonthly(s)/avg : Infinity;
+}
+const STATUS = {
+  ok:{label:'✅ Đáng tiền', cls:'ok'}, warn:{label:'🤔 Cân nhắc', cls:'warn'},
+  kill:{label:'✂️ Nên cắt', cls:'kill'}, trial:{label:'⏳ Dùng thử', cls:'trial'}, unknown:{label:'Chưa có dữ liệu', cls:''}
+};
+
+/* Roll past billing dates forward; convert finished trials */
+function rollForward(){
+  let changed = false; const t = today();
+  for (const s of state.subs){
+    if (s.trialEnd && daysUntil(s.trialEnd) < 0 && !s.trialConverted){
+      s.trialConverted = true; s.trialEndedOn = s.trialEnd;
+      if (!s.nextBill || parseD(s.nextBill) < parseD(s.trialEnd)) s.nextBill = s.trialEnd;
+      s.trialEnd = ''; changed = true;
+    }
+    if (s.nextBill){
+      let d = parseD(s.nextBill); let guard = 0;
+      while (d < t && guard++ < 60){ d = s.cycle === 'year' ? addMonths(d,12) : addMonths(d,1); changed = true; }
+      s.nextBill = iso(d);
+    }
+  }
+  if (changed) commit(false);
+}
+
+function billDue(b){
+  const t = today(); const key = ym(t);
+  const last = new Date(t.getFullYear(), t.getMonth()+1, 0).getDate();
+  const thisDue = new Date(t.getFullYear(), t.getMonth(), Math.min(b.dueDay, last));
+  if (b.paid?.[key]){
+    const n = addMonths(new Date(t.getFullYear(), t.getMonth(), 1), 1);
+    const nl = new Date(n.getFullYear(), n.getMonth()+1, 0).getDate();
+    return {date: iso(new Date(n.getFullYear(), n.getMonth(), Math.min(b.dueDay, nl))), paidNow:true};
+  }
+  return {date: iso(thisDue), paidNow:false};
+}
+function tuitionPlan(x){
+  const left = Math.max(0, x.total - (x.saved||0));
+  const days = daysUntil(x.due);
+  const months = Math.max(1, Math.ceil((days ?? 30)/30.44));
+  const perMonth = left <= 0 ? 0 : Math.ceil(left/months/1000)*1000;
+  return {left, days, months, perMonth, pct: x.total ? Math.min(100, (x.saved||0)/x.total*100) : 0};
+}
+
+function events(horizon=35){
+  const ev = [];
+  for (const s of state.subs){
+    if (s.trialEnd) ev.push({date:s.trialEnd, kind:'trial', icon:'⏳', title:`${s.name}: hết dùng thử`, desc:`Sau ngày này sẽ bị trừ ${money(s.price)} nếu không hủy`, amount:s.price, ref:s.id});
+    else if (s.nextBill) ev.push({date:s.nextBill, kind:'renew', icon:'🔁', title:`${s.name}: gia hạn tự động`, desc: subStatus(s)==='kill' ? 'Bạn gần như không dùng dịch vụ này — hủy trước ngày này' : `Kỳ ${s.cycle==='year'?'năm':'tháng'} mới`, amount:s.price, ref:s.id});
+  }
+  for (const b of state.bills){ const d = billDue(b); ev.push({date:d.date, kind:'bill', icon:'🏠', title:`${b.name}`, desc:`Phần của bạn ${money(b.amount/Math.max(1,b.people))}${b.people>1?` · tổng ${money(b.amount)} chia ${b.people} người`:''}`, amount:b.amount/Math.max(1,b.people), ref:b.id, paid:d.paidNow}); }
+  for (const x of state.tuition){ const p = tuitionPlan(x); if (p.left>0) ev.push({date:x.due, kind:'tuition', icon:'🎓', title:`Hạn đóng ${x.name}`, desc:`Còn thiếu ${money(p.left)}`, amount:p.left, ref:x.id}); }
+  return ev.map(e => ({...e, n: daysUntil(e.date)}))
+    .filter(e => e.n !== null && e.n <= horizon && (e.n >= 0 || (e.kind==='bill' && !e.paid)))
+    .sort((a,b) => a.n - b.n);
+}
+function alertsList(){
+  const out = events(3).filter(e => !e.paid).filter(e => {
+    if (e.kind !== 'trial' && e.kind !== 'renew') return true;
+    const s = state.subs.find(x => x.id === e.ref); const r = s ? (s.remind ?? 3) : 3;
+    return r >= 0 && e.n <= r;
+  }).map(e => ({...e, c: e.n < 0 ? 'var(--leak)' : e.kind==='trial' ? 'var(--trial)' : 'var(--warn)'}));
+  for (const m of (state.inbox||[]).filter(x => !x.read).slice(0,10).reverse()) out.unshift(m.type === 'invite'
+    ? {icon:'🤝', title:`${m.fromName} mời bạn ghép nhóm ${m.svc}`, desc:m.text, c:'var(--ok)', kind:'invite', ref:m.id}
+    : {icon:'💬', title:`${m.fromName} nhắc bạn${m.amount?` · ${money(m.amount)}`:''}`, desc:m.text, c:'var(--trial)', kind:'msg', ref:m.id, amount:m.amount});
+  for (const s of state.subs){
+    if (s.cancelTodo){ const dl = s.trialEnd || s.nextBill; out.unshift({icon:'✂️', title:`Nhớ hủy ${s.name}`, desc: dl ? `Hủy trước ${fmtDate(dl)} (${whenText(daysUntil(dl))}) để không bị trừ ${money(s.price)}.` : `Bạn đã đặt nhắc hủy gói này.`, c:'var(--leak)', kind:'todo', ref:s.id}); }
+    if (s.prevPrice && s.priceChangedAt && (Date.now()-s.priceChangedAt) < 60*864e5 && s.price > s.prevPrice){
+      out.push({icon:'📈', title:`${s.name} đã tăng giá`, desc:`${money(s.prevPrice)} → ${money(s.price)} (+${Math.round((s.price/s.prevPrice-1)*100)}%). Một lý do tốt để xem lại gói này.`, c:'var(--muted)', kind:'price', ref:s.id, quiet:true});
+    }
+    if (s.trialEndedOn && daysUntil(s.trialEndedOn) >= -5){
+      out.push({icon:'💸', title:`${s.name} đã hết dùng thử`, desc:`Có thể bạn đã bị trừ ${money(s.price)} vào ${fmtDate(s.trialEndedOn)}. Kiểm tra sao kê và hủy nếu không cần.`, c:'var(--leak)', kind:'trial-ended', ref:s.id});
+    }
+  }
+  return out;
+}
+
+/* Tips */
+const FAMILY = {spotify:'Spotify có gói Family/Duo', youtube:'YouTube Premium có gói Gia đình (tối đa 6 người)', netflix:'Netflix cho phép nhiều màn hình trên gói cao hơn', 'google one':'Google One chia sẻ được với nhóm gia đình', icloud:'iCloud+ chia sẻ qua Chia sẻ trong gia đình', 'apple music':'Apple Music có gói Gia đình', 'microsoft 365':'Microsoft 365 Family dùng được cho 6 người', chatgpt:'ChatGPT có gói Business cho nhóm', canva:'Canva có gói Teams chia nhiều thành viên'};
+const STUDENT = {spotify:'kiểm tra xem có gói Student cho sinh viên không', notion:'Notion có gói Education miễn phí với email trường (.edu)', 'github':'GitHub Student Developer Pack có Copilot miễn phí cho sinh viên đã xác minh', 'microsoft 365':'nhiều trường cấp Microsoft 365 miễn phí qua email sinh viên — hỏi phòng CNTT', canva:'bản Canva miễn phí đã đủ cho phần lớn bài thuyết trình; kiểm tra xem trường có chương trình Canva Education không', 'apple music':'Apple Music có gói Sinh viên giá giảm ở nhiều quốc gia', chatgpt:'nếu chỉ hỏi bài thỉnh thoảng, bản miễn phí có thể đã đủ', youtube:'YouTube Premium có gói Sinh viên ở một số quốc gia'};
+const match = (map, name) => { const n = name.toLowerCase(); const k = Object.keys(map).find(k => n.includes(k)); return k ? map[k] : null; };
+function tipFor(s){
+  const st = subStatus(s);
+  if ((s.sharedWith||1) > 1 && (s.payers||1) <= 1){
+    const fam = match(FAMILY, s.name);
+    return `👨‍👩‍👧 ${s.sharedWith} người đang dùng chung nhưng chỉ mình bạn trả. ${fam ? fam + ' — ' : ''}chia đều ra mỗi người chỉ khoảng ${money(monthly(s)/s.sharedWith)}/tháng.`;
+  }
+  if (st === 'kill') return `🧊 3 tháng liền không mở app. Số tiền đã trả là chi phí chìm — không lấy lại được bằng cách tiếp tục trả. Cắt ngay tiết kiệm ${money(myMonthly(s)*12)}/năm.`;
+  const stu = match(STUDENT, s.name);
+  if (st === 'warn'){ const c = cpu(s); return `💡 Mỗi lần dùng tốn ${c===Infinity?'—':money(c)}. ${stu ? 'Gợi ý: ' + stu + '.' : 'Hạ xuống gói rẻ hơn hoặc chỉ đăng ký lại vào tháng thật sự cần.'}`; }
+  if (st === 'trial') return `⏳ Đặt lịch hủy trước ${fmtDate(s.trialEnd)}. Dùng thử là cửa vào của hiệu ứng khóa chặt — quyết định từ bây giờ, đừng để thẻ tự quyết.`;
+  if (s.cycle === 'month' && st === 'ok') return `📅 Dùng đều đặn — nếu chắc dùng cả năm, gói năm thường rẻ hơn khoảng 15–20%.${stu ? ' Ngoài ra ' + stu + '.' : ''}`;
+  if (stu) return `🎓 ${stu.charAt(0).toUpperCase()+stu.slice(1)}.`;
+  return null;
+}
+
+const CANCEL = {
+  netflix:['Mở netflix.com trên trình duyệt và đăng nhập.','Vào Tài khoản → Gói thành viên.','Chọn “Hủy gói thành viên” và xác nhận.'],
+  spotify:['Vào spotify.com/account trên trình duyệt (không hủy được trong app).','Chọn Gói của bạn → Thay đổi gói.','Kéo xuống phần Spotify Free → Hủy Premium.'],
+  youtube:['Mở youtube.com/paid_memberships.','Chọn YouTube Premium → Hủy kích hoạt.','Xác nhận lý do và hoàn tất.'],
+  chatgpt:['Mở chatgpt.com → ảnh đại diện → Cài đặt.','Vào mục Tài khoản/Gói → Quản lý.','Chọn Hủy gói. Nếu mua qua App Store/Google Play, hủy ở đó.'],
+  canva:['Mở canva.com → Cài đặt → Thanh toán và gói.','Chọn gói đang dùng → Hủy gói.','Canva có thể mời tạm dừng — chọn hủy hẳn nếu đã quyết.'],
+  'apple':['iPhone: Cài đặt → [Tên bạn] → Đăng ký.','Chọn dịch vụ → Hủy đăng ký.'],
+  'google':['Mở Google Play → ảnh đại diện → Thanh toán và gói thuê bao → Gói thuê bao.','Chọn dịch vụ → Hủy gói thuê bao.']
+};
+const GENERIC_CANCEL = ['Kiểm tra bạn đã đăng ký qua đâu: website, App Store hay Google Play — phải hủy đúng nơi đã trả tiền.','Vào phần Tài khoản / Thanh toán / Gói đăng ký và chọn Hủy hoặc Tắt tự động gia hạn.','Chụp màn hình trang xác nhận hủy để làm bằng chứng.','Nếu không tìm thấy nút hủy, liên hệ bộ phận hỗ trợ ngay trong app hoặc website của dịch vụ.'];
+const MINDSET = [
+  'Chi phí chìm: tiền đã trả các tháng trước không quay lại dù bạn có dùng tiếp hay không. Câu hỏi đúng chỉ là: tháng tới có đáng trả tiếp không?',
+  'Hiệu ứng khóa chặt: playlist, lịch sử, thiết kế đã lưu khiến bạn ngại rời đi. Hầu hết dịch vụ giữ dữ liệu một thời gian sau khi hủy — bạn luôn có thể quay lại khi thật cần.',
+  'Bẫy “để đó lỡ cần”: nếu cần thật, đăng ký lại mất 2 phút. Trả tiền cho khả năng “có thể” là khoản rò rỉ đắt nhất.'
+];
+
+/* ============ Rendering ============ */
+const NAV = [['overview','Tổng quan','home'],['subs','Gói','card'],['calendar','Lịch','cal'],['student','Sinh viên','cap']];
+const PAGE = {subs:['Quản lý các gói đăng ký','Theo dõi chi phí, tần suất sử dụng và mức độ đáng tiền của từng gói.'], calendar:['Lịch thanh toán','Nhắc trước 1–3 ngày, không bị trừ tiền oan'], student:['Ví sinh viên','Học phí, chia tiền nhóm, mượn & trả'], ai:['Hỏi OptiSub','Cố vấn chi tiêu số của riêng bạn']};
+const DECO = '<svg class="hdr-deco" viewBox="0 0 400 260" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><defs><radialGradient id="dg1" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#FFD1DC" stop-opacity=".75"/><stop offset="1" stop-color="#FFD1DC" stop-opacity="0"/></radialGradient><radialGradient id="dg2" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#FFC07A" stop-opacity=".7"/><stop offset="1" stop-color="#FFC07A" stop-opacity="0"/></radialGradient><radialGradient id="dg3" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#C77DFF" stop-opacity=".45"/><stop offset="1" stop-color="#C77DFF" stop-opacity="0"/></radialGradient><pattern id="dgd" width="14" height="14" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1.4" fill="#fff"/></pattern></defs><circle cx="345" cy="20" r="150" fill="url(#dg1)"/><circle cx="40" cy="250" r="140" fill="url(#dg2)"/><circle cx="230" cy="150" r="110" fill="url(#dg3)"/><rect x="250" y="150" width="120" height="84" fill="url(#dgd)" opacity=".18" rx="20"/><path d="M-10 205 C 70 170, 140 245, 230 205 S 360 170, 420 200" fill="none" stroke="#fff" stroke-width="2" stroke-opacity=".22" stroke-linecap="round"/><path d="M-10 222 C 80 192, 150 262, 240 222 S 370 190, 420 218" fill="none" stroke="#fff" stroke-width="1.4" stroke-opacity=".14" stroke-linecap="round"/><circle cx="300" cy="85" r="26" fill="none" stroke="#fff" stroke-opacity=".28" stroke-width="2"/><circle cx="300" cy="85" r="17" fill="#fff" fill-opacity=".12"/><circle cx="372" cy="128" r="9" fill="#fff" fill-opacity=".22"/><circle cx="182" cy="34" r="5" fill="#fff" fill-opacity=".3"/><circle cx="128" cy="140" r="3.5" fill="#fff" fill-opacity=".35"/><path fill="#fff" opacity="0.85" transform="translate(352 58) scale(1.3)" d="M0-10C1.2-3 3-1.2 10 0 3 1.2 1.2 3 0 10-1.2 3-3 1.2-10 0-3-1.2-1.2-3 0-10z"/><path fill="#fff" opacity="0.6" transform="translate(250 40) scale(0.8)" d="M0-10C1.2-3 3-1.2 10 0 3 1.2 1.2 3 0 10-1.2 3-3 1.2-10 0-3-1.2-1.2-3 0-10z"/><path fill="#fff" opacity="0.55" transform="translate(388 190) scale(0.9)" d="M0-10C1.2-3 3-1.2 10 0 3 1.2 1.2 3 0 10-1.2 3-3 1.2-10 0-3-1.2-1.2-3 0-10z"/><path fill="#fff" opacity="0.5" transform="translate(205 118) scale(0.6)" d="M0-10C1.2-3 3-1.2 10 0 3 1.2 1.2 3 0 10-1.2 3-3 1.2-10 0-3-1.2-1.2-3 0-10z"/><path fill="#fff" opacity="0.45" transform="translate(92 30) scale(0.7)" d="M0-10C1.2-3 3-1.2 10 0 3 1.2 1.2 3 0 10-1.2 3-3 1.2-10 0-3-1.2-1.2-3 0-10z"/></svg>';
+function tier(){
+  const s = state.savedFromCancels || 0;
+  if (s >= 300000) return {em:'🌳', name:'Cây Tiết Kiệm', next:null};
+  if (s >= 100000) return {em:'🌿', name:'Chồi Tiết Kiệm', next:300000};
+  return {em:'🌱', name:'Mầm Tiết Kiệm', next:100000};
+}
+/* Khoản đã tiết kiệm: gói đã cắt + phần giảm nhờ ghép nhóm dùng chung */
+function savings(){
+  const cut = (state.cancelled||[]).map(c => ({name:c.name, amt:c.monthly||0}));
+  const cutSum = cut.reduce((a,c) => a + c.amt, 0);
+  const legacy = Math.max(0, (state.savedFromCancels||0) - cutSum);
+  const shared = state.subs.filter(s => (s.payers||1) > 1).map(s => ({name:s.name, full:monthly(s), mine:myMonthly(s), n:s.payers, amt:monthly(s) - myMonthly(s)}));
+  const total = cutSum + legacy + shared.reduce((a,x) => a + x.amt, 0);
+  const spend = state.subs.reduce((a,s) => a + myMonthly(s), 0);
+  const pct = total > 0 ? Math.round(total / (spend + total) * 100) : 0;
+  return {cut, legacy, shared, total, spend, pct};
+}
+function savingsSheet(){
+  const sv = savings();
+  const row = (l, r, sub) => `<div class="alert" style="--c:var(--ok)"><div style="flex:1;min-width:0"><div class="t">${l}</div>${sub?`<div class="d">${sub}</div>`:''}</div><div class="num" style="font-weight:700;color:var(--ok);white-space:nowrap">${r}</div></div>`;
+  openDlg('Khoản đã tiết kiệm', `
+    <div class="acc-top"><span class="av lg" style="background:linear-gradient(150deg,var(--ok),#5BD6A0)">💰</span><h3 style="font-size:26px" class="num">${money(sv.total)}<span class="sub" style="font-size:15px">/tháng</span></h3><span class="sub" style="margin:0">≈ ${money(sv.total*12)}/năm${sv.pct?` · giảm ${sv.pct}% chi phí gói đăng ký`:''}</span></div>
+    ${sv.total ? '' : `<div class="empty">Chưa có khoản nào. Hủy các gói không sử dụng hoặc chia sẻ chi phí gói với người dùng chung để bắt đầu tiết kiệm.</div>`}
+    ${sv.cut.length || sv.legacy ? `<h3 style="font-size:15px">✂️ Cắt gói dư thừa</h3><div class="alerts">${sv.cut.map(c => row(esc(c.name), '+' + money(c.amt), 'Đã hủy, không còn bị trừ tiền')).join('')}${sv.legacy ? row('Các gói đã cắt trước đây', '+' + money(sv.legacy)) : ''}</div>` : ''}
+    ${sv.shared.length ? `<h3 style="font-size:15px">🔗 Ghép nhóm dùng chung</h3><div class="alerts">${sv.shared.map(x => row(esc(x.name), '+' + money(x.amt), `${money(x.full)} → ${money(x.mine)} (chia ${x.n} người) · giảm ${Math.round((1 - 1/x.n)*100)}%`)).join('')}</div>` : ''}
+    <p class="hint" style="margin:0;text-align:center">% giảm = khoản đã tiết kiệm ÷ (chi phí hiện tại ${money(sv.spend)} + khoản đã tiết kiệm)</p>
+  `, `<button class="btn primary" data-act="close">Đóng</button>`);
+}
+/* ============ Gợi ý ghép nhóm (so khớp gói giữa các tài khoản trong app) ============ */
+const FAMILY_SVC = {spotify:'Spotify Family/Duo', youtube:'YouTube Premium Gia đình', 'apple music':'Apple Music Gia đình', icloud:'iCloud+ Chia sẻ trong gia đình', 'google one':'Google One nhóm gia đình', 'microsoft 365':'Microsoft 365 Family', duolingo:'Duolingo Family', netflix:'Netflix', canva:'Canva Teams'};
+const SVC_KEYS = ['apple music','google one','microsoft 365','github copilot','fpt play','netflix','spotify','youtube','chatgpt','canva','icloud','notion','duolingo','capcut','xbox','grab','shopee','adobe'];
+const svcKey = name => { const n = String(name||'').toLowerCase(); return SVC_KEYS.find(k => n.includes(k)) || n.trim(); };
+let peers = {}; let smartIdx = 0;
+async function loadState(acc){
+  const key = 'optisub.v1.' + acc.id;
+  let st = readJSON(localStorage, key);
+  const ref = cloud.db && cloud.cid ? cloud.db.doc(`data/users/${cloud.cid}/optisub-${acc.id}`) : null;
+  if (ref){ try { const snap = await ref.get(); if (snap.exists){ const d = snap.data(); if (!st || (d.updatedAt||0) > (st.updatedAt||0)) st = JSON.parse(d.payload); } } catch(e){} }
+  return st && st.v ? Object.assign(emptyState(), st) : Object.assign(demoState(acc.kind), {updatedAt:1});
+}
+async function saveState(acc, st){
+  st.updatedAt = Date.now();
+  writeJSON(localStorage, 'optisub.v1.' + acc.id, st);
+  const ref = cloud.db && cloud.cid ? cloud.db.doc(`data/users/${cloud.cid}/optisub-${acc.id}`) : null;
+  if (ref){ try { await ref.set({payload: JSON.stringify(st), updatedAt: st.updatedAt}); } catch(e){} }
+}
+async function loadPeers(){
+  const me = current; if (!me) return;
+  const out = {};
+  for (const a of liveAccounts()) if (a.id !== me.id) out[a.username] = await loadState(a);
+  if (current !== me) return;
+  peers = out; if (tab === 'overview') render();
+}
+function smartMatches(){
+  const res = [];
+  for (const s of state.subs){
+    const k = svcKey(s.name);
+    if (!FAMILY_SVC[k] || s.owner || (s.payers||1) > 1 || (s.shareWith||[]).length || subStatus(s) === 'kill') continue;
+    const friends = [];
+    for (const a of liveAccounts()){
+      if (a.id === current.id) continue; const st = peers[a.username]; if (!st) continue;
+      const ps = st.subs.find(x => svcKey(x.name) === k && !x.owner && (x.payers||1) <= 1 && !(x.shareWith||[]).length);
+      if (ps) friends.push({acc:a, price: monthly(ps)});
+    }
+    const n = friends.length ? Math.min(6, friends.length + 1) : 4;
+    const P = monthly(s), per = P / n;
+    res.push({s, k, friends, n, P, per, pct: Math.round((1 - 1/n) * 100), save: P - per});
+  }
+  return res.sort((a,b) => (b.friends.length > 0) - (a.friends.length > 0) || b.save - a.save);
+}
+function smartCardHTML(){
+  const list = smartMatches(); if (!list.length) return '';
+  const m = list[smartIdx % list.length]; const s = m.s;
+  const names = m.friends.map(f => esc(f.acc.displayName.split(' ').slice(-1)[0]));
+  const msg = m.friends.length
+    ? `Bạn và ${m.friends.length} người dùng OptiSub khác (${names.join(', ')}) đang trả riêng gói ${esc(s.name)} cá nhân. Ghép thành gói nhóm để giảm ${m.pct}% chi phí!`
+    : `Bạn đang trả riêng ${esc(s.name)}. Rủ thêm 3 người dùng OptiSub ghép thành ${esc(FAMILY_SVC[m.k])} để giảm ${m.pct}% chi phí!`;
+  const avs = [`<span class="av">${esc(initials(current.displayName))}</span>`, ...m.friends.slice(0,4).map(f => `<span class="av">${esc(initials(f.acc.displayName))}</span>`)].join('') + (m.friends.length ? '' : `<span class="av" style="background:rgba(255,255,255,.25)">+</span><span class="av" style="background:rgba(255,255,255,.25)">+</span><span class="av" style="background:rgba(255,255,255,.25)">+</span>`);
+  const sent = (s.invited||[]);
+  return `<section class="smart" aria-label="Gợi ý ghép nhóm">
+    <div class="smart-top"><span class="tag2">🤝 Gợi ý ghép nhóm</span>${list.length > 1 ? `<span class="cnt">${(smartIdx % list.length) + 1}/${list.length}</span>` : ''}</div>
+    <p class="smart-msg">${msg}</p>
+    <div class="avs">${avs}<span class="more">${m.n} người · ${esc(s.name)}</span></div>
+    <div class="cmp"><span class="pct">−${m.pct}%</span>
+      <div><small>Gói cá nhân</small><s class="num">${money(m.P)}/tháng</s></div>
+      <span class="arr" aria-hidden="true">➔</span>
+      <div><small>Giá ghép nhóm</small><b class="num">${money(m.per)}</b><small>/người/tháng</small></div>
+    </div>
+    ${sent.length ? `<div class="sent">📨 Đã gửi lời mời tới ${sent.map(u => '@'+esc(u)).join(', ')} · đang chờ phản hồi</div>` : ''}
+    <div class="row">
+      <button class="btn cta" data-act="${m.friends.length ? 'smart-invite' : 'smart-find'}" data-id="${s.id}">${m.friends.length ? (sent.length ? '📨 Gửi lại lời mời' : '📨 Gửi lời mời share gói') : '🔍 Tìm bạn ghép nhóm'}</button>
+      ${m.friends.length ? `<button class="btn ghost2" data-act="smart-find" data-id="${s.id}">Tìm thêm bạn</button>` : ''}
+    </div>
+    <p class="fine">Ước tính chia đều giá gói hiện tại cho ${m.n} người; giá gói nhóm thực tế có thể khác.${m.k === 'netflix' ? ' Netflix chỉ cho dùng chung trong cùng hộ gia đình.' : ''}</p>
+    ${list.length > 1 ? `<button class="nxt" data-act="smart-next">Gợi ý tiếp theo ›</button>` : ''}
+  </section>`;
+}
+function smartFind(id){
+  const s = state.subs.find(x => x.id === id); if (!s) return;
+  const k = svcKey(s.name);
+  const rows = liveAccounts().filter(a => a.id !== current.id).map(a => {
+    const st = peers[a.username]; const ps = st && st.subs.find(x => svcKey(x.name) === k);
+    const solo = ps && !ps.owner && (ps.payers||1) <= 1 && !(ps.shareWith||[]).length;
+    return {a, ps, solo};
+  }).sort((x,y) => (y.solo?2:y.ps?1:0) - (x.solo?2:x.ps?1:0));
+  openDlg(`Tìm bạn ghép nhóm · ${esc(s.name)}`, `
+    <p class="sub" style="margin:0">Chọn người muốn mời. Người đang trả riêng ${esc(s.name)} được chọn sẵn vì ghép với họ tiết kiệm nhiều nhất.</p>
+    <div id="sf-list">${rows.map(r => `<button class="dev" data-act="sf-toggle" data-u="${esc(r.a.username)}" aria-pressed="${r.solo}"><span class="av">${esc(initials(r.a.displayName))}</span><span><div class="who">${esc(r.a.displayName)}</div><div class="u">@${esc(r.a.username)} · ${r.solo ? `đang trả riêng ${money(monthly(r.ps))}/tháng` : r.ps ? 'đã ở trong một nhóm' : `chưa dùng ${esc(s.name)}`}</div></span><span class="tick">✓</span></button>`).join('')}</div>
+    <div class="pick-sum" id="sf-sum"></div>
+    <div class="notif-tip">👥 Mời người chưa dùng OptiSub: sao chép lời mời và gửi qua Zalo/Messenger.</div>
+  `, `<button class="btn" data-act="sf-copy" data-id="${s.id}">📋 Sao chép lời mời</button><button class="btn primary" data-act="sf-send" data-id="${s.id}">📨 Gửi lời mời share gói</button>`);
+  sfSum(s);
+}
+function sfSel(){ return [...dlg.querySelectorAll('#sf-list .dev[aria-pressed="true"]')].map(b => b.dataset.u); }
+function sfSum(s){ const el = dlg.querySelector('#sf-sum'); if (!el) return; const n = sfSel().length + 1; el.textContent = n === 1 ? 'Chọn ít nhất 1 người.' : `Nhóm ${n} người · mỗi người ${money(monthly(s)/n)}/tháng (giảm ${Math.round((1-1/n)*100)}%)`; }
+function inviteText(s, n){ return `Mình đang trả ${s.name} ${money(monthly(s))}/tháng. Ghép nhóm ${n} người thì mỗi người chỉ còn ${money(monthly(s)/n)}/tháng (giảm ${Math.round((1-1/n)*100)}%). Vào nhóm với mình nhé? 🙌`; }
+async function sendInvites(s, users){
+  if (!users.length){ toast('Chọn ít nhất 1 người để mời.'); return; }
+  const n = Math.min(6, users.length + 1 + (s.shareWith||[]).length);
+  for (const u of users){ const a = liveAccounts().find(x => x.username === u); if (a) await pushToAccount(a, {type:'invite', from: current.username, fromName: current.displayName, subId: s.id, svc: s.name, text: inviteText(s, n), amount: 0}); }
+  s.invited = [...new Set([...(s.invited||[]), ...users])];
+  if (dlg.open) dlg.close();
+  commit();
+  toast(`📨 Đã gửi lời mời share ${s.name} tới ${users.map(u => '@'+u).join(', ')}.`, 5000);
+}
+async function acceptInvite(m){
+  const sender = liveAccounts().find(a => a.username === m.from); if (!sender){ m.read = true; commit(); return; }
+  const sst = await loadState(sender);
+  const s = sst.subs.find(x => x.id === m.subId);
+  if (!s){ m.read = true; commit(); toast('Gói này không còn tồn tại.'); return; }
+  s.shareWith = [...new Set([...(s.shareWith||[]), current.username])];
+  s.sharedWith = s.shareWith.length + (s.guests||[]).length + 1; s.payers = s.sharedWith;
+  s.invited = (s.invited||[]).filter(u => u !== current.username);
+  sst.inbox = [{id:uid(), at:Date.now(), read:false, from: current.username, fromName: current.displayName, text:`Mình đồng ý ghép nhóm ${s.name}! Nhóm giờ có ${s.sharedWith} người, mỗi người ${money(monthly(s)/s.sharedWith)}/tháng.`, amount:0}, ...(sst.inbox||[])];
+  await saveState(sender, sst);
+  const members = [sender.username, ...s.shareWith]; const k = svcKey(s.name);
+  for (const u of s.shareWith){
+    const copy = {...s, shareWith: members.filter(x => x !== u), sharedBy: sender.displayName, owner: sender.username, invited: []};
+    if (u === current.username){
+      state.subs = state.subs.filter(x => !(svcKey(x.name) === k && !x.owner && x.id !== s.id && (x.payers||1) <= 1));
+      const i = state.subs.findIndex(x => x.id === s.id); const prev = i >= 0 ? state.subs[i] : null;
+      const c = {...copy, usage: prev ? prev.usage : {}, remind: prev ? prev.remind : 3};
+      if (i >= 0) state.subs[i] = c; else state.subs.push(c);
+    } else {
+      const acc = liveAccounts().find(a => a.username === u); if (!acc) continue;
+      const st = await loadState(acc); const i = st.subs.findIndex(x => x.id === s.id); const prev = i >= 0 ? st.subs[i] : null;
+      const c = {...copy, usage: prev ? prev.usage : {}, remind: prev ? prev.remind : 3};
+      if (i >= 0) st.subs[i] = c; else st.subs.push(c);
+      await saveState(acc, st);
+    }
+  }
+  m.read = true; commit(); if (dlg.open) notifCenter();
+  toast(`🎉 Đã vào nhóm ${s.name} cùng ${sender.displayName.split(' ').slice(-1)[0]}. Phần của bạn: ${money(monthly(s)/s.sharedWith)}/tháng.`, 5000);
+  loadPeers();
+}
+
+function renderHeader(){
+  const t = tier(); const hdr = $('#hdr');
+  const left = tab === 'overview'
+    ? `<h1 class="hdr-title">${esc(current?.displayName || 'Xin chào bạn')}</h1>${(() => { const sv = savings(); return `<button class="badge" data-act="savings"><span class="em">💰</span>${sv.total > 0 ? `Đã tiết kiệm ${money(sv.total)}/tháng${sv.pct ? ` · −${sv.pct}%` : ''}` : 'Chưa có khoản tiết kiệm'}${I.chev}</button>`; })()}`
+    : `<h1 class="hdr-title page">${PAGE[tab][0]}</h1><p class="hdr-sub">${PAGE[tab][1]}</p>`;
+  const strip = tab === 'student' ? `<div class="strip" role="tablist">${[['tuition','Học phí','cap'],['bills','Khoản dùng chung','split'],['debts','Mượn &amp; Trả','cash']].map(([k,l,ic]) => `<button role="tab" aria-selected="${sub===k}" data-act="sub" data-s="${k}">${I[ic]}${l}</button>`).join('')}</div>` : '';
+  hdr.className = 'hdr' + (strip ? ' has-strip' : '');
+  const nN = alertsList().filter(a => !a.quiet).length;
+  hdr.innerHTML = DECO + `<div class="hdr-inner"><div>${left}</div><div class="hdr-actions"><button class="round av-btn" data-act="account" aria-label="Tài khoản">${esc(initials(current?.displayName))}</button><button class="round" data-act="notifs" aria-label="Thông báo${nN?`, ${nN} mới`:''}">${I.bell}${nN?`<span class="dot">${nN}</span>`:''}</button></div></div>` + strip;
+}
+function renderNav(){
+  const nAlerts = alertsList().filter(a => !a.quiet).length;
+  const nKill = state.subs.filter(s => subStatus(s)==='kill').length;
+  $('#nav').innerHTML = NAV.map(([k,l,ic]) => {
+    const n = k==='calendar' ? nAlerts : k==='subs' ? nKill : 0;
+    return `<button data-tab="${k}" ${tab===k?'aria-current="page"':''}><span class="ni">${I[ic]}${n?`<span class="dot">${n}</span>`:''}</span>${l}</button>`;
+  }).join('');
+}
+function goTab(t){
+  if (['tuition','bills','debts'].includes(t)){ sub = t; tab = 'student'; } else tab = t;
+  render(); window.scrollTo(0,0);
+}
+function render(){
+  document.body.classList.toggle('auth', !current);
+  if (!current){ renderAuth(); return; }
+  renderHeader(); renderNav();
+  const v = $('#view');
+  v.innerHTML = ({overview:viewOverview, subs:viewSubs, calendar:viewCalendar, student:viewStudent, ai:viewAI})[tab]();
+}
+function viewStudent(){ return ({tuition:viewTuition, bills:viewBills, debts:viewDebts})[sub](); }
+
+function viewOverview(){
+  const subs = [...state.subs].sort((a,b)=>myMonthly(b)-myMonthly(a));
+  const total = subs.reduce((a,s)=>a+myMonthly(s),0);
+  const leak = subs.filter(s=>['kill','warn'].includes(subStatus(s))).reduce((a,s)=>a+myMonthly(s),0);
+  const killAmt = subs.filter(s=>subStatus(s)==='kill').reduce((a,s)=>a+myMonthly(s),0);
+  const billsMine = state.bills.reduce((a,b)=>a+b.amount/Math.max(1,b.people),0);
+  const tuitionMonthly = state.tuition.reduce((a,x)=>a+tuitionPlan(x).perMonth,0);
+  const owe = state.debts.filter(d=>!d.settled&&d.dir==='owe').reduce((a,d)=>a+d.amount,0);
+  const owed = state.debts.filter(d=>!d.settled&&d.dir==='owed').reduce((a,d)=>a+d.amount,0);
+  const alerts = alertsList();
+  const nSoon = alerts.filter(a=>!a.quiet).length;
+  const isEmpty = !state.subs.length && !state.bills.length && !state.tuition.length && !state.debts.length;
+  const mask = s => hideAmt ? '*********₫' : s;
+
+  const flow = subs.length ? subs.map(s => {
+    const st = subStatus(s); const w = total ? myMonthly(s)/total*100 : 0;
+    return `<button class="flow-seg ${st}" style="flex:${Math.max(w,2)} 1 0" data-act="edit-sub" data-id="${s.id}" title="${esc(s.name)} — ${money(myMonthly(s))}/tháng · ${STATUS[st].label}">${esc(s.name)}</button>`;
+  }).join('') : `<div class="flow-empty">Chưa có gói đăng ký nào</div>`;
+
+  const utils = [
+    ['add-sub','', 'Thêm gói<br>đăng ký', I.card, true],
+    caps.downloads ? ['ics','', 'Nhắc lịch<br>điện thoại', I.bell, false] : ['go','calendar','Lịch<br>thanh toán', I.cal, false],
+    ['go','tuition','Quỹ<br>học phí', I.cap, false],
+    ['go','bills','Khoản<br>dùng chung', I.split, false],
+    ['go','debts','Mượn &amp;<br>Trả', I.cash, false]
+  ].map(([act,t,l,ic,acc]) => `<button class="util" data-act="${act}" ${t?`data-tab="${t}"`:''}><span class="ico">${ic}${acc?I.accPlus:''}</span><span>${l}</span></button>`).join('');
+
+  const duty = `<div class="grid g2">
+    <div class="panel stat" style="grid-column:1/-1"><div class="k">Tổng cần chuẩn bị tháng này</div><div class="v num">${mask(money(total+billsMine+tuitionMonthly))}</div><div class="x">Gói đăng ký + hóa đơn + để dành học phí</div></div>
+    <div class="panel stat"><div class="k">Hóa đơn</div><div class="v num">${mask(money(billsMine))}</div><div class="x">${state.bills.length} khoản cố định</div></div>
+    <div class="panel stat"><div class="k">Để dành học phí</div><div class="v num">${mask(money(tuitionMonthly))}</div><div class="x">mỗi tháng</div></div>
+    <div class="panel stat" style="grid-column:1/-1"><div class="k">Nợ bạn bè</div><div class="v num ${owed-owe>=0?'owed':'owe'}">${owed-owe>=0?'+':'−'}${money(Math.abs(owed-owe))}</div><div class="x">Bạn nợ ${money(owe)} · được nợ ${money(owed)}</div></div>
+  </div>`;
+
+  const topSubs = [...state.subs].sort((a,b) => { const o = {kill:0,trial:1,warn:2,unknown:3,ok:4}; return o[subStatus(a)]-o[subStatus(b)] || myMonthly(b)-myMonthly(a); }).slice(0,3);
+
+  return `
+  ${isEmpty ? `<div class="panel" style="margin-bottom:16px">
+      <h3>👋 Chào bạn, mình là OptiSub</h3>
+      <p class="sub" style="margin-bottom:14px">Thêm gói đăng ký, hóa đơn, học phí và khoản nợ — mình sẽ chỉ ra tiền đang rò rỉ ở đâu và nhắc trước khi bị trừ tiền.</p>
+      <div class="row"><button class="btn primary" data-act="add-sub">${I.plus} Thêm gói</button><button class="btn soft" data-act="seed">Dùng dữ liệu mẫu</button></div>
+    </div>` : ''}
+  <section class="acct">
+    <div class="acct-head"><span class="tag">Định kỳ</span><span class="meta num">${subs.length} gói${nSoon?` · ${nSoon} cần chú ý`:''}</span></div>
+    <div class="acct-cols">
+      <div><label>Mỗi tháng trả</label><div class="v num">${mask(money(total))}<button class="eye" data-act="eye" aria-label="${hideAmt?'Hiện số tiền':'Ẩn số tiền'}">${hideAmt?I.eyeOff:I.eye}</button></div></div>
+      <div class="sep" aria-hidden="true"></div>
+      <div><label>Đang rò rỉ</label><div class="v num ${leak>0?'leak':''}">${mask(money(leak))}</div></div>
+    </div>
+    <div class="flow" aria-label="Cơ cấu chi phí theo từng gói">${flow}</div>
+    ${subs.length ? `<div class="legend"><span style="--c:var(--ok)">Đáng tiền</span><span style="--c:var(--warn)">Cân nhắc</span><span style="--c:var(--leak)">Nên cắt</span><span style="--c:var(--trial)">Dùng thử</span></div>` : ''}
+    ${killAmt>0 ? `<div class="leak-line">✂️ Cắt nhóm “Nên cắt” ngay: tiết kiệm ${money(killAmt*12)}/năm.</div>`:''}
+    ${state.savedFromCancels>0 ? `<div class="saved-note">🎉 Đã cắt được ${money(state.savedFromCancels)}/tháng nhờ OptiSub.</div>`:''}
+    <div class="acct-btns"><button class="btn soft" data-act="go" data-tab="subs">Xem chi tiết</button><button class="btn primary" data-act="analyze" ${isEmpty?'disabled':''}>Phân tích ngay</button></div>
+  </section>
+  ${smartCardHTML()}
+  <div class="ai-box ${analysis?'show':''}" id="ai-box" aria-live="polite">${analysis?esc(analysis.text)+(analysis.src?`<span class="src">${esc(analysis.src)}</span>`:''):''}</div>
+
+  <div class="center"><button class="btn outline lg" data-act="add-sub">${I.plus} Thêm gói đăng ký</button></div>
+
+  <div class="sec-head"><h2>Tiện ích</h2></div>
+  <div class="utils">${utils}</div>
+
+  <div class="sec-head"><h2>Tình hình tháng này</h2></div>
+  <div class="segc" role="group"><button data-act="ovseg" data-s="alerts" aria-pressed="${ovSeg==='alerts'}">Cần chú ý${nSoon?` (${nSoon})`:''}</button><button data-act="ovseg" data-s="duty" aria-pressed="${ovSeg==='duty'}">Nghĩa vụ tháng</button></div>
+  ${ovSeg==='alerts' ? (alerts.length ? `<div class="alerts">${alerts.map(alertHTML).join('')}</div>` : `<div class="empty">Không có gì sắp bị trừ tiền trong 3 ngày tới. Yên tâm học bài nhé 📚</div>`) : duty}
+
+  ${topSubs.length ? `<div class="sec-head"><h2>Gói đang sử dụng</h2><button class="link" data-act="go" data-tab="subs">Xem tất cả</button></div><div class="list">${topSubs.map(subHTML).join('')}</div>` : ''}
+  ${syncHTML()}`;
+}
+function alertHTML(a){
+  let act = '';
+  if (a.kind==='invite') act = `<div class="act" style="display:grid;gap:6px"><button class="btn sm primary" data-act="invite-accept" data-id="${a.ref}">Đồng ý ghép</button><button class="btn sm" data-act="msg-read" data-id="${a.ref}">Để sau</button></div>`;
+  else if (a.kind==='msg') act = `<div class="act" style="display:grid;gap:6px">${a.amount?`<button class="btn sm primary" data-act="msg-debt" data-id="${a.ref}">Ghi cần trả</button>`:''}<button class="btn sm" data-act="msg-read" data-id="${a.ref}">Đã xem</button></div>`;
+  else if (a.kind==='todo') act = `<button class="btn sm act primary" data-act="cancel" data-id="${a.ref}">Xem cách hủy</button>`;
+  else if (a.kind==='trial' || a.kind==='trial-ended' || (a.kind==='renew' && state.subs.find(s=>s.id===a.ref && subStatus(s)==='kill'))) act = `<button class="btn sm act" data-act="cancel" data-id="${a.ref}">Hủy ngay</button>`;
+  else if (a.kind==='bill') act = `<button class="btn sm act" data-act="pay-bill" data-id="${a.ref}">Đã trả</button>`;
+  else if (a.kind==='tuition') act = `<button class="btn sm act" data-act="go" data-tab="tuition">Xem kế hoạch</button>`;
+  else if (a.kind==='price') act = `<button class="btn sm act" data-act="edit-sub" data-id="${a.ref}">Xem lại</button>`;
+  return `<div class="alert" style="--c:${a.c}"><span class="ic">${a.icon}</span><div><div class="t">${esc(a.title)}${a.n!==undefined?` <span class="chip ${a.n<0?'kill':'warn'}">${whenText(a.n)}</span>`:''}</div><div class="d">${esc(a.desc)}</div></div>${act}</div>`;
+}
+
+function viewSubs(){
+  const subs = [...state.subs].sort((a,b) => { const o = {kill:0,trial:1,warn:2,unknown:3,ok:4}; return o[subStatus(a)]-o[subStatus(b)] || myMonthly(b)-myMonthly(a); });
+  const kills = subs.filter(s=>subStatus(s)==='kill');
+  return `
+  <div class="sec-head"><div><h2>Tất cả gói</h2><p class="sub">Chọn mức dùng tháng này — mỗi gói chỉ cần 1 chạm/tháng</p></div><button class="btn primary sm" data-act="add-sub">${I.plus} Thêm gói</button></div>
+  ${kills.length ? `<div class="kill-zone"><h3>✂️ Nên cân nhắc cắt (${kills.length})</h3>
+    <p class="sub" style="color:var(--ink)">Không sử dụng 3 tháng liên tiếp — tổng ${money(kills.reduce((a,s)=>a+myMonthly(s),0))}/tháng đang chảy đi mà không đổi lại gì.</p>
+    ${kills.map(s=>`<div class="kill-card"><div><div class="n">${esc(s.name)}</div><div class="m">${money(myMonthly(s))}/tháng · gia hạn ${s.nextBill?fmtDate(s.nextBill):'—'}</div></div><button class="btn primary sm" data-act="cancel" data-id="${s.id}">${I.scissors} Xem cách hủy</button></div>`).join('')}
+    <p class="mind">💭 ${MINDSET[0]}</p></div>` : ''}
+  <div class="list" style="margin-top:${kills.length?'16px':'0'}">
+    ${subs.length ? subs.map(subHTML).join('') : `<div class="empty">Chưa có gói nào. Thêm Netflix, Spotify, ChatGPT Plus, Canva… để bắt đầu theo dõi.</div>`}
+  </div>`;
+}
+const FREQ = [[0,'Không dùng'],[3,'Ít'],[10,'Hằng tuần'],[30,'Hằng ngày']];
+function subHTML(s){
+  const st = subStatus(s); const c = cpu(s); const u = uses3(s); const cur = u[0] ?? 0;
+  const lvl = typeof u[0] === 'number' ? FREQ.map(f => f[0]).reduce((b,v) => Math.abs(v-u[0]) < Math.abs(b-u[0]) ? v : b, 0) : null;
+  const maxU = Math.max(1, ...u.filter(x=>typeof x==='number'));
+  const tip = tipFor(s);
+  const nextTxt = s.trialEnd ? `Hết dùng thử ${fmtDate(s.trialEnd)} (${whenText(daysUntil(s.trialEnd))})` : s.nextBill ? `Gia hạn ${fmtDate(s.nextBill)} (${whenText(daysUntil(s.nextBill))})` : 'Chưa có ngày gia hạn';
+  const CORNER = {ok:'Đáng tiền', warn:'Cân nhắc', kill:'Nên cắt', trial:'Dùng thử', unknown:'Chưa đo'};
+  return `<div class="item has-corner">
+    <span class="corner ${st}">${CORNER[st]}</span>
+    <div>
+      <div class="item-name">${esc(s.name)}${s.price>s.prevPrice&&s.prevPrice?'<span class="chip warn">📈 vừa tăng giá</span>':''}</div>
+      <div class="item-meta">${nextTxt}${s.sharedBy?` · 🔗 chia sẻ bởi ${esc(s.sharedBy)}`:''}${((s.shareWith||[]).length || (s.guests||[]).length)?` · dùng chung với ${[...(s.shareWith||[]).map(u => esc((liveAccounts().find(a=>a.username===u)?.displayName||u).split(' ').slice(-1)[0])), ...(s.guests||[]).map(esc)].join(', ')}`:(s.payers||1)>1?` · chia ${s.payers} người trả`:''}</div>
+    </div>
+    <div class="item-right">
+      <div class="item-price num">${money(s.price)}<span class="item-cpu">/${s.cycle==='year'?'năm':'tháng'}</span></div>
+      <div class="item-cpu num">${c===null?'Chưa đo chi phí/lần':c===Infinity?'Không dùng lần nào':`≈ ${money(c)} / lần dùng`}</div>
+    </div>
+    <div class="item-foot">
+      <div class="freq" role="group" aria-label="Mức dùng tháng này">${FREQ.map(([v,l]) => `<button data-act="freq" data-id="${s.id}" data-v="${v}" aria-pressed="${lvl===v}">${l}</button>`).join('')}</div>
+      <div class="spark" title="3 tháng gần nhất (cũ → mới)">${[...u].reverse().map(x=>`<i class="${typeof x==='number'&&x>0?'has':''}" style="height:${typeof x==='number'?Math.max(3,x/maxU*22):3}px"></i>`).join('')}</div>
+      <span style="flex:1"></span>
+      <button class="btn ghost sm" data-act="edit-sub" data-id="${s.id}">Sửa</button>
+      <button class="btn sm ${st==='kill'?'danger':''}" data-act="cancel" data-id="${s.id}">Hủy gói</button>
+    </div>
+    ${tip?`<div class="tip">${esc(tip)}</div>`:''}
+  </div>`;
+}
+
+function viewCalendar(){
+  const ev = events(35);
+  const alerts = alertsList();
+  return `
+  <div class="sec-head"><h2>Cảnh báo</h2>${caps.downloads?`<button class="btn soft sm" data-act="ics">${I.bell} Nhắc trên điện thoại</button>`:''}</div>
+  ${alerts.length ? `<div class="alerts">${alerts.map(alertHTML).join('')}</div>` : `<div class="empty">Không có khoản nào cần chú ý trong 3 ngày tới ✨</div>`}
+  <div class="sec-head"><div><h2>Lịch thanh toán 5 tuần tới</h2></div></div>
+  ${ev.length ? `<div class="cal">${ev.map(e=>`<div class="cal-row ${e.n<0?'late':e.n<=3?'soon':''}">
+    <div class="cal-date num">${parseD(e.date).getDate()}<small>Th${parseD(e.date).getMonth()+1}</small></div>
+    <div><div class="cal-main"><div style="font-weight:600">${e.icon} ${esc(e.title)}</div><div class="cal-amt num">${money(e.amount)}</div></div><div class="sub" style="margin:2px 0 0">${weekday(e.date)} · ${whenText(e.n)} · ${esc(e.desc)}</div></div></div>`).join('')}</div>` : `<div class="empty">Lịch trống. Thêm gói đăng ký, hóa đơn hoặc học phí để thấy các mốc thanh toán.</div>`}
+  ${caps.downloads?`<p class="sub" style="margin-top:10px">Tệp lịch (.ics) chứa nhắc nhở trước 3 ngày và 1 ngày cho từng mốc — mở bằng Google Calendar hoặc Lịch iPhone để nhận thông báo ngay cả khi không mở OptiSub.</p>`:''}`;
+}
+
+function viewTuition(){
+  return `
+  <div class="sec-head"><div><h2>Học phí theo kỳ</h2><p class="sub">Nhập tổng học phí và hạn đóng — mình tính ngược số cần để dành mỗi tháng</p></div><button class="btn primary sm" data-act="add-tuition">${I.plus} Thêm kỳ</button></div>
+  <div class="grid">
+  ${state.tuition.length ? state.tuition.map(x => { const p = tuitionPlan(x); return `<div class="panel">
+    <div class="row" style="justify-content:space-between"><h3>🎓 ${esc(x.name)}</h3><span class="chip ${p.left<=0?'ok':p.days!==null&&p.days<30?'kill':'warn'}">${p.left<=0?'Đã đủ tiền':`Hạn ${fmtDate(x.due)}/${parseD(x.due).getFullYear()} · ${whenText(p.days)}`}</span></div>
+    <div class="bar"><i style="width:${p.pct}%"></i></div>
+    <div class="row" style="justify-content:space-between;font-size:13.5px;color:var(--muted)"><span class="num">Đã để dành ${money(x.saved||0)}</span><span class="num">Tổng ${money(x.total)}</span></div>
+    ${p.left>0?`<div style="margin-top:14px"><div class="sub" style="margin:0">Cần để dành mỗi tháng</div><div style="font-size:26px;font-weight:800;letter-spacing:-.02em" class="num">${money(p.perMonth)}</div><div class="sub" style="margin:2px 0 0">trong ${p.months} tháng còn lại · ≈ ${money(Math.ceil(p.perMonth/4.3/1000)*1000)}/tuần</div></div>`:''}
+    <div class="row" style="margin-top:14px"><button class="btn sm primary" data-act="save-tuition" data-id="${x.id}">＋ Ghi nhận đã để dành</button><button class="btn ghost sm" data-act="edit-tuition" data-id="${x.id}">Sửa</button></div>
+  </div>`; }).join('') : `<div class="empty" style="grid-column:1/-1">Chưa có kỳ học nào. Thêm học phí kỳ tới để không bị “vỡ trận” dòng tiền cuối kỳ.</div>`}
+  </div>`;
+}
+
+function viewBills(){
+  const key = ym(today());
+  const mine = state.bills.reduce((a,b)=>a+b.amount/Math.max(1,b.people),0);
+  return `
+  <div class="sec-head"><div><h2>Khoản dùng chung</h2><p class="sub">Khoản chi chung với 1 người hay cả nhóm · phần của bạn mỗi tháng: <b class="num">${money(mine)}</b></p></div><button class="btn primary sm" data-act="add-bill">${I.plus} Thêm khoản chia</button></div>
+  <div class="list">
+  ${state.bills.length ? state.bills.map(b => { const d = billDue(b); const n = daysUntil(d.date); const share = b.amount/Math.max(1,b.people); return `<div class="item">
+    <div><div class="item-name">${esc(b.name)} ${b.paid?.[key]?'<span class="chip ok">✅ Đã trả tháng này</span>':n<0?'<span class="chip kill">Quá hạn</span>':n<=3?`<span class="chip warn">${whenText(n)}</span>`:''}</div>
+    <div class="item-meta">Hạn ngày ${b.dueDay} hằng tháng${b.people>1?` · chia ${b.people} người${b.roommates?` (${esc(b.roommates)})`:''}`:''}</div></div>
+    <div class="item-right"><div class="item-price num">${money(share)}</div><div class="item-cpu num">${b.people>1?`trên tổng ${money(b.amount)}`:'trả một mình'}</div></div>
+    <div class="item-foot">
+      <button class="btn sm ${b.paid?.[key]?'':'primary'}" data-act="pay-bill" data-id="${b.id}">${b.paid?.[key]?'Bỏ đánh dấu':'Đánh dấu đã trả'}</button>
+      ${b.people>1?`<button class="btn sm" data-act="split-msg" data-id="${b.id}">💬 Tin nhắn đòi tiền</button>`:''}
+      <span style="flex:1"></span><button class="btn ghost sm" data-act="edit-bill" data-id="${b.id}">Sửa</button>
+    </div></div>`; }).join('') : `<div class="empty">Thêm khoản chi chung: tiền nhà, điện nước, wifi, ăn uống, quỹ lớp, du lịch… Nhập số người cùng chia, mình tự tính phần của mỗi người.</div>`}
+  </div>`;
+}
+
+function viewDebts(){
+  const open = state.debts.filter(d=>!d.settled); const closed = state.debts.filter(d=>d.settled);
+  const owe = open.filter(d=>d.dir==='owe').reduce((a,d)=>a+d.amount,0);
+  const owed = open.filter(d=>d.dir==='owed').reduce((a,d)=>a+d.amount,0);
+  const people = {};
+  open.forEach(d => { people[d.person] = (people[d.person]||0) + (d.dir==='owed'?d.amount:-d.amount); });
+  const dRow = d => `<div class="item ${d.settled?'done':''}">
+    <div><div class="item-name">${d.dir==='owe'?'↗':'↙'} ${esc(d.person)}</div><div class="item-meta">${esc(d.note||'')}${d.note?' · ':''}${fmtDate(d.date)}</div></div>
+    <div class="item-right"><div class="item-price num ${d.dir==='owe'?'owe':'owed'}">${d.dir==='owe'?'−':'+'}${money(d.amount)}</div><div class="item-cpu">${d.dir==='owe'?'Cần trả':'Cần thu'}</div></div>
+    <div class="item-foot">${d.settled?`<button class="btn sm" data-act="settle" data-id="${d.id}">Mở lại</button>`:`<button class="btn sm primary" data-act="settle" data-id="${d.id}">Đã thanh toán</button>${d.dir==='owed'?`<button class="btn sm" data-act="remind" data-id="${d.id}">💬 Nhắc khéo</button>`:''}`}<span style="flex:1"></span><button class="btn ghost sm" data-act="del-debt" data-id="${d.id}">Xóa</button></div></div>`;
+  return `
+  <div class="sec-head"><div><h2>Mượn &amp; Trả</h2><p class="sub">Tiền nhỏ hay quên — ghi lại để giữ tình bạn</p></div><button class="btn primary sm" data-act="add-debt">${I.plus} Ghi khoản</button></div>
+  <div class="debt-tot"><div class="panel stat"><div class="sub" style="margin:0">Cần trả</div><div class="v num owe">${money(owe)}</div></div><div class="panel"><div class="sub" style="margin:0">Cần thu</div><div class="v num owed">${money(owed)}</div></div></div>
+  ${Object.keys(people).length>1?`<p class="sub" style="margin-top:12px">Tính gộp theo người: ${Object.entries(people).map(([p,v])=>`${esc(p)} ${v>=0?'nợ bạn':'bạn nợ'} ${money(Math.abs(v))}`).join('; ')}.</p>`:''}
+  <div class="list" style="margin-top:14px">${open.length?open.map(dRow).join(''):`<div class="empty">Không còn khoản nợ nào 🙌</div>`}</div>
+  ${closed.length?`<div class="sec-head"><h3>Đã thanh toán</h3></div><div class="list">${closed.slice(-10).reverse().map(dRow).join('')}</div>`:''}`;
+}
+
+function viewAI(){
+  const avail = !!caps.sample;
+  return `
+  <div class="sec-head"><div><h2>Trò chuyện</h2><p class="sub">Trợ lý đọc dữ liệu của bạn để trả lời</p></div>${chatLog.length?`<button class="btn ghost sm" data-act="clear-chat">Xóa hội thoại</button>`:''}</div>
+  ${avail ? `<div class="quick">${['Phân tích ngay','Gói nào nên cắt trước?','Tháng này mình cần chuẩn bị bao nhiêu tiền?','Có cách nào dùng chung để rẻ hơn không?'].map(q=>`<button class="btn sm" data-act="ask" data-q="${esc(q)}">${esc(q)}</button>`).join('')}</div>
+  <div class="chat" id="chat">${chatLog.length?chatLog.map(m=>`<div class="msg ${m.role==='user'?'u':'a'}">${esc(m.content)}</div>`).join(''):`<div class="empty">Hỏi bất cứ điều gì về chi tiêu của bạn, ví dụ “Có nên giữ Canva Pro không?”</div>`}</div>
+  <div class="chat-in"><textarea id="chat-text" rows="1" placeholder="Nhập câu hỏi…" aria-label="Câu hỏi cho OptiSub"></textarea><button class="btn primary" data-act="send" aria-label="Gửi">${I.send}</button></div>`
+  : `<div class="empty">Trợ lý AI cần quyền hỏi Claude, chỉ có khi mở trang trong Claude. Nút “Phân tích ngay” ở Tổng quan vẫn chạy bằng bộ quy tắc có sẵn.</div>`}`;
+}
+
+/* ============ Analysis ============ */
+function snapshot(){
+  return {
+    homNay: iso(today()),
+    goiDangKy: state.subs.map(s => ({ten:s.name, gia:s.price, chuKy:s.cycle==='year'?'năm':'tháng', phanBanTraMoiThang:Math.round(myMonthly(s)), soNguoiDungChung:s.sharedWith||1, soNguoiCungTra:s.payers||1, solanMo_thangNay_thangTruoc_2thangTruoc:uses3(s).map(x=>x??'chưa nhập'), chiPhiMoiLanDung: (()=>{const c=cpu(s); return c===null?'chưa đo':c===Infinity?'không dùng':Math.round(c);})(), trangThai:STATUS[subStatus(s)].label, ngayGiaHan:s.nextBill||null, hetDungThu:s.trialEnd||null, giaCu:s.prevPrice||null})),
+    hocPhi: state.tuition.map(x => { const p=tuitionPlan(x); return {ky:x.name, tong:x.total, daDeDanh:x.saved||0, han:x.due, canDeDanhMoiThang:p.perMonth}; }),
+    hoaDon: state.bills.map(b => ({ten:b.name, tong:b.amount, soNguoi:b.people, phanCuaBan:Math.round(b.amount/Math.max(1,b.people)), hanNgay:b.dueDay, daTraThangNay:!!b.paid?.[ym(today())]})),
+    no: state.debts.filter(d=>!d.settled).map(d => ({nguoi:d.person, soTien:d.amount, chieu:d.dir==='owe'?'mình nợ':'nợ mình', ghiChu:d.note}))
+  };
+}
+const PERSONA = `Bạn là OptiSub — trợ lý tài chính cá nhân cho học sinh, sinh viên Việt Nam, chuyên về kinh tế học hành vi và tối ưu chi tiêu số. Giọng: thân thiện, thực tế, thẳng thắn nhưng thấu hiểu, như một cố vấn tài chính tận tâm. Khi phù hợp, nhắc đến chi phí chìm (sunk cost fallacy) và hiệu ứng khóa chặt (lock-in effect) để giúp người dùng quyết định cắt giảm dứt khoát. Luôn kèm gợi ý tối ưu chi phí cụ thể (gói gia đình/dùng chung, gói sinh viên, gói năm, bản miễn phí). Dùng emoji vừa phải. Tiền tệ là VND, viết dạng 59.000 ₫. Không bịa giá dịch vụ; chỉ dựa vào dữ liệu được cung cấp. Không dùng markdown đậm hay tiêu đề.`;
+function localAnalysis(){
+  const subs = state.subs;
+  const waste = subs.filter(s=>['kill','warn'].includes(subStatus(s))).sort((a,b)=>(cpu(b)??0)-(cpu(a)??0) || myMonthly(b)-myMonthly(a))[0];
+  const ev = events(7).filter(e=>!e.paid)[0];
+  const lines = [];
+  if (waste){ const c = cpu(waste); lines.push(`• Lãng phí nhất: ${waste.name} — ${money(myMonthly(waste))}/tháng mà ${c===Infinity?'gần như không dùng':`mỗi lần mở tốn ${money(c)}`}. Tiền đã trả là chi phí chìm, đừng để nó giữ chân bạn.`); }
+  else lines.push(`• Chưa thấy gói nào lãng phí rõ rệt. Chọn mức dùng mỗi tháng để số liệu chính xác hơn.`);
+  if (ev) lines.push(`• Sắp tới hạn: ${ev.title} (${fmtDate(ev.date)}, ${whenText(ev.n)}) — ${money(ev.amount)}.`);
+  else lines.push(`• Không có khoản nào tới hạn trong 7 ngày tới.`);
+  const shared = subs.find(s=>(s.sharedWith||1)>1 && (s.payers||1)<=1);
+  if (waste && subStatus(waste)==='kill') lines.push(`• Hành động: hủy ${waste.name} ngay hôm nay theo hướng dẫn trong OptiSub — tiết kiệm ${money(myMonthly(waste)*12)}/năm.`);
+  else if (shared) lines.push(`• Hành động: rủ ${shared.sharedWith-1} người đang dùng chung ${shared.name} góp tiền — phần bạn còn ${money(monthly(shared)/shared.sharedWith)}/tháng.`);
+  else if (waste) lines.push(`• Hành động: hạ ${waste.name} xuống gói rẻ hơn hoặc tạm dừng 1 tháng xem có nhớ không.`);
+  else { const t = state.tuition.map(tuitionPlan).find(p=>p.perMonth>0); lines.push(t?`• Hành động: chuyển ${money(t.perMonth)} vào quỹ học phí ngay khi nhận tiền tháng này.`:`• Hành động: đặt nhắc nhở lịch cho các ngày gia hạn để không bị trừ tiền bất ngờ.`); }
+  return lines.join('\n');
+}
+async function runAnalysis(){
+  const btn = document.querySelector('[data-act="analyze"]');
+  if (!caps.sample){ analysis = {text: localAnalysis(), src:'Phân tích nhanh bằng bộ quy tắc của OptiSub'}; render(); return; }
+  analysis = {text:'Đang quét dữ liệu…', src:''}; render();
+  const box = $('#ai-box'); const b = document.querySelector('[data-act="analyze"]'); if (b) b.disabled = true;
+  const prompt = `${PERSONA}\n\nNhiệm vụ “Phân tích ngay”: quét nhanh dữ liệu dưới đây và trả lời ĐÚNG 3 dòng, mỗi dòng bắt đầu bằng “• ”, mỗi dòng tối đa 40 từ, không thêm lời mở đầu hay kết luận.\nDòng 1: khoản đang lãng phí nhất (nêu tên và số tiền, chi phí mỗi lần dùng).\nDòng 2: khoản sắp tới hạn gần nhất (ngày, số tiền).\nDòng 3: một hành động cụ thể nên làm ngay hôm nay.\n\nDỮ LIỆU (JSON):\n${JSON.stringify(snapshot())}`;
+  try {
+    const r = await caps.sample(prompt, {modelTier:'quick', onText:({text}) => { analysis.text = text; const bx=$('#ai-box'); if (bx) bx.textContent = text; }});
+    analysis = {text:r.text.trim(), src:'Phân tích bởi OptiSub'};
+  } catch(e){
+    analysis = {text: localAnalysis(), src: e?.code==='not_granted' ? 'Bạn chưa cho phép hỏi Claude — dùng bộ quy tắc của OptiSub' : 'Chưa phân tích chi tiết được lúc này — dùng bộ quy tắc của OptiSub'};
+  }
+  render();
+}
+let chatBusy = false;
+async function sendChat(q){
+  if (!q.trim() || chatBusy || !caps.sample) return;
+  chatBusy = true;
+  chatLog.push({role:'user', content:q.trim()});
+  chatLog.push({role:'assistant', content:'Đang suy nghĩ…'});
+  render();
+  window.scrollTo(0, document.body.scrollHeight);
+  const turns = chatLog.slice(0,-1).slice(-10);
+  const ctx = `${PERSONA}\nNếu người dùng nói “Phân tích ngay”: chỉ ra khoản lãng phí nhất, khoản sắp tới hạn và lời khuyên hành động, đúng 3 gạch đầu dòng ngắn. Các câu khác: trả lời ngắn gọn, trực quan, tối đa ~150 từ.\n\nDỮ LIỆU HIỆN TẠI CỦA NGƯỜI DÙNG (JSON):\n${JSON.stringify(snapshot())}\n\nTin nhắn của người dùng: `;
+  const input = turns.map((m,i) => i===turns.length-1 ? {role:'user', content: ctx + m.content} : m);
+  if (input[0].role !== 'user') input.shift();
+  try {
+    const r = await caps.sample(input, {cache:false, onText:({text}) => { chatLog[chatLog.length-1].content = text; const msgs = document.querySelectorAll('#chat .msg.a'); const last = msgs[msgs.length-1]; if (last) last.textContent = text; }});
+    chatLog[chatLog.length-1].content = r.text.trim();
+  } catch(e){
+    chatLog[chatLog.length-1].content = e?.code==='not_granted' ? 'Bạn chưa cho phép trang này hỏi Claude nên mình chưa trả lời được. Tải lại trang và chọn Cho phép để dùng trợ lý.' : e?.code==='rate_limited' ? 'Hỏi hơi nhanh rồi — đợi một chút rồi thử lại nhé.' : 'Không kết nối được trợ lý. Thử lại sau ít phút.';
+  }
+  chatBusy = false; render(); window.scrollTo(0, document.body.scrollHeight);
+}
+
+/* ============ Auth ============ */
+const LOGO = '<svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="15" fill="none" stroke="var(--brand)" stroke-width="6"/><path d="M33 9l6-4M36 14l7 0" stroke="var(--brand)" stroke-width="4" stroke-linecap="round"/><circle cx="24" cy="24" r="5" fill="var(--brand)"/></svg>';
+function initials(n){ const w = String(n||'?').trim().split(/\s+/); return ((w.length>1 ? w[w.length-1][0] : w[0][0]) || '?').toUpperCase(); }
+const normUser = u => String(u||'').trim().toLowerCase();
+const b64 = buf => btoa(String.fromCharCode(...new Uint8Array(buf)));
+async function hashPw(pw, saltB64){
+  if (!window.crypto?.subtle) throw new Error('nocrypto');
+  const salt = Uint8Array.from(atob(saltB64), c => c.charCodeAt(0));
+  const key = await crypto.subtle.importKey('raw', new TextEncoder().encode(pw), 'PBKDF2', false, ['deriveBits']);
+  return b64(await crypto.subtle.deriveBits({name:'PBKDF2', salt, iterations:150000, hash:'SHA-256'}, key, 256));
+}
+function newSalt(){ const s = new Uint8Array(16); crypto.getRandomValues(s); return b64(s); }
+function accDocRef(){ return cloud.db && cloud.cid ? cloud.db.doc(`data/users/${cloud.cid}/optisub-accounts`) : null; }
+async function saveAccounts(){ return; /* danh sách tài khoản cố định */
+  writeJSON(localStorage, ACC_KEY, accounts);
+  const ref = accDocRef(); if (!ref) return;
+  try { await ref.set({payload: JSON.stringify(accounts), updatedAt: Date.now()}); } catch(e){}
+}
+function mergeAccounts(remote){ return; /* bỏ qua tài khoản ngoài danh sách */
+  const map = new Map(accounts.map(a => [a.id, a]));
+  for (const r of remote){ const l = map.get(r.id); if (!l || (r.updatedAt||0) > (l.updatedAt||0)) map.set(r.id, r); }
+  accounts = [...map.values()];
+  writeJSON(localStorage, ACC_KEY, accounts);
+}
+function setSession(acc, remember){
+  const s = {accountId: acc.id, at: Date.now()};
+  try { localStorage.removeItem(SES_KEY); sessionStorage.removeItem(SES_KEY); } catch(e){}
+  writeJSON(remember ? localStorage : sessionStorage, SES_KEY, s);
+}
+function readSession(){ return readJSON(sessionStorage, SES_KEY) || readJSON(localStorage, SES_KEY); }
+
+async function enterAccount(acc){
+  current = acc; tab = 'overview'; chatLog = []; analysis = null;
+  const local = readJSON(localStorage, stateKey());
+  state = local && local.v ? Object.assign(emptyState(), local) : Object.assign(demoState(acc.kind), {updatedAt: 1});
+  if (!local) saveLocal();
+  caps.docRef = cloud.db && cloud.cid ? cloud.db.doc(`data/users/${cloud.cid}/optisub-${acc.id}`) : null;
+  rollForward(); render(); window.scrollTo(0,0);
+  setTimeout(showPush, 900);
+  peers = {}; smartIdx = 0; loadPeers();
+  if (caps.docRef){
+    try {
+      const snap = await caps.docRef.get();
+      if (current !== acc) return;
+      if (snap.exists){
+        const data = snap.data();
+        if ((data.updatedAt||0) > (state.updatedAt||0)){ state = Object.assign(emptyState(), JSON.parse(data.payload)); saveLocal(); rollForward(); render(); }
+        else if (state.updatedAt > (data.updatedAt||0)) pushCloud();
+      } else if (state.updatedAt) pushCloud();
+      setSync(true);
+    } catch(e){ setSync(false); }
+  } else setSync(false);
+}
+function logout(){
+  try { localStorage.removeItem(SES_KEY); sessionStorage.removeItem(SES_KEY); } catch(e){}
+  const name = current?.username || '';
+  clearTimeout(cloudTimer); if (caps.docRef && current) pushCloud();
+  hidePush(); current = null; caps.docRef = null; state = emptyState(); chatLog = []; analysis = null;
+  authMode = 'login'; authErr = ''; prefillUser = name; showPw = false;
+  if (dlg.open) dlg.close();
+  render(); window.scrollTo(0,0);
+  toast('👋 Đã đăng xuất. Hẹn gặp lại!');
+}
+
+function renderAuth(){
+  const hdr = $('#hdr');
+  hdr.className = 'hdr auth-hdr';
+  hdr.innerHTML = DECO + `<div class="hdr-inner"><div class="logo">${LOGO}</div><h1 class="auth-title">OptiSub</h1><p class="auth-sub">Bịt lỗ rò rỉ tiền, sống khỏe ví sinh viên</p></div>`;
+  $('#nav').innerHTML = '';
+  authMode = 'login'; const reg = false;
+  const locked = Date.now() < authLockUntil;
+  const devs = liveAccounts();
+  $('#view').innerHTML = `
+  <section class="auth-card">
+    <h2 style="margin:4px 4px 6px">Đăng nhập</h2><p class="sub" style="margin:0 4px 12px">Chỉ các tài khoản demo được cấp mới đăng nhập được.</p>
+    <form id="auth-form" novalidate onsubmit="return false">
+      ${authErr ? `<div class="err" role="alert">${esc(authErr)}</div>` : ''}
+      ${reg ? `<label class="f">Tên hiển thị<input id="a-name" autocomplete="name" value="${esc(claudeName)}" placeholder="VD: Ngọc Sơn"></label>` : ''}
+      <label class="f">Tên đăng nhập<input id="a-user" autocomplete="username" autocapitalize="none" spellcheck="false" value="${esc(prefillUser)}" placeholder="VD: giang.nguyen"></label>
+      <label class="f pw">Mật khẩu<input id="a-pw" type="${showPw?'text':'password'}" autocomplete="${reg?'new-password':'current-password'}" placeholder="${reg?'Ít nhất 6 ký tự':'Nhập mật khẩu'}"><button type="button" class="eye" data-act="toggle-pw" aria-label="${showPw?'Ẩn mật khẩu':'Hiện mật khẩu'}">${showPw?I.eyeOff:I.eye}</button></label>
+      ${reg ? `<label class="f">Nhập lại mật khẩu<input id="a-pw2" type="${showPw?'text':'password'}" autocomplete="new-password"></label>` : ''}
+      <div class="auth-row"><label class="check"><input type="checkbox" id="a-remember" checked> Ghi nhớ đăng nhập</label>${reg?'':`<button type="button" class="link" data-act="forgot">Quên mật khẩu?</button>`}</div>
+      <button type="button" class="btn primary" data-act="${reg?'register':'login'}" ${authBusy||locked?'disabled':''}>${authBusy ? 'Đang xử lý…' : locked ? `Thử lại sau ${Math.ceil((authLockUntil-Date.now())/1000)} giây` : reg ? 'Tạo tài khoản' : 'Đăng nhập'}</button>
+    </form>
+  </section>
+  ${!reg && devs.length ? `<div class="devs"><h3>Tài khoản demo</h3>${devs.map(a => `<button class="dev" data-act="pick-acc" data-u="${esc(a.username)}"><span class="av">${esc(initials(a.displayName))}</span><span><div class="who">${esc(a.displayName)}</div><div class="u">@${esc(a.username)}</div></span>${I.chev}</button>`).join('')}</div>` : ''}
+  <p class="auth-foot">🔒 Mật khẩu được mã hóa một chiều. Mỗi tài khoản demo có dữ liệu riêng, tách biệt.</p>`;
+  if (locked) setTimeout(() => { if (!current) renderAuth(); }, 1000);
+}
+
+async function doRegister(){
+  const name = val2('a-name').trim(), u = normUser(val2('a-user')), pw = val2('a-pw'), pw2 = val2('a-pw2');
+  const remember = $('#a-remember').checked;
+  prefillUser = val2('a-user'); claudeName = name || claudeName;
+  if (!name) return authFail('Nhập tên hiển thị của bạn.');
+  if (!/^[a-z0-9._@-]{3,40}$/.test(u)) return authFail('Tên đăng nhập 3–40 ký tự, chỉ gồm chữ không dấu, số và . _ @ -');
+  if (pw.length < 6) return authFail('Mật khẩu cần ít nhất 6 ký tự.');
+  if (pw !== pw2) return authFail('Hai lần nhập mật khẩu không khớp.');
+  authBusy = true; authErr = ''; renderAuth();
+  await Promise.race([cloudReady, new Promise(r => setTimeout(r, 2500))]);
+  if (liveAccounts().some(a => a.username === u)){ authBusy = false; return authFail('Tên đăng nhập này đã có. Chọn tên khác hoặc đăng nhập.'); }
+  try {
+    const salt = newSalt();
+    const acc = {id: uid()+uid(), username:u, displayName:name, salt, hash: await hashPw(pw, salt), createdAt: Date.now(), updatedAt: Date.now()};
+    const first = liveAccounts().length === 0;
+    accounts.push(acc); await saveAccounts();
+    // Move pre-login data into the first account
+    if (first){
+      const lLocal = readJSON(localStorage, LEGACY_KEY); const lc = cloud.legacy;
+      const pick = [lLocal, lc].filter(x => x && x.v && x.updatedAt).sort((a,b) => b.updatedAt - a.updatedAt)[0];
+      if (pick){ writeJSON(localStorage, 'optisub.v1.'+acc.id, pick); try { localStorage.removeItem(LEGACY_KEY); } catch(e){} setTimeout(() => toast('📦 Đã chuyển dữ liệu cũ vào tài khoản mới của bạn.', 4500), 600); }
+    }
+    setSession(acc, remember); authBusy = false; authErr = ''; prefillUser = '';
+    await enterAccount(acc);
+    if (!state.updatedAt) commit();
+    toast(`🎉 Chào mừng ${acc.displayName}! Tài khoản đã sẵn sàng.`, 4000);
+  } catch(e){ authBusy = false; authFail(e.message === 'nocrypto' ? 'Trình duyệt này không hỗ trợ mã hóa mật khẩu. Hãy mở bằng Chrome hoặc Safari mới.' : 'Không tạo được tài khoản. Thử lại nhé.'); }
+}
+async function doLogin(){
+  if (Date.now() < authLockUntil) return;
+  const u = normUser(val2('a-user')), pw = val2('a-pw'); const remember = $('#a-remember').checked;
+  prefillUser = val2('a-user');
+  if (!u || !pw) return authFail('Nhập tên đăng nhập và mật khẩu.');
+  authBusy = true; authErr = ''; renderAuth();
+  let acc = liveAccounts().find(a => a.username === u);
+  if (!acc){ await Promise.race([cloudReady, new Promise(r => setTimeout(r, 2500))]); acc = liveAccounts().find(a => a.username === u); }
+  try {
+    if (!acc || await hashPw(pw, acc.salt) !== acc.hash){
+      authBusy = false; authFails++;
+      if (authFails >= 5){ authFails = 0; authLockUntil = Date.now() + 30000; return authFail('Sai quá 5 lần. Tạm khóa 30 giây để bảo vệ tài khoản.'); }
+      return authFail(acc ? 'Mật khẩu chưa đúng.' : 'Tài khoản này không có trong danh sách được phép đăng nhập.');
+    }
+    authFails = 0; authBusy = false; authErr = ''; prefillUser = '';
+    setSession(acc, remember);
+    await enterAccount(acc);
+    toast(`👋 Chào mừng trở lại, ${acc.displayName}!`);
+  } catch(e){ authBusy = false; authFail('Không đăng nhập được lúc này. Thử lại nhé.'); }
+}
+const DEMO_PW = 'demo123';
+function demoState(kind){
+  const t = today(); const d = n => iso(addDays(t,n));
+  const u = (a,b,c) => { const o = {}; [a,b,c].forEach((v,i) => { if (v !== undefined) o[monthKey(i)] = v; }); return o; };
+  const S = (name, price, o={}) => Object.assign({id:uid(), name, price, cycle:'month', nextBill:'', trialEnd:'', sharedWith:1, payers:1, email:'', usage:{}}, o);
+  const B = (name, amount, dueDay, people, roommates, paid) => ({id:uid(), name, amount, dueDay, people, roommates, paid: paid ? {[ym(t)]:true} : {}});
+  const D = (person, amount, dir, note, ago) => ({id:uid(), person, amount, dir, note, date:d(-ago), settled:false});
+  const T = (name, total, saved, months) => ({id:uid(), name, total, saved, due:iso(addMonths(t, months))});
+  const base = Object.assign(emptyState(), {updatedAt: Date.now()});
+  if (kind === 1) return Object.assign(base, {
+    subs:[S('Netflix',260000,{nextBill:d(2),usage:u(0,0,0)}), S('Spotify Premium',59000,{nextBill:d(11),usage:u(48,51,46)}), S('YouTube Premium',79000,{nextBill:d(6),sharedWith:3,usage:u(30,35,28)}), S('FPT Play',100000,{nextBill:d(19),usage:u(1,0,0)})],
+    tuition:[T('Học kỳ 2, 2026–2027',11800000,1500000,4)],
+    bills:[B('Tiền nhà',3600000,Math.min(28,t.getDate()+2),2,'Hùng',false), B('Điện',480000,10,2,'Hùng',true), B('Wifi',200000,15,2,'Hùng',true)],
+    debts:[D('Hùng',150000,'owed','Pizza cuối tuần',4)]});
+  if (kind === 2) return Object.assign(base, {
+    subs:[S('Canva Pro',130000,{nextBill:d(9),usage:u(22,25,30)}), S('CapCut Pro',249000,{trialEnd:d(1),usage:u(4)}), S('Adobe Lightroom',129000,{nextBill:d(15),usage:u(0,0,0)}), S('ChatGPT Plus',520000,{nextBill:d(23),usage:u(2,1,3)})],
+    tuition:[T('Học kỳ 2, 2026–2027',16500000,6000000,4)],
+    bills:[B('Tiền phòng KTX',1200000,5,1,'',false)],
+    debts:[D('Thảo',90000,'owe','In poster đồ án',2), D('Khoa',60000,'owed','Cà phê',8)], savedFromCancels:120000});
+  if (kind === 3) return Object.assign(base, {
+    subs:[S('Google One 100GB',45000,{nextBill:d(14),usage:u(12,10,15)}), S('Duolingo Super',1150000,{cycle:'year',nextBill:d(40),usage:u(27,29,30)})],
+    tuition:[T('Học kỳ 2, 2026–2027',9800000,7200000,3), T('Học kỳ hè 2027',3200000,0,8)],
+    bills:[B('Tiền nhà',2700000,Math.min(28,t.getDate()+1),3,'Vy, Ngân',false), B('Điện nước',540000,12,3,'Vy, Ngân',true)],
+    debts:[], savedFromCancels:320000});
+  if (kind === 4) return Object.assign(base, {
+    subs:[S('ChatGPT Plus',520000,{nextBill:d(8),usage:u(60,55,58)}), S('GitHub Copilot',260000,{nextBill:d(3),usage:u(40,38,41)}), S('iCloud+',25000,{nextBill:d(17),usage:u(20,20,20),prevPrice:19000,priceChangedAt:Date.now()-6*864e5}), S('Xbox Game Pass',229000,{nextBill:d(2),usage:u(0,0,0)}), S('YouTube Premium',79000,{nextBill:d(25),sharedWith:4,usage:u(45,40,42)})],
+    tuition:[T('Học kỳ 2, 2026–2027',14000000,3000000,5)],
+    bills:[B('Tiền nhà',4000000,Math.min(28,t.getDate()+3),4,'Long, Quân, Tú',false), B('Wifi',250000,15,4,'Long, Quân, Tú',true)],
+    debts:[D('Quân',200000,'owed','Tiền điện tháng trước',10), D('Long',75000,'owe','Bún bò',1)]});
+  if (kind === 6) return Object.assign(base, {
+    subs:[S('Microsoft 365',1599000,{cycle:'year',nextBill:d(30),usage:u(15,18,20)}), S('Notion Plus',250000,{nextBill:d(3),usage:u(0,0,0)}), S('Apple Music',65000,{trialEnd:d(2),usage:u(9)}), S('Grab Unlimited',39000,{nextBill:d(7),usage:u(6,8,5)}), S('Netflix',220000,{nextBill:d(16),sharedWith:3,usage:u(14,10,12)})],
+    tuition:[T('Học kỳ 2, 2026–2027',13200000,4500000,4)],
+    bills:[B('Tiền nhà',3000000,Math.min(28,t.getDate()+4),2,'Tâm',false), B('Điện nước',500000,10,2,'Tâm',true), B('Wifi',180000,20,2,'Tâm',false)],
+    debts:[D('Tâm',110000,'owed','Đi chợ chung',5), D('Hà',50000,'owe','Photo tài liệu',2)]});
+  return Object.assign(base, {
+    subs:[S('Spotify Premium',59000,{nextBill:d(5),usage:u(70,66,72)}), S('Netflix',220000,{nextBill:d(12),sharedWith:4,payers:4,usage:u(9,12,10)}), S('Shopee VIP',29000,{nextBill:d(1),usage:u(0,0,0)})],
+    tuition:[T('Học kỳ 2, 2026–2027',12500000,2000000,4)],
+    bills:[B('Tiền nhà',4500000,Math.min(28,t.getDate()+1),3,'Mai, Phương',false), B('Điện',620000,10,3,'Mai, Phương',true), B('Nước',150000,10,3,'Mai, Phương',true), B('Wifi',220000,15,3,'Mai, Phương',false)],
+    debts:[D('Mai',85000,'owed','Trà sữa',6), D('Phương',120000,'owe','Vé xem phim',3), D('Mai',40000,'owed','Gửi xe',2), D('Tuấn',300000,'owe','Mượn tiền đóng quỹ lớp',12)]});
+}
+async function makeDemoAccounts(){
+  if (authBusy) return;
+  authBusy = true; authErr = ''; renderAuth();
+  await Promise.race([cloudReady, new Promise(r => setTimeout(r, 2500))]);
+  const people = [['an.nguyen','Nguyễn Minh An'],['binh.tran','Trần Thanh Bình'],['chi.le','Lê Khánh Chi'],['dung.pham','Phạm Tiến Dũng'],['em.vo','Võ Ngọc Em']];
+  try {
+    let made = 0;
+    for (let i = 0; i < people.length; i++){
+      const [u, name] = people[i];
+      if (liveAccounts().some(a => a.username === u)) continue;
+      const salt = newSalt();
+      const acc = {id: uid()+uid(), username:u, displayName:name, salt, hash: await hashPw(DEMO_PW, salt), demo:true, createdAt:Date.now(), updatedAt:Date.now()};
+      const st = demoState(i+1);
+      writeJSON(localStorage, 'optisub.v1.'+acc.id, st);
+      if (cloud.db && cloud.cid){ try { await cloud.db.doc(`data/users/${cloud.cid}/optisub-${acc.id}`).set({payload: JSON.stringify(st), updatedAt: st.updatedAt}); } catch(e){} }
+      accounts.push(acc); made++;
+    }
+    await saveAccounts();
+    authBusy = false; authMode = 'login'; prefillUser = people[0][0]; renderAuth();
+    toast(made ? `🧪 Đã tạo ${made} tài khoản mẫu. Mật khẩu chung: ${DEMO_PW}` : 'Các tài khoản mẫu đã có sẵn.', 5000);
+    const f = $('#a-pw'); if (f) f.focus();
+  } catch(e){ authBusy = false; authFail(e.message === 'nocrypto' ? 'Trình duyệt này không hỗ trợ mã hóa mật khẩu.' : 'Không tạo được tài khoản mẫu. Thử lại nhé.'); }
+}
+function authFail(msg){ authErr = msg; authBusy = false; renderAuth(); const f = $('#a-pw'); if (f) f.focus(); }
+const val2 = id => $('#'+id)?.value ?? '';
+
+function accountSheet(){
+  const a = current;
+  openDlg('Tài khoản', `
+    <div class="acc-top"><span class="av lg">${esc(initials(a.displayName))}</span><h3 style="font-size:20px">${esc(a.displayName)}</h3><span class="sub" style="margin:0">@${esc(a.username)} · 💰 đã tiết kiệm ${money(savings().total)}/tháng</span></div>
+    <div class="menu">
+      <button data-act="logout">${I.logout} Đăng xuất</button>
+      <button data-act="reset-demo">${I.pen} Khôi phục dữ liệu mẫu ban đầu</button>
+    </div>
+    <p class="hint" style="text-align:center;margin:0">${syncOn ? 'Dữ liệu đang đồng bộ vào tài khoản Claude của bạn.' : 'Dữ liệu đang lưu trên thiết bị này.'}</p>
+  `, `<button class="btn" data-act="close">Đóng</button>`);
+}
+async function changePassword(){
+  const a = current; const oldPw = val('c-old'), pw = val('c-new'), pw2 = val('c-new2');
+  if (await hashPw(oldPw, a.salt) !== a.hash) return toast('Mật khẩu hiện tại chưa đúng.');
+  if (pw.length < 6) return toast('Mật khẩu mới cần ít nhất 6 ký tự.');
+  if (pw !== pw2) return toast('Hai lần nhập mật khẩu mới không khớp.');
+  a.salt = newSalt(); a.hash = await hashPw(pw, a.salt); a.updatedAt = Date.now();
+  await saveAccounts(); dlg.close(); toast('🔒 Đã đổi mật khẩu.');
+}
+async function deleteAccount(){
+  const a = current;
+  if (await hashPw(val('c-old'), a.salt) !== a.hash) return toast('Mật khẩu chưa đúng nên chưa xóa.');
+  const ref = caps.docRef;
+  try { localStorage.removeItem('optisub.v1.'+a.id); } catch(e){}
+  if (ref){ try { await ref.delete(); } catch(e){} }
+  Object.assign(a, {deleted:true, hash:'', salt:'', displayName:'', updatedAt:Date.now()});
+  await saveAccounts();
+  caps.docRef = null; current = a; prefillUser = '';
+  logout();
+  toast('🗑️ Đã xóa tài khoản và toàn bộ dữ liệu.');
+}
+
+/* ============ Dialogs ============ */
+const dlg = $('#dlg');
+function openDlg(title, body, foot){
+  dlg.innerHTML = `<div class="dlg-head"><h3>${title}</h3><button class="btn ghost" data-act="close" aria-label="Đóng">✕</button></div><div class="dlg-body">${body}</div><div class="dlg-foot">${foot}</div>`;
+  dlg.showModal();
+  const f = dlg.querySelector('input,select,textarea'); if (f) f.focus();
+}
+const val = id => dlg.querySelector('#'+id)?.value ?? '';
+const numv = id => Math.max(0, Number(String(val(id)).replace(/\D/g,'')) || 0);
+/* Ô nhập tiền: tự thêm dấu chấm phân cách hàng nghìn (59.000 — 1.250.000) */
+const fmtIn = v => { const n = Number(String(v ?? '').replace(/\D/g,'')); return v === '' || v === undefined || v === null || isNaN(n) ? '' : NF.format(n); };
+document.addEventListener('change', e => { if (e.target.id === 'f-cycle') updateShareSum(); });
+document.addEventListener('input', e => {
+  if (e.target.id === 'f-price') setTimeout(updateShareSum);
+  if (e.target.id === 'f-share-in'){ const er = dlg.querySelector('#f-share-err'); if (er) er.textContent = ''; renderShare(); }
+  const f = e.target; if (!f.classList || !f.classList.contains('money')) return;
+  const caret = f.selectionStart ?? f.value.length;
+  const digitsBefore = f.value.slice(0, caret).replace(/\D/g,'').length;
+  const digits = f.value.replace(/\D/g,'').replace(/^0+(?=\d)/,'').slice(0, 13);
+  f.value = digits ? NF.format(Number(digits)) : '';
+  let pos = 0, seen = 0;
+  while (pos < f.value.length && seen < digitsBefore){ if (/\d/.test(f.value[pos])) seen++; pos++; }
+  try { f.setSelectionRange(pos, pos); } catch(err){}
+});
+
+function subForm(s){
+  const isNew = !s; s = s || {name:'', price:'', cycle:'month', nextBill:'', trialEnd:'', sharedWith:1, payers:1, email:'', usage:{}};
+  const u = uses3(s);
+  openDlg(isNew?'Thêm gói đăng ký':'Sửa '+esc(s.name), `
+    <label class="f">Tên dịch vụ<input id="f-name" list="svc" value="${esc(s.name)}" placeholder="VD: Spotify Premium" required></label>
+    <datalist id="svc">${['Netflix','Spotify Premium','YouTube Premium','ChatGPT Plus','Canva Pro','iCloud+','Google One','Microsoft 365','Notion Plus','Apple Music','Duolingo Super','CapCut Pro'].map(x=>`<option value="${x}">`).join('')}</datalist>
+    <div class="f2"><label class="f">Giá (₫)<input id="f-price" class="money" type="text" inputmode="numeric" autocomplete="off" value="${fmtIn(s.price)}" placeholder="59.000"></label>
+    <label class="f">Chu kỳ<select id="f-cycle"><option value="month" ${s.cycle==='month'?'selected':''}>Hằng tháng</option><option value="year" ${s.cycle==='year'?'selected':''}>Hằng năm</option></select></label></div>
+    <div class="f2"><label class="f">Ngày gia hạn kế tiếp<input id="f-next" type="date" value="${esc(s.nextBill)}"></label>
+    <label class="f">Hết dùng thử (nếu có)<input id="f-trial" type="date" value="${esc(s.trialEnd)}"></label></div>
+    <div class="f"><span>Dùng chung với <span class="hint">Nhập tên đăng nhập (VD: @vy.tran) để ghép nối tài khoản, hoặc gõ tên người không dùng app</span></span>
+      <div class="share-in"><input id="f-share-in" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="@tên_đăng_nhập hoặc tên người"><button type="button" class="btn soft sm" data-act="share-add">Thêm</button></div>
+      <div class="share-err" id="f-share-err" role="alert"></div>
+      <div class="sugs" id="f-share-sug"></div>
+      <div class="pick" id="f-share"></div>
+      <label class="check sm" id="f-share-debt-wrap" hidden><input type="checkbox" id="f-share-debt" checked> Ghi phần tiền của người không dùng app vào Sổ nợ bạn bè</label>
+      <div class="pick-sum" id="f-share-sum"></div>
+    </div>
+    <label class="f">Thông báo nhắc trước khi trừ tiền <span class="hint">OptiSub báo trên app và trên điện thoại (qua lịch nhắc)</span><select id="f-remind">${[[3,'Trước 3 ngày'],[2,'Trước 2 ngày'],[1,'Trước 1 ngày'],[0,'Đúng ngày trừ tiền'],[-1,'Tắt thông báo']].map(([v,l])=>`<option value="${v}" ${(s.remind ?? 3)===v?'selected':''}>${l}</option>`).join('')}</select></label>
+  `, `${isNew?'':`<button class="btn danger" data-act="del-sub" data-id="${s.id}" style="margin-right:auto">Xóa</button>`}<button class="btn" data-act="close">Huỷ</button><button class="btn primary" data-act="save-sub" data-id="${s.id||''}">${isNew?'Thêm gói':'Lưu thay đổi'}</button>`);
+  shareDraft = {users:[...(s.shareWith||[])], guests:[...(s.guests||[])], locked: !!s.owner && s.owner !== current.username};
+  renderShare();
+}
+let shareDraft = {users:[], guests:[], locked:false};
+function shareSel(){ return shareDraft.users; }
+function renderShare(){
+  const box = dlg.querySelector('#f-share'); if (!box) return;
+  const acc = u => liveAccounts().find(a => a.username === u);
+  box.innerHTML = shareDraft.users.map(u => { const a = acc(u); return `<span class="chip2"><span class="av">${esc(initials(a?.displayName||u))}</span>${esc((a?.displayName||u).split(' ').slice(-1)[0])} <small>🔗 @${esc(u)}</small>${shareDraft.locked?'':`<button type="button" class="x" data-act="share-rm" data-u="${esc(u)}" aria-label="Bỏ ${esc(u)}">×</button>`}</span>`; }).join('')
+    + shareDraft.guests.map((g,i) => `<span class="chip2 guest"><span class="av">${esc(initials(g))}</span>${esc(g)} <small>không dùng app</small>${shareDraft.locked?'':`<button type="button" class="x" data-act="share-rm" data-g="${i}" aria-label="Bỏ ${esc(g)}">×</button>`}</span>`).join('');
+  const q = normUser(val('f-share-in')).replace(/^@/,'');
+  const sug = shareDraft.locked ? [] : liveAccounts().filter(a => a.id !== current.id && !shareDraft.users.includes(a.username) && (!q || a.username.includes(q) || normUser(a.displayName).includes(q))).slice(0,4);
+  dlg.querySelector('#f-share-sug').innerHTML = sug.length ? `<span class="hint">Gợi ý:</span>${sug.map(a => `<button type="button" data-act="share-pick" data-u="${esc(a.username)}">@${esc(a.username)}</button>`).join('')}` : '';
+  const inWrap = dlg.querySelector('.share-in'); if (inWrap) inWrap.hidden = shareDraft.locked;
+  const dw = dlg.querySelector('#f-share-debt-wrap'); if (dw) dw.hidden = !shareDraft.guests.length || shareDraft.locked;
+  updateShareSum();
+}
+function shareAdd(raw){
+  const err = dlg.querySelector('#f-share-err'); err.textContent = '';
+  const text = String(raw||'').trim(); if (!text) return;
+  const u = normUser(text).replace(/^@/,'');
+  const a = liveAccounts().find(x => x.username === u);
+  if (a){
+    if (a.id === current.id){ err.textContent = 'Đây là tài khoản của bạn rồi.'; return; }
+    if (!shareDraft.users.includes(u)) shareDraft.users.push(u);
+  } else if (text.startsWith('@')){
+    err.textContent = `Không tìm thấy tài khoản @${u}. Bỏ dấu @ nếu người này không dùng app.`; return;
+  } else {
+    if (text.length > 40){ err.textContent = 'Tên quá dài.'; return; }
+    if (!shareDraft.guests.some(g => g.toLowerCase() === text.toLowerCase())) shareDraft.guests.push(text);
+  }
+  const f = dlg.querySelector('#f-share-in'); f.value = ''; f.focus();
+  renderShare();
+}
+function updateShareSum(){
+  const el = dlg.querySelector('#f-share-sum'); if (!el) return;
+  const n = shareDraft.users.length + shareDraft.guests.length + 1; const price = numv('f-price'); const cyc = val('f-cycle');
+  el.textContent = n === 1 ? 'Chỉ mình bạn dùng và trả tiền.' : `${n} người dùng chung (tính cả bạn)${price ? ` · mỗi người trả ${money((cyc==='year'?price/12:price)/n)}/tháng` : ''}`;
+}
+/* Ghép nối: đẩy gói dùng chung sang app của các tài khoản được chọn */
+async function syncShared(s, removed=[]){
+  const me = current; const members = [me.username, ...(s.shareWith||[])];
+  const targets = [...(s.shareWith||[]).map(u => [u,true]), ...removed.map(u => [u,false])];
+  for (const [u, keep] of targets){
+    const acc = liveAccounts().find(a => a.username === u); if (!acc || acc.id === me.id) continue;
+    const key = 'optisub.v1.' + acc.id;
+    let st = readJSON(localStorage, key);
+    const ref = cloud.db && cloud.cid ? cloud.db.doc(`data/users/${cloud.cid}/optisub-${acc.id}`) : null;
+    if (ref){ try { const snap = await ref.get(); if (snap.exists){ const d = snap.data(); if (!st || (d.updatedAt||0) > (st.updatedAt||0)) st = JSON.parse(d.payload); } } catch(e){} }
+    st = st && st.v ? Object.assign(emptyState(), st) : Object.assign(demoState(acc.kind), {updatedAt:1});
+    const i = st.subs.findIndex(x => x.id === s.id);
+    if (keep){
+      const prev = i >= 0 ? st.subs[i] : null;
+      const copy = {...s, usage: prev ? prev.usage : {}, remind: prev ? prev.remind : s.remind, cancelTodo: prev ? prev.cancelTodo : false, shareWith: members.filter(x => x !== u), sharedBy: me.displayName, owner: me.username};
+      if (i >= 0) st.subs[i] = copy; else st.subs.push(copy);
+    } else if (i >= 0 && st.subs[i].owner === me.username) st.subs.splice(i, 1);
+    st.updatedAt = Date.now();
+    writeJSON(localStorage, key, st);
+    if (ref){ try { await ref.set({payload: JSON.stringify(st), updatedAt: st.updatedAt}); } catch(e){} }
+  }
+}
+function saveSub(id){
+  const name = val('f-name').trim(); const price = numv('f-price');
+  if (!name || !price){ toast('Nhập tên dịch vụ và giá để lưu.'); return; }
+  let s = state.subs.find(x=>x.id===id); const isNew = !s;
+  if (isNew){ s = {id:uid(), usage:{}, createdAt:Date.now()}; state.subs.push(s); }
+  else if (price > s.price){ s.prevPrice = s.price; s.priceChangedAt = Date.now(); }
+  else if (price < s.price){ s.prevPrice = 0; }
+  Object.assign(s, {name, price, cycle:val('f-cycle'), nextBill:val('f-next'), trialEnd:val('f-trial'), remind:Number(val('f-remind'))});
+  const before = s.shareWith || []; const sel = shareSel();
+  if (!s.owner || s.owner === current.username){
+    const pending = val('f-share-in').trim(); if (pending) shareAdd(pending);
+    const guestsBefore = s.guests || [];
+    s.shareWith = sel; s.guests = [...shareDraft.guests]; s.sharedWith = sel.length + s.guests.length + 1; s.payers = s.sharedWith; delete s.owner; delete s.sharedBy;
+    const newGuests = s.guests.filter(g => !guestsBefore.includes(g));
+    if (newGuests.length && dlg.querySelector('#f-share-debt')?.checked){
+      const share = Math.round(monthly({...s, price}) / s.sharedWith / 1000) * 1000;
+      newGuests.forEach(g => state.debts.push({id:uid(), person:g, amount:share, dir:'owed', note:`Phần ${name} tháng ${today().getMonth()+1}`, date:iso(today()), settled:false}));
+      setTimeout(() => toast(`📒 Đã ghi ${newGuests.join(', ')} nợ ${money(share)} vào Sổ nợ bạn bè.`, 4500), 1200);
+    }
+    const removed = before.filter(u => !sel.includes(u));
+    if (sel.length || removed.length) syncShared(s, removed).then(() => { if (sel.length) toast(`🔗 Đã ghép nối ${s.name} với ${sel.map(u => '@'+u).join(', ')}.`, 4500); });
+  }
+  if (s.trialEnd) s.trialConverted = false;
+  dlg.close(); commit();
+  if (isNew){ const t = tipFor(s); toast(`✅ Đã thêm ${s.name} (${money(s.price)}/${s.cycle==='year'?'năm':'tháng'}).${t?' '+t:' 💡 Chọn mức dùng (Không dùng / Ít / Hằng tuần / Hằng ngày) trên thẻ gói để đo chi phí thật.'}`, 7000); }
+  else toast('Đã lưu thay đổi.');
+}
+
+let emailLang = 'vi';
+function cancelDlg(id){
+  const s = state.subs.find(x=>x.id===id); if (!s) return;
+  const n = s.name.toLowerCase();
+  const key = Object.keys(CANCEL).find(k=>n.includes(k));
+  const steps = key ? CANCEL[key] : GENERIC_CANCEL;
+  const deadline = s.trialEnd || s.nextBill;
+  openDlg(`Hủy ${esc(s.name)}`, `
+    <div class="tip" style="background:var(--leak-soft)">Tiết kiệm ${money(myMonthly(s))}/tháng · ${money(myMonthly(s)*12)}/năm.${deadline?` Hủy trước <b>${fmtDate(deadline)}</b> để không bị trừ kỳ tới.`:''}</div>
+    <div><h3 style="font-size:15px;margin-bottom:6px">Cách hủy</h3><ol class="steps">${steps.map(x=>`<li>${esc(x)}</li>`).join('')}</ol>${key?`<p class="hint" style="margin:6px 0 0">Nếu đã đăng ký qua App Store hoặc Google Play, hãy hủy trong phần Gói đăng ký của cửa hàng đó.</p>`:''}</div>
+    <p class="mind" style="margin:0">💭 ${MINDSET[(s.name.length)%3]}</p>
+  `, `<button class="btn ${s.cancelTodo?'':'soft'}" data-act="remind-cancel" data-id="${s.id}">${s.cancelTodo?'🔕 Bỏ nhắc hủy':'🔔 Nhắc tôi hủy'}</button><button class="btn primary" data-act="mark-cancelled" data-id="${s.id}">Tôi đã hủy xong</button>`);
+}
+function emailDraft(s, lang){
+  const email = s.email || (lang==='vi'?'[email tài khoản của bạn]':'[your account email]');
+  const when = s.trialEnd || s.nextBill;
+  if (lang==='en') return {subject:`Cancellation request: ${s.name} subscription and auto-renewal`, body:`Hello ${s.name} Support team,\n\nI am the holder of the account registered with ${email}. Please cancel my ${s.name} subscription and turn off auto-renewal, effective immediately${when?` and before the next billing date (${fmtDate(when)})`:''}.\n\nPlease make sure no further charges are made to my payment method, and send me a written confirmation once the cancellation is complete. If any charge is made after the date of this email, I request a full refund.\n\nThank you,\n[Your name]`};
+  return {subject:`Yêu cầu hủy gói ${s.name} và tắt gia hạn tự động`, body:`Kính gửi bộ phận hỗ trợ ${s.name},\n\nTôi là chủ tài khoản đăng ký bằng email ${email}. Tôi đề nghị hủy gói ${s.name} hiện tại và tắt gia hạn tự động, có hiệu lực ngay${when?` và trước kỳ thanh toán kế tiếp (${fmtDate(when)})`:''}.\n\nVui lòng không trừ thêm bất kỳ khoản phí nào vào phương thức thanh toán của tôi và gửi email xác nhận khi việc hủy hoàn tất. Nếu có khoản phí phát sinh sau thời điểm email này, tôi đề nghị được hoàn tiền đầy đủ.\n\nTrân trọng,\n[Họ tên của bạn]`};
+}
+
+function tuitionForm(x){
+  const isNew = !x; x = x || {name:'', total:'', saved:0, due:''};
+  openDlg(isNew?'Thêm kỳ học':'Sửa '+esc(x.name), `
+    <label class="f">Tên kỳ<input id="t-name" value="${esc(x.name)}" placeholder="VD: Học kỳ 2, 2026–2027"></label>
+    <div class="f2"><label class="f">Tổng học phí (₫)<input id="t-total" class="money" type="text" inputmode="numeric" autocomplete="off" value="${fmtIn(x.total)}" placeholder="12.500.000"></label>
+    <label class="f">Hạn đóng<input id="t-due" type="date" value="${esc(x.due)}"></label></div>
+    <label class="f">Đã để dành được (₫)<input id="t-saved" class="money" type="text" inputmode="numeric" autocomplete="off" value="${fmtIn(x.saved||0)}" placeholder="0"></label>
+  `, `${isNew?'':`<button class="btn danger" data-act="del-tuition" data-id="${x.id}" style="margin-right:auto">Xóa</button>`}<button class="btn" data-act="close">Huỷ</button><button class="btn primary" data-act="save-tuition-form" data-id="${x.id||''}">${isNew?'Thêm kỳ học':'Lưu'}</button>`);
+}
+function billForm(b){
+  const isNew = !b; b = b || {name:'', amount:'', dueDay:5, people:1, roommates:''};
+  openDlg(isNew?'Thêm khoản chia tiền':'Sửa '+esc(b.name), `
+    <label class="f">Tên khoản<input id="b-name" list="bl" value="${esc(b.name)}" placeholder="Tiền nhà, ăn chung, quỹ lớp, du lịch…"></label>
+    <datalist id="bl">${['Tiền nhà','Điện','Nước','Wifi','Ăn uống chung','Quỹ lớp','Quỹ nhóm','Du lịch','Gửi xe'].map(x=>`<option value="${x}">`).join('')}</datalist>
+    <div class="f2"><label class="f">Tổng tiền (₫)<input id="b-amount" class="money" type="text" inputmode="numeric" autocomplete="off" value="${fmtIn(b.amount)}" placeholder="4.500.000"></label>
+    <label class="f">Hạn đóng (ngày trong tháng)<input id="b-day" type="number" min="1" max="31" value="${esc(b.dueDay)}"></label></div>
+    <div class="f2"><label class="f">Số người chia (tính cả bạn)<input id="b-people" type="number" min="1" value="${esc(b.people)}"></label>
+    <label class="f">Tên người cùng chia <span class="hint">không bắt buộc</span><input id="b-room" value="${esc(b.roommates||'')}" placeholder="Minh, Lan"></label></div>
+  `, `${isNew?'':`<button class="btn danger" data-act="del-bill" data-id="${b.id}" style="margin-right:auto">Xóa</button>`}<button class="btn" data-act="close">Huỷ</button><button class="btn primary" data-act="save-bill" data-id="${b.id||''}">${isNew?'Thêm hóa đơn':'Lưu'}</button>`);
+}
+function debtForm(){
+  openDlg('Ghi khoản nợ', `
+    <div class="f2"><label class="f">Loại<select id="d-dir"><option value="owed">Cần thu</option><option value="owe">Cần trả</option></select></label>
+    <label class="f">Tên bạn<input id="d-person" placeholder="VD: Minh"></label></div>
+    <div class="f2"><label class="f">Số tiền (₫)<input id="d-amount" class="money" type="text" inputmode="numeric" autocomplete="off" placeholder="50.000"></label>
+    <label class="f">Ngày<input id="d-date" type="date" value="${iso(today())}"></label></div>
+    <label class="f">Ghi chú<input id="d-note" placeholder="Trà sữa, vé xem phim, đổ xăng…"></label>
+  `, `<button class="btn" data-act="close">Huỷ</button><button class="btn primary" data-act="save-debt">Ghi lại</button>`);
+}
+function textDlg(title, text, send){
+  msgCtx = send || null;
+  const to = send ? (send.to||[]).map(u => '@'+u).join(', ') : '';
+  const sug = liveAccounts().filter(a => a.id !== current.id).slice(0,6);
+  openDlg(title, `<label class="f">Nội dung<textarea id="m-body" style="min-height:140px">${esc(text)}</textarea></label>
+    ${send ? `<label class="f">Gửi nhắc qua OptiSub <span class="hint">Nhập @id người dùng app (nhiều người cách nhau bằng dấu phẩy) — họ sẽ nhận thông báo ngay trong app</span><input id="m-to" autocomplete="off" autocapitalize="none" spellcheck="false" value="${esc(to)}" placeholder="@tên_đăng_nhập"></label>
+    <div class="sugs"><span class="hint">Gợi ý:</span>${sug.map(a => `<button type="button" data-act="msg-pick" data-u="${esc(a.username)}">@${esc(a.username)}</button>`).join('')}</div>` : ''}`,
+    `<button class="btn" data-act="close">Đóng</button><button class="btn ${send?'':'primary'}" data-act="copy-text">📋 Sao chép</button>${send ? `<button class="btn primary" data-act="msg-send">📨 Gửi trong app</button>` : ''}`);
+}
+let msgCtx = null;
+function matchAcc(name){
+  const n = normUser(name).replace(/^@/,''); if (!n) return null;
+  return liveAccounts().find(a => a.id !== current.id && (a.username === n || normUser(a.displayName) === n || normUser(a.displayName).split(' ').pop() === n)) || null;
+}
+/* Gửi tin nhắn vào hộp thư trong app của tài khoản khác */
+async function pushToAccount(acc, msg){
+  const key = 'optisub.v1.' + acc.id;
+  let st = readJSON(localStorage, key);
+  const ref = cloud.db && cloud.cid ? cloud.db.doc(`data/users/${cloud.cid}/optisub-${acc.id}`) : null;
+  if (ref){ try { const snap = await ref.get(); if (snap.exists){ const d = snap.data(); if (!st || (d.updatedAt||0) > (st.updatedAt||0)) st = JSON.parse(d.payload); } } catch(e){} }
+  st = st && st.v ? Object.assign(emptyState(), st) : Object.assign(demoState(acc.kind), {updatedAt:1});
+  st.inbox = [{...msg, id:uid(), at:Date.now(), read:false}, ...(st.inbox||[])].slice(0,50);
+  st.updatedAt = Date.now();
+  writeJSON(localStorage, key, st);
+  if (ref){ try { await ref.set({payload: JSON.stringify(st), updatedAt: st.updatedAt}); } catch(e){} }
+}
+async function sendInApp(){
+  const raw = val('m-to').split(/[\s,;]+/).map(x => x.replace(/^@/,'').trim().toLowerCase()).filter(Boolean);
+  if (!raw.length){ toast('Nhập @id của người nhận.'); return; }
+  const accs = [], bad = [];
+  raw.forEach(u => { const a = liveAccounts().find(x => x.username === u); if (a && a.id !== current.id){ if (!accs.includes(a)) accs.push(a); } else bad.push(u); });
+  if (bad.length){ toast(`Không tìm thấy tài khoản: ${bad.map(u => '@'+u).join(', ')}`); return; }
+  const text = val('m-body').trim(); if (!text){ toast('Nội dung đang trống.'); return; }
+  const ctx = msgCtx || {};
+  for (const a of accs) await pushToAccount(a, {from: current.username, fromName: current.displayName, text, amount: ctx.amount || 0, note: ctx.note || ''});
+  if (ctx.debtId){ const d = state.debts.find(x => x.id === ctx.debtId); if (d){ d.username = accs[0].username; d.remindedAt = Date.now(); commit(false); } }
+  dlg.close();
+  toast(`📨 Đã gửi nhắc tới ${accs.map(a => '@'+a.username).join(', ')}. Họ sẽ thấy thông báo khi mở OptiSub.`, 5000);
+}
+
+/* ============ Notifications ============ */
+function notifCenter(){
+  const list = alertsList();
+  openDlg('Thông báo', `
+    ${list.length ? `<div class="alerts">${list.map(alertHTML).join('')}</div>` : `<div class="empty">Chưa có thông báo nào. OptiSub sẽ báo ở đây trước khi bị trừ tiền 🔔</div>`}
+    <div class="notif-tip">📲 <b>Nhận thông báo trên màn hình điện thoại</b>, kể cả khi không mở OptiSub: thêm lịch nhắc vào ứng dụng Lịch của điện thoại. Điện thoại sẽ tự hiện thông báo trước mỗi lần gia hạn, hết dùng thử và hạn đóng tiền.</div>
+  `, `${caps.downloads ? `<button class="btn primary" data-act="ics">${I.bell} Bật nhắc trên điện thoại</button>` : ''}<button class="btn" data-act="close">Đóng</button>`);
+}
+let pushT;
+function hidePush(){ const p = $('#push'); if (p) p.classList.remove('show'); clearTimeout(pushT); }
+function showPush(){
+  if (!current) return;
+  const list = alertsList().filter(a => !a.quiet); if (!list.length) return;
+  const key = 'optisub.pushed.' + current.id + '.' + iso(today());
+  try { if (sessionStorage.getItem(key)) return; sessionStorage.setItem(key, '1'); } catch(e){}
+  const a = list[0];
+  $('#push').innerHTML = `<span class="pi">${LOGO.replace(/var\(--brand\)/g,'#fff')}</span><span style="flex:1;min-width:0"><span class="pm"><span>OptiSub</span><span>bây giờ</span></span><div class="pt">${a.icon} ${esc(a.title)}${a.n!==undefined?` — ${whenText(a.n)}`:''}</div><div class="pb">${esc(a.desc)}${list.length>1?` · và ${list.length-1} thông báo khác`:''}</div></span>`;
+  requestAnimationFrame(() => $('#push').classList.add('show'));
+  clearTimeout(pushT); pushT = setTimeout(hidePush, 7000);
+}
+
+/* ============ Misc actions ============ */
+let toastT;
+function toast(msg, ms=3500){ const t = $('#toast'); t.textContent = msg; t.classList.add('show'); clearTimeout(toastT); toastT = setTimeout(()=>t.classList.remove('show'), ms); }
+async function copy(text){
+  try { await navigator.clipboard.writeText(text); toast('Đã sao chép 📋'); }
+  catch(e){ const ta = dlg.querySelector('#m-body'); if (ta){ ta.select(); } toast('Đã chọn sẵn nội dung — nhấn Ctrl/⌘+C để sao chép.'); }
+}
+function buildICS(){
+  const stamp = new Date().toISOString().replace(/[-:]/g,'').split('.')[0]+'Z';
+  const escI = s => String(s).replace(/[,;\\]/g, m=>'\\'+m).replace(/\n/g,'\\n');
+  const lines = ['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//OptiSub//VI','CALSCALE:GREGORIAN'];
+  for (const e of events(370)){
+    if (e.n < 0) continue;
+    const d = e.date.replace(/-/g,''); const end = iso(addDays(parseD(e.date),1)).replace(/-/g,'');
+    lines.push('BEGIN:VEVENT',`UID:${e.kind}-${e.ref}-${d}@optisub`,`DTSTAMP:${stamp}`,`DTSTART;VALUE=DATE:${d}`,`DTEND;VALUE=DATE:${end}`,`SUMMARY:${escI(e.icon+' '+e.title+' — '+money(e.amount))}`,`DESCRIPTION:${escI(e.desc)}`,
+      ...(() => { const s = state.subs.find(x => x.id === e.ref); const r = s ? (s.remind ?? 3) : 3; return r > 0 ? ['BEGIN:VALARM','ACTION:DISPLAY',`DESCRIPTION:${escI('Còn '+r+' ngày: '+e.title)}`,`TRIGGER:-P${r}D`,'END:VALARM'] : []; })(),
+      'BEGIN:VALARM','ACTION:DISPLAY',`DESCRIPTION:${escI('Ngày mai: '+e.title)}`,'TRIGGER:-P1D','END:VALARM','END:VEVENT');
+  }
+  lines.push('END:VCALENDAR');
+  return lines.join('\r\n');
+}
+function seed(){
+  const t = today(); const d = n => iso(addDays(t,n));
+  const u = (a,b,c) => ({[monthKey(0)]:a,[monthKey(1)]:b,[monthKey(2)]:c});
+  state.subs = [
+    {id:uid(), name:'Netflix', price:260000, cycle:'month', nextBill:d(2), trialEnd:'', sharedWith:1, payers:1, usage:u(0,0,0), email:''},
+    {id:uid(), name:'ChatGPT Plus', price:520000, cycle:'month', nextBill:d(12), trialEnd:'', sharedWith:1, payers:1, usage:u(38,52,47), email:''},
+    {id:uid(), name:'Canva Pro', price:130000, cycle:'month', nextBill:d(18), trialEnd:'', sharedWith:1, payers:1, usage:u(1,0,2), email:''},
+    {id:uid(), name:'YouTube Premium', price:79000, cycle:'month', nextBill:d(9), trialEnd:'', sharedWith:3, payers:1, usage:u(40,44,39), email:''},
+    {id:uid(), name:'Spotify Premium', price:59000, cycle:'month', nextBill:'', trialEnd:d(2), sharedWith:1, payers:1, usage:u(6,undefined,undefined), email:''},
+    {id:uid(), name:'iCloud+', price:25000, cycle:'month', nextBill:d(21), trialEnd:'', sharedWith:1, payers:1, usage:u(20,22,25), email:'', prevPrice:19000, priceChangedAt:Date.now()-5*864e5}
+  ];
+  state.subs.forEach(s => Object.keys(s.usage).forEach(k => s.usage[k]===undefined && delete s.usage[k]));
+  state.tuition = [{id:uid(), name:'Học kỳ 2, 2026–2027', total:12500000, saved:2000000, due:iso(addMonths(t,4))}];
+  state.bills = [
+    {id:uid(), name:'Tiền nhà', amount:4500000, dueDay:Math.min(28,t.getDate()+1), people:3, roommates:'Minh, Lan', paid:{}},
+    {id:uid(), name:'Điện', amount:620000, dueDay:10, people:3, roommates:'Minh, Lan', paid:{[ym(t)]:true}},
+    {id:uid(), name:'Wifi', amount:220000, dueDay:15, people:3, roommates:'Minh, Lan', paid:{[ym(t)]:true}}
+  ];
+  state.debts = [
+    {id:uid(), person:'Minh', amount:85000, dir:'owed', note:'Trà sữa', date:d(-6), settled:false},
+    {id:uid(), person:'Lan', amount:120000, dir:'owe', note:'Vé xem phim', date:d(-3), settled:false}
+  ];
+  commit(); toast('Đã nạp dữ liệu mẫu — thử bấm “Phân tích ngay” nhé ⚡');
+}
+
+/* ============ Event delegation ============ */
+document.addEventListener('click', async ev => {
+  const el = ev.target.closest('[data-act],[data-tab]'); if (!el) return;
+  const act = el.dataset.act; const id = el.dataset.id;
+  if (!act && el.dataset.tab){ goTab(el.dataset.tab); return; }
+  switch(act){
+    case 'go': goTab(el.dataset.tab); break;
+    case 'sub': sub = el.dataset.s; render(); break;
+    case 'ovseg': ovSeg = el.dataset.s; render(); break;
+    case 'eye': hideAmt = !hideAmt; try { localStorage.setItem('optisub.hide', hideAmt?'1':'0'); } catch(e){} render(); break;
+    case 'tier': case 'savings': savingsSheet(); break;
+    case 'close': dlg.close(); break;
+    case 'auth-mode': authMode = 'login'; authErr = ''; renderAuth(); break;
+    case 'toggle-pw': { ev.preventDefault(); showPw = !showPw; ['a-pw','a-pw2'].forEach(k => { const f = $('#'+k); if (f) f.type = showPw ? 'text' : 'password'; }); el.innerHTML = showPw ? I.eyeOff : I.eye; el.setAttribute('aria-label', showPw ? 'Ẩn mật khẩu' : 'Hiện mật khẩu'); el.setAttribute('aria-pressed', String(showPw)); const f = $('#a-pw'); if (f){ f.focus(); const n = f.value.length; try { f.setSelectionRange(n, n); } catch(e){} } break; }
+    case 'login': doLogin(); break;
+    case 'register': break;
+    case 'pick-acc': prefillUser = el.dataset.u; authErr = ''; renderAuth(); $('#a-pw').focus(); break;
+    case 'forgot': openDlg('Quên mật khẩu', `<p style="margin:0">Đây là bản demo với 5 tài khoản được cấp sẵn.</p><p class="sub" style="margin:0">Hãy hỏi người tổ chức buổi demo để lấy lại mật khẩu.</p>`, `<button class="btn primary" data-act="close">Đã hiểu</button>`); break;
+    case 'forgot-new': dlg.close(); authMode = 'register'; authErr = ''; prefillUser = ''; renderAuth(); break;
+    case 'account': accountSheet(); break;
+    case 'logout': logout(); break;
+    case 'rename': openDlg('Đổi tên hiển thị', `<label class="f">Tên hiển thị<input id="c-name" value="${esc(current.displayName)}"></label>`, `<button class="btn" data-act="close">Huỷ</button><button class="btn primary" data-act="save-name">Lưu</button>`); break;
+    case 'save-name': { const n = val('c-name').trim(); if (!n){ toast('Tên không được để trống.'); return; } current.displayName = n; current.updatedAt = Date.now(); await saveAccounts(); dlg.close(); render(); toast('Đã đổi tên.'); break; }
+    case 'chpw': openDlg('Đổi mật khẩu', `<label class="f">Mật khẩu hiện tại<input id="c-old" type="password" autocomplete="current-password"></label><label class="f">Mật khẩu mới<input id="c-new" type="password" autocomplete="new-password" placeholder="Ít nhất 6 ký tự"></label><label class="f">Nhập lại mật khẩu mới<input id="c-new2" type="password" autocomplete="new-password"></label>`, `<button class="btn" data-act="close">Huỷ</button><button class="btn primary" data-act="save-pw">Đổi mật khẩu</button>`); break;
+    case 'save-pw': changePassword(); break;
+    case 'del-acc': openDlg('Xóa tài khoản?', `<div class="err">Toàn bộ gói đăng ký, học phí, hóa đơn và sổ nợ của tài khoản @${esc(current.username)} sẽ bị xóa vĩnh viễn.</div><label class="f">Nhập mật khẩu để xác nhận<input id="c-old" type="password" autocomplete="current-password"></label>`, `<button class="btn" data-act="close">Huỷ</button><button class="btn danger" data-act="confirm-del">Xóa vĩnh viễn</button>`); break;
+    case 'confirm-del': deleteAccount(); break;
+    case 'reset-demo': if (confirm('Khôi phục dữ liệu mẫu ban đầu cho tài khoản này? Mọi thay đổi sẽ mất.')){ state = demoState(current.kind); dlg.close(); commit(); toast('🔄 Đã khôi phục dữ liệu mẫu.'); } break;
+    case 'seed': seed(); break;
+    case 'analyze': runAnalysis(); break;
+    case 'add-sub': subForm(); break;
+    case 'edit-sub': subForm(state.subs.find(s=>s.id===id)); break;
+    case 'save-sub': saveSub(id); break;
+    case 'del-sub': if (confirm('Xóa gói này khỏi danh sách?')){ const s = state.subs.find(x=>x.id===id); if (s && !s.owner && (s.shareWith||[]).length) syncShared({...s, shareWith:[]}, s.shareWith); state.subs = state.subs.filter(s=>s.id!==id); dlg.close(); commit(); } break;
+    case 'share-add': shareAdd(val('f-share-in')); break;
+    case 'share-pick': shareAdd('@' + el.dataset.u); break;
+    case 'share-rm': if (el.dataset.u) shareDraft.users = shareDraft.users.filter(u => u !== el.dataset.u); else shareDraft.guests.splice(Number(el.dataset.g), 1); renderShare(); break;
+    case 'freq': { const s = state.subs.find(x=>x.id===id); s.usage[monthKey(0)] = Number(el.dataset.v); commit(); break; }
+    case 'use': { const s = state.subs.find(x=>x.id===id); const k = monthKey(0); s.usage[k] = Math.max(0,(s.usage[k]||0) + Number(el.dataset.d)); commit(); break; }
+    case 'cancel': cancelDlg(id); break;
+    case 'remind-cancel': { const s = state.subs.find(x=>x.id===id); s.cancelTodo = !s.cancelTodo; commit(); dlg.close(); toast(s.cancelTodo ? `🔔 OptiSub sẽ nhắc bạn hủy ${s.name} mỗi lần mở app cho đến khi xong.` : 'Đã bỏ nhắc hủy.', 4500); break; }
+    case 'notifs': hidePush(); notifCenter(); break;
+    case 'copy-mail': copy(`Tiêu đề: ${val('m-subj')}\n\n${val('m-body')}`); break;
+    case 'copy-text': copy(val('m-body')); break;
+    case 'mark-cancelled': { const s = state.subs.find(x=>x.id===id); state.savedFromCancels = (state.savedFromCancels||0) + myMonthly(s); state.cancelled.push({name:s.name, monthly:myMonthly(s), at:Date.now()}); state.subs = state.subs.filter(x=>x.id!==id); dlg.close(); commit(); toast(`🎉 Đã cắt ${s.name}. Bạn vừa giữ lại ${money(myMonthly(s)*12)} mỗi năm.`, 5000); break; }
+    case 'add-tuition': tuitionForm(); break;
+    case 'edit-tuition': tuitionForm(state.tuition.find(x=>x.id===id)); break;
+    case 'save-tuition-form': { const name = val('t-name').trim(); const total = numv('t-total'); const due = val('t-due'); if (!name||!total||!due){ toast('Nhập tên kỳ, tổng học phí và hạn đóng.'); return; } let x = state.tuition.find(t=>t.id===id); if (!x){ x = {id:uid()}; state.tuition.push(x); } Object.assign(x,{name,total,due,saved:numv('t-saved')}); dlg.close(); commit(); const p = tuitionPlan(x); toast(`🎓 Cần để dành ${money(p.perMonth)}/tháng trong ${p.months} tháng.`, 5000); break; }
+    case 'del-tuition': state.tuition = state.tuition.filter(x=>x.id!==id); dlg.close(); commit(); break;
+    case 'save-tuition': openDlg('Ghi nhận đã để dành', `<label class="f">Số tiền vừa để dành (₫)<input id="s-amt" class="money" type="text" inputmode="numeric" autocomplete="off" placeholder="500.000"></label>`, `<button class="btn" data-act="close">Huỷ</button><button class="btn primary" data-act="add-saving" data-id="${id}">Ghi nhận</button>`); break;
+    case 'add-saving': { const x = state.tuition.find(t=>t.id===id); x.saved = (x.saved||0) + numv('s-amt'); dlg.close(); commit(); toast('💪 Đã cộng vào quỹ học phí.'); break; }
+    case 'add-bill': billForm(); break;
+    case 'edit-bill': billForm(state.bills.find(b=>b.id===id)); break;
+    case 'save-bill': { const name = val('b-name').trim(); const amount = numv('b-amount'); if (!name||!amount){ toast('Nhập tên và số tiền hóa đơn.'); return; } let b = state.bills.find(x=>x.id===id); if (!b){ b = {id:uid(), paid:{}}; state.bills.push(b); } Object.assign(b,{name, amount, dueDay:Math.min(31,Math.max(1,numv('b-day')||1)), people:Math.max(1,numv('b-people')||1), roommates:val('b-room').trim()}); dlg.close(); commit(); if (b.people>1) toast(`🏠 Mỗi người trả ${money(b.amount/b.people)}.`); break; }
+    case 'del-bill': state.bills = state.bills.filter(b=>b.id!==id); dlg.close(); commit(); break;
+    case 'pay-bill': { const b = state.bills.find(x=>x.id===id); const k = ym(today()); b.paid = b.paid||{}; if (b.paid[k]) delete b.paid[k]; else b.paid[k] = true; commit(); break; }
+    case 'split-msg': { const b = state.bills.find(x=>x.id===id); const share = money(b.amount/b.people); const tos = (b.roommates||'').split(/[,;]+/).map(matchAcc).filter(Boolean).map(a => a.username); textDlg('Tin nhắn chia tiền', `Hi ${b.roommates||'cả nhà'} 👋 ${b.name} tháng ${today().getMonth()+1} hết ${money(b.amount)}, chia ${b.people} người là ${share}/người. Hạn đóng ngày ${b.dueDay} nha, mọi người chuyển cho mình trước hôm đó giúp mình nhé. Cảm ơn! 🙏`, {to: tos, amount: Math.round(b.amount/b.people), note: `${b.name} tháng ${today().getMonth()+1}`}); break; }
+    case 'add-debt': debtForm(); break;
+    case 'save-debt': { const person = val('d-person').trim(); const amount = numv('d-amount'); if (!person||!amount){ toast('Nhập tên và số tiền.'); return; } state.debts.push({id:uid(), person, amount, dir:val('d-dir'), date:val('d-date')||iso(today()), note:val('d-note').trim(), settled:false}); dlg.close(); commit(); break; }
+    case 'settle': { const d = state.debts.find(x=>x.id===id); d.settled = !d.settled; commit(); if (d.settled) toast('✅ Đã gạch nợ.'); break; }
+    case 'del-debt': state.debts = state.debts.filter(x=>x.id!==id); commit(); break;
+    case 'remind': { const d = state.debts.find(x=>x.id===id); const m = d.username ? liveAccounts().find(a => a.username === d.username) : matchAcc(d.person); textDlg('Nhắc khéo', `Ê ${d.person} ơi, khoản ${money(d.amount)}${d.note?` (${d.note})`:''} hôm ${fmtDate(d.date)} nhớ chuyển mình khi tiện nha 😄 Cảm ơn bạn!`, {to: m ? [m.username] : [], amount: d.amount, note: d.note, debtId: d.id}); break; }
+    case 'msg-pick': { const f = $('#m-to'); const cur = f.value.split(/[\s,;]+/).filter(Boolean); const u = '@' + el.dataset.u; if (!cur.includes(u)) cur.push(u); f.value = cur.join(', '); break; }
+    case 'msg-send': sendInApp(); break;
+    case 'smart-next': smartIdx++; render(); break;
+    case 'smart-find': smartFind(id); break;
+    case 'smart-invite': { const m = smartMatches().find(x => x.s.id === id); if (m) sendInvites(m.s, m.friends.map(f => f.acc.username)); break; }
+    case 'sf-toggle': { el.setAttribute('aria-pressed', String(el.getAttribute('aria-pressed') !== 'true')); const s = state.subs.find(x => x.id === dlg.querySelector('[data-act="sf-send"]').dataset.id); sfSum(s); break; }
+    case 'sf-send': { const s = state.subs.find(x => x.id === id); sendInvites(s, sfSel()); break; }
+    case 'sf-copy': { const s = state.subs.find(x => x.id === id); const t = inviteText(s, Math.max(2, sfSel().length + 1)); try { await navigator.clipboard.writeText(t); toast('Đã sao chép lời mời 📋'); } catch(e){ textDlg('Lời mời ghép nhóm', t); } break; }
+    case 'invite-accept': { const m = (state.inbox||[]).find(x => x.id === id); if (m) acceptInvite(m); break; }
+    case 'msg-read': { const m = (state.inbox||[]).find(x => x.id === id); if (m){ m.read = true; commit(); if (dlg.open) notifCenter(); } break; }
+    case 'msg-debt': { const m = (state.inbox||[]).find(x => x.id === id); if (m){ m.read = true; state.debts.push({id:uid(), person:m.fromName.split(' ').slice(-1)[0], username:m.from, amount:m.amount, dir:'owe', note:m.note||'Theo nhắc trong app', date:iso(today()), settled:false}); commit(); if (dlg.open) notifCenter(); toast('📒 Đã ghi vào Mượn & Trả (cần trả).'); } break; }
+    case 'ics': { try { await caps.downloads.save({filename:'optisub-nhac-thanh-toan.ics', data:buildICS()}); } catch(e){ if (e?.code!=='declined' && e?.code!=='cancelled') toast('Chưa lưu được tệp lịch.'); } break; }
+    case 'ask': tab = 'ai'; sendChat(el.dataset.q); window.scrollTo(0, document.body.scrollHeight); break;
+    case 'send': { const t = $('#chat-text'); const q = t.value; t.value=''; sendChat(q); break; }
+    case 'clear-chat': chatLog = []; render(); break;
+  }
+});
+document.addEventListener('keydown', e => {
+  if (e.key==='Enter' && e.target.closest && e.target.closest('#auth-form') && e.target.tagName==='INPUT' && e.target.type!=='checkbox'){ e.preventDefault(); doLogin(); return; }
+  if (e.target.id==='f-share-in' && e.key==='Enter'){ e.preventDefault(); shareAdd(e.target.value); return; }
+  if (e.target.id==='chat-text' && e.key==='Enter' && !e.shiftKey){ e.preventDefault(); const q = e.target.value; e.target.value=''; sendChat(q); }
+});
+dlg.addEventListener('click', e => { if (e.target === dlg) dlg.close(); });
+
+/* ============ Boot ============ */
+(() => {
+  const ses = readSession();
+  const acc = ses && liveAccounts().find(a => a.id === ses.accountId);
+  if (acc) enterAccount(acc); else { render(); }
+})();
+(async () => {
+  if (!window.claude || !window.claude.use){ cloudReadyResolve(); return; }
+  claude.use('sample').then(s => { caps.sample = s; if (s && tab==='ai' && current) render(); });
+  claude.use('downloads').then(d => { caps.downloads = d; if (d && current) render(); });
+  try {
+    const [db, user] = await Promise.all([claude.use('db'), claude.use('user')]);
+    if (!db || !user){ cloudReadyResolve(); return; }
+    try { const me = await user.me(); if (me && me.name && !claudeName){ claudeName = me.name; if (!current && authMode==='register' && !$('#a-name')?.value) renderAuth(); } } catch(e){}
+    const cid = await user.id(); if (!cid){ cloudReadyResolve(); return; }
+    cloud.db = db; cloud.cid = cid;
+    try { const r = await accDocRef().get(); if (r.exists){ mergeAccounts(JSON.parse(r.data().payload)); } else if (accounts.length) saveAccounts(); } catch(e){}
+    try { const lg = await db.doc(`data/users/${cid}/optisub`).get(); if (lg.exists) cloud.legacy = JSON.parse(lg.data().payload); } catch(e){}
+    cloudReadyResolve();
+    if (current){
+      if (!caps.docRef) enterAccount(current);
+    } else {
+      const ses = readSession(); const acc = ses && liveAccounts().find(a => a.id === ses.accountId);
+      if (acc) enterAccount(acc);
+      else { if (liveAccounts().length && authMode==='register' && !$('#a-name')?.value && !$('#a-user')?.value) authMode = 'login'; renderAuth(); }
+    }
+  } catch(e){ cloudReadyResolve(); }
+})();
+</script>
+</body>
+</html>
