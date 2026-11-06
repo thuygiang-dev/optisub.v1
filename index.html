@@ -1274,20 +1274,8 @@ function renderAuth(){
   const locked = Date.now() < authLockUntil;
   const devs = liveAccounts();
   $('#view').innerHTML = `
-  <section class="auth-card">
-    <h2 style="margin:4px 4px 6px">Đăng nhập</h2><p class="sub" style="margin:0 4px 12px">Chỉ các tài khoản demo được cấp mới đăng nhập được.</p>
-    <form id="auth-form" novalidate onsubmit="return false">
-      ${authErr ? `<div class="err" role="alert">${esc(authErr)}</div>` : ''}
-      ${reg ? `<label class="f">Tên hiển thị<input id="a-name" autocomplete="name" value="${esc(claudeName)}" placeholder="VD: Ngọc Sơn"></label>` : ''}
-      <label class="f">Tên đăng nhập<input id="a-user" autocomplete="username" autocapitalize="none" spellcheck="false" value="${esc(prefillUser)}" placeholder="VD: giang.nguyen"></label>
-      <label class="f pw">Mật khẩu<input id="a-pw" type="${showPw?'text':'password'}" autocomplete="${reg?'new-password':'current-password'}" placeholder="${reg?'Ít nhất 6 ký tự':'Nhập mật khẩu'}"><button type="button" class="eye" data-act="toggle-pw" aria-label="${showPw?'Ẩn mật khẩu':'Hiện mật khẩu'}">${showPw?I.eyeOff:I.eye}</button></label>
-      ${reg ? `<label class="f">Nhập lại mật khẩu<input id="a-pw2" type="${showPw?'text':'password'}" autocomplete="new-password"></label>` : ''}
-      <div class="auth-row"><label class="check"><input type="checkbox" id="a-remember" checked> Ghi nhớ đăng nhập</label>${reg?'':`<button type="button" class="link" data-act="forgot">Quên mật khẩu?</button>`}</div>
-      <button type="button" class="btn primary" data-act="${reg?'register':'login'}" ${authBusy||locked?'disabled':''}>${authBusy ? 'Đang xử lý…' : locked ? `Thử lại sau ${Math.ceil((authLockUntil-Date.now())/1000)} giây` : reg ? 'Tạo tài khoản' : 'Đăng nhập'}</button>
-    </form>
-  </section>
-  ${!reg && devs.length ? `<div class="devs"><h3>Tài khoản demo</h3>${devs.map(a => `<button class="dev" data-act="pick-acc" data-u="${esc(a.username)}"><span class="av">${esc(initials(a.displayName))}</span><span><div class="who">${esc(a.displayName)}</div><div class="u">@${esc(a.username)}</div></span>${I.chev}</button>`).join('')}</div>` : ''}
-  <p class="auth-foot">🔒 Mật khẩu được mã hóa một chiều. Mỗi tài khoản demo có dữ liệu riêng, tách biệt.</p>`;
+  ${!reg && devs.length ? `<div class="devs"><h3>Đăng nhập với tư cách…</h3>${devs.map(a => `<button class="dev" data-act="switch-acc" data-u="${esc(a.id)}"><span class="av">${esc(initials(a.displayName))}</span><span><div class="who">${esc(a.displayName)}</div><div class="u">@${esc(a.username)}</div></span>${I.chev}</button>`).join('')}</div>` : ''}
+  <p class="auth-foot">Bản demo: mỗi tài khoản có dữ liệu riêng, không cần mật khẩu.</p>`;
   if (locked) setTimeout(() => { if (!current) renderAuth(); }, 1000);
 }
 
@@ -1410,7 +1398,9 @@ function accountSheet(){
   openDlg('Tài khoản', `
     <div class="acc-top"><span class="av lg">${esc(initials(a.displayName))}</span><h3 style="font-size:20px">${esc(a.displayName)}</h3><span class="sub" style="margin:0">@${esc(a.username)} · 💰 đã tiết kiệm ${money(savings().total)}/tháng</span></div>
     <div class="menu">
-      <button data-act="logout">${I.logout} Đăng xuất</button>
+      <button data-act="logout">${I.logout} Về màn chọn tài khoản</button>
+      <div class="sub" style="margin:4px 4px 0;font-weight:600">Đăng nhập với tư cách…</div>
+      ${liveAccounts().map(x => `<button class="dev" style="margin:0" data-act="switch-acc" data-u="${esc(x.id)}" aria-pressed="${x.id===a.id}"><span class="av">${esc(initials(x.displayName))}</span><span><div class="who">${esc(x.displayName)}</div><div class="u">@${esc(x.username)}</div></span>${x.id===a.id?'<span class="tick">✓</span>':''}</button>`).join('')}
       <button data-act="reset-demo">${I.pen} Khôi phục dữ liệu mẫu ban đầu</button>
     </div>
     <p class="hint" style="text-align:center;margin:0">${syncOn ? 'Dữ liệu đang đồng bộ vào tài khoản Claude của bạn.' : 'Dữ liệu đang lưu trên thiết bị này.'}</p>
@@ -1747,6 +1737,7 @@ document.addEventListener('click', async ev => {
     case 'forgot-new': dlg.close(); authMode = 'register'; authErr = ''; prefillUser = ''; renderAuth(); break;
     case 'account': accountSheet(); break;
     case 'logout': logout(); break;
+    case 'switch-acc': { const acc = liveAccounts().find(x => x.id === el.dataset.u); if (!acc || acc === current) { dlg.close(); break; } dlg.close(); clearTimeout(cloudTimer); if (caps.docRef && current) pushCloud(); hidePush(); setSession(acc, true); await enterAccount(acc); toast('👋 Đang dùng tài khoản ' + acc.displayName); break; }
     case 'rename': openDlg('Đổi tên hiển thị', `<label class="f">Tên hiển thị<input id="c-name" value="${esc(current.displayName)}"></label>`, `<button class="btn" data-act="close">Huỷ</button><button class="btn primary" data-act="save-name">Lưu</button>`); break;
     case 'save-name': { const n = val('c-name').trim(); if (!n){ toast('Tên không được để trống.'); return; } current.displayName = n; current.updatedAt = Date.now(); await saveAccounts(); dlg.close(); render(); toast('Đã đổi tên.'); break; }
     case 'chpw': openDlg('Đổi mật khẩu', `<label class="f">Mật khẩu hiện tại<input id="c-old" type="password" autocomplete="current-password"></label><label class="f">Mật khẩu mới<input id="c-new" type="password" autocomplete="new-password" placeholder="Ít nhất 6 ký tự"></label><label class="f">Nhập lại mật khẩu mới<input id="c-new2" type="password" autocomplete="new-password"></label>`, `<button class="btn" data-act="close">Huỷ</button><button class="btn primary" data-act="save-pw">Đổi mật khẩu</button>`); break;
@@ -1830,7 +1821,7 @@ dlg.addEventListener('click', e => { if (e.target === dlg) dlg.close(); });
 (() => {
   const ses = readSession();
   const acc = ses && liveAccounts().find(a => a.id === ses.accountId);
-  if (acc) enterAccount(acc); else { render(); }
+  render();
 })();
 (async () => {
   if (!window.claude || !window.claude.use){ cloudReadyResolve(); return; }
@@ -1850,7 +1841,7 @@ dlg.addEventListener('click', e => { if (e.target === dlg) dlg.close(); });
     } else {
       const ses = readSession(); const acc = ses && liveAccounts().find(a => a.id === ses.accountId);
       if (acc) enterAccount(acc);
-      else { if (liveAccounts().length && authMode==='register' && !$('#a-name')?.value && !$('#a-user')?.value) authMode = 'login'; renderAuth(); }
+      else renderAuth();
     }
   } catch(e){ cloudReadyResolve(); }
 })();
