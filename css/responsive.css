@@ -1,0 +1,290 @@
+/* ===== Màn hình lớn =====
+   < 768px    : điện thoại (mặc định trong các file khác)
+   ≥ 768px    : tablet — nội dung rộng hơn, danh sách 2 cột
+   ≥ 1100px   : desktop — thanh điều hướng dọc bên trái, bố cục nhiều cột */
+
+.nav-brand {
+  display: none;
+}
+.ov-main,
+.ov-side,
+.cal-alerts,
+.cal-list {
+  min-width: 0;
+}
+
+@media (min-width: 768px) {
+  :root {
+    --content: 760px;
+    --gutter: 24px;
+  }
+  main {
+    padding-top: 28px;
+  }
+  .hdr-inner {
+    padding: 32px 24px 28px;
+  }
+  .hdr-title {
+    font-size: 26px;
+  }
+  .list,
+  .grid,
+  .convs {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: start;
+  }
+  .alerts {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .nav {
+    max-width: 560px;
+  }
+  .auth-card {
+    max-width: 680px;
+    padding: 24px 20px 20px;
+  }
+  .auth-card .dev-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .util .ico {
+    width: 56px;
+    height: 56px;
+  }
+  .util {
+    font-size: 13.5px;
+  }
+}
+
+@media (min-width: 1100px) {
+  :root {
+    --content: 1120px;
+    --side: 236px;
+  }
+  body:not(.auth) {
+    padding-left: calc(var(--side) + 32px);
+    padding-right: 16px;
+  }
+
+  /* Thanh điều hướng dọc */
+  .nav {
+    left: 16px;
+    top: 16px;
+    bottom: 16px;
+    transform: none;
+    width: var(--side);
+    max-width: none;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 18px 12px;
+    border-radius: var(--radius-xl);
+    background: var(--surface);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--card-border);
+  }
+  .nav-brand {
+    display: flex;
+    text-decoration: none;
+    align-items: center;
+    gap: 10px;
+    padding: 4px 10px 20px;
+    font-size: 21px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+  }
+  .nav-logo {
+    width: 38px;
+    height: 38px;
+    border-radius: 12px;
+    background: var(--brand-soft);
+    display: grid;
+    place-items: center;
+  }
+  .nav-logo svg {
+    width: 26px;
+    height: 26px;
+  }
+  .nav button {
+    position: relative;
+    flex-direction: row;
+    justify-content: flex-start;
+    gap: 12px;
+    padding: 11px 12px;
+    border-radius: 14px;
+    font-size: 15px;
+    color: var(--ink);
+    transition: background var(--fast);
+  }
+  .nav .ni {
+    position: static;
+    width: 24px;
+    height: 24px;
+  }
+  .nav .ni svg.i {
+    width: 22px;
+    height: 22px;
+  }
+  .nav button[aria-current="page"] {
+    background: var(--brand-soft);
+  }
+  .nav button[aria-current="page"] .ni,
+  .nav button:hover .ni {
+    background: none;
+  }
+  @media (hover: hover) {
+    .nav button:hover:not([aria-current="page"]) {
+      background: var(--hover);
+    }
+  }
+  .nav .nav-settings {
+    display: flex;
+    margin-top: auto;
+  }
+  .nav .dot {
+    left: auto;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  /* Header dạng thẻ, thẳng hàng với thanh điều hướng */
+  body:not(.auth) .hdr {
+    margin-top: 16px;
+    border-radius: 28px;
+  }
+  body:not(.auth) .hdr.has-strip {
+    border-radius: 28px 28px 0 0;
+  }
+  .hdr-inner {
+    padding: 34px 32px 30px;
+  }
+  .hdr-title {
+    font-size: 28px;
+  }
+  main {
+    padding: 28px 16px 56px;
+  }
+
+  /* Tổng quan: cột chính + cột tình hình */
+  .ov-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+    gap: 32px;
+    align-items: start;
+  }
+  .ov-side .sec-head:first-child {
+    margin-top: 4px;
+  }
+
+  /* Lịch: cảnh báo + lịch thanh toán song song */
+  .cal-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr);
+    gap: 32px;
+    align-items: start;
+  }
+  .ov-side .alerts,
+  .ov-side .list,
+  .cal-alerts .alerts {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .list,
+  .grid {
+    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+  }
+  .grid.g2 {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  /* Bạn bè: danh sách + khung chat */
+  .chat-split {
+    display: grid;
+    grid-template-columns: 340px minmax(0, 1fr);
+    gap: 24px;
+    align-items: start;
+  }
+  .chat-list .convs {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .chat-list .list {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .conv.active {
+    border-color: var(--brand);
+    background: var(--brand-soft);
+  }
+  .chat-pane {
+    display: flex;
+    flex-direction: column;
+    /* vừa phần màn hình dưới header để ô nhập luôn nhìn thấy */
+    height: calc(100vh - 220px);
+    min-height: 460px;
+    background: var(--surface);
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-sm);
+    padding: 16px 18px;
+  }
+  .chat-pane .chat-head .back {
+    display: none;
+  }
+  .chat-pane .thread {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    padding: 4px 2px 12px;
+  }
+  .chat-pane .bub.them {
+    background: var(--surface-2);
+    border-color: transparent;
+  }
+  .chat-pane .compose {
+    position: static;
+    transform: none;
+    width: auto;
+    max-width: none;
+    background: none;
+    padding: 12px 0 0;
+    border-top: 1px solid var(--line);
+  }
+  .chat-empty {
+    flex: 1;
+    display: grid;
+    place-content: center;
+    justify-items: center;
+    gap: 10px;
+    color: var(--muted);
+    text-align: center;
+  }
+  .chat-empty svg.i {
+    width: 40px;
+    height: 40px;
+    color: var(--brand);
+    stroke-width: 1.5;
+  }
+  .chat-empty p {
+    margin: 0;
+  }
+
+  /* Toast & thông báo căn giữa vùng nội dung (bỏ qua thanh điều hướng) */
+  body:not(.auth) .toast {
+    left: calc(50% + (var(--side) + 16px) / 2);
+    bottom: 32px;
+  }
+  body:not(.auth) .push {
+    left: calc(50% + (var(--side) + 16px) / 2);
+    top: 24px;
+  }
+}
+
+/* Trong hộp thoại (rộng tối đa 560px) danh sách luôn 1 cột, kể cả trên tablet/desktop */
+.dlg-body .alerts,
+.dlg-body .list,
+.dlg-body .grid,
+.dlg-body .convs,
+.dlg-body .dev-list {
+  grid-template-columns: minmax(0, 1fr);
+}

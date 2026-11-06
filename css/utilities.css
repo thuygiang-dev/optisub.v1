@@ -1,0 +1,26 @@
+/* Tiện ích nhỏ — nạp sau cùng để thắng các rule thành phần cùng độ ưu tiên */
+.m-0 {
+  margin: 0;
+}
+.mt-xs {
+  margin-top: 6px;
+}
+.mt-md {
+  margin-top: 14px;
+}
+.mr-auto {
+  margin-right: auto;
+}
+.spacer {
+  flex: 1;
+}
+.grow {
+  flex: 1;
+  min-width: 0;
+}
+.span-all {
+  grid-column: 1 / -1;
+}
+.text-center {
+  text-align: center;
+}

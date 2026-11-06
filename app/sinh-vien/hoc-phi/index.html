@@ -1,0 +1,75 @@
+<!doctype html>
+<!-- Tạo tự động từ app/index.html bởi scripts/build-pages.py — đừng sửa trực tiếp -->
+<html lang="vi">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <title>OptiSub — Cố vấn chi tiêu số cho sinh viên</title>
+    <meta
+      name="description"
+      content="Cố vấn chi tiêu số cho sinh viên: theo dõi gói đăng ký, học phí, khoản chia chung và nợ bạn bè."
+    />
+    <meta
+      name="theme-color"
+      content="#f0284d"
+      media="(prefers-color-scheme: light)"
+    />
+    <meta
+      name="theme-color"
+      content="#111114"
+      media="(prefers-color-scheme: dark)"
+    />
+    <link rel="icon" type="image/svg+xml" href="../../../assets/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="32x32" href="../../../assets/icon-32.png" />
+    <link rel="apple-touch-icon" href="../../../assets/icon-180.png" />
+    <link rel="manifest" href="../../../manifest.webmanifest" />
+    <meta property="og:title" content="OptiSub — Bịt lỗ rò rỉ tiền" />
+    <meta
+      property="og:description"
+      content="Cố vấn chi tiêu số cho sinh viên: sống khỏe ví, không còn mất tiền oan."
+    />
+    <meta
+      property="og:image"
+      content="https://thuygiang-dev.github.io/optisub.v1/assets/poster.png"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <script>
+      try {
+        const t = localStorage.getItem("optisub.theme");
+        if (t === "light" || t === "dark")
+          document.documentElement.dataset.theme = t;
+      } catch (e) {}
+    </script>
+    <link rel="stylesheet" href="../../../css/tokens.css" />
+    <link rel="stylesheet" href="../../../css/base.css" />
+    <link rel="stylesheet" href="../../../css/header.css" />
+    <link rel="stylesheet" href="../../../css/components.css" />
+    <link rel="stylesheet" href="../../../css/overlays.css" />
+    <link rel="stylesheet" href="../../../css/features.css" />
+    <link rel="stylesheet" href="../../../css/responsive.css" />
+    <link rel="stylesheet" href="../../../css/utilities.css" />
+    <script type="module" src="../../../js/main.js"></script>
+  </head>
+  <body>
+    <header class="hdr" id="hdr"></header>
+    <main id="view"></main>
+    <nav class="nav" id="nav" aria-label="Điều hướng chính"></nav>
+    <dialog id="dlg"></dialog>
+    <div
+      class="toast"
+      id="toast"
+      role="status"
+      aria-live="polite"
+      data-act="toast-close"
+    ></div>
+    <div class="push" id="push" role="status" aria-live="polite"></div>
+  </body>
+</html>

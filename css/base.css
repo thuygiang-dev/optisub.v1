@@ -1,0 +1,220 @@
+/* ===== Reset & typography ===== */
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+html,
+body {
+  background: var(--bg);
+}
+body {
+  margin: 0;
+  color: var(--ink);
+  font-family:
+    "Be Vietnam Pro",
+    system-ui,
+    -apple-system,
+    "Segoe UI",
+    Roboto,
+    sans-serif;
+  font-size: 15px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+  /* Chữ dài liền mạch (tên gói, ghi chú…) được ngắt dòng thay vì làm tràn layout */
+  overflow-wrap: anywhere;
+}
+/* Nút, nhãn ngắn: giữ nguyên từ, không ngắt giữa chữ */
+.btn,
+.chip,
+.badge,
+.corner,
+.legend,
+.freq button,
+.segc button,
+.strip button,
+.nav,
+.theme-opt,
+.util,
+.toast-x {
+  overflow-wrap: normal;
+}
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+button {
+  touch-action: manipulation;
+}
+[hidden] {
+  display: none !important;
+}
+::selection {
+  background: var(--brand-soft);
+}
+.num {
+  font-variant-numeric: tabular-nums;
+}
+:focus-visible {
+  outline: 2px solid var(--brand);
+  outline-offset: 2px;
+}
+svg.i {
+  width: 22px;
+  height: 22px;
+  flex: none;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+h1,
+h2,
+h3 {
+  margin: 0;
+  letter-spacing: -0.015em;
+  text-wrap: balance;
+}
+h2 {
+  font-size: 21px;
+  font-weight: 700;
+}
+h3 {
+  font-size: 17px;
+  font-weight: 700;
+}
+.sub {
+  color: var(--muted);
+  font-size: 14px;
+  margin: 4px 0 0;
+}
+.hint {
+  font-size: 12.5px;
+  color: var(--muted);
+  font-weight: 400;
+}
+
+/* ===== Layout ===== */
+main {
+  max-width: var(--content);
+  margin: 0 auto;
+  padding: 20px var(--gutter) calc(env(safe-area-inset-bottom, 0px) + 120px);
+}
+/* Tiêu đề mục: [tiêu đề][nút] trên một hàng, mô tả xuống hàng dưới full rộng */
+.sec-head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  column-gap: 12px;
+  margin: 32px 4px 14px;
+}
+.sec-head:first-child {
+  margin-top: 4px;
+}
+.sec-head > div {
+  display: contents;
+}
+.sec-head h2,
+.sec-head h3 {
+  grid-column: 1;
+  grid-row: 1;
+}
+.sec-head > .btn,
+.sec-head > .link {
+  grid-column: 2;
+  grid-row: 1;
+}
+.sec-head .sub {
+  grid-column: 1 / -1;
+  grid-row: 2;
+}
+
+/* ===== Hiệu ứng chung ===== */
+#view.view-in {
+  animation: view-in 0.24s var(--ease);
+}
+@keyframes view-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+}
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}
+@keyframes shimmer {
+  to {
+    background-position: -200% 0;
+  }
+}
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Tiêu đề / dòng chữ có icon phía trước */
+.h-ic {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.h-ic > svg.i {
+  width: 20px;
+  height: 20px;
+  color: var(--brand);
+}
+.row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.row.between {
+  justify-content: space-between;
+}
+.center {
+  display: flex;
+  justify-content: center;
+  margin-top: 22px;
+}
+.grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 12px;
+}
+.g2 {
+  grid-template-columns: 1fr 1fr;
+}
+.link {
+  border: 0;
+  background: none;
+  color: var(--brand);
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  padding: 6px 8px;
+  border-radius: 8px;
+}
+@media (hover: hover) {
+  .link:hover {
+    background: var(--brand-soft);
+  }
+}
